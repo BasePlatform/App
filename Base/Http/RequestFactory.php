@@ -21,18 +21,10 @@ class RequestFactory
   /**
    * Create a Request instance with PSR-7 Standard
    *
-   * @param String|null $vendor
-   *
    * @return ServerRequest
    */
-  public static function create($vendor = null)
+  public static function create()
   {
-    $request = null;
-    switch ($vendor) {
-      default:
-        $request = \Zend\Diactoros\ServerRequestFactory::fromGlobals();
-        break;
-    }
-    return $request;
+    return \Zend\Diactoros\ServerRequestFactory::fromGlobals();
   }
 }

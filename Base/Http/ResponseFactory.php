@@ -1,23 +1,84 @@
 <?php
+/*
+ * This file is part of the BasePlatform project.
+ *
+ * (c) BasePlatform project <https://github.com/BasePlatform>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-namespace App\Base\Factory;
+namespace Base\Http;
 
-class ResponseFactory
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
+
+/**
+ * ResponseFactory that provides a Response Instance in
+ * PSR-7 Standard based on Zend\Diactoros package
+ *
+ *
+ * @author Tuan Nguyen <nganhtuan63@gmail.com>
+ */
+class ResponseFactory implements ResponseFactoryInterface
 {
   /**
-   * Create a Response Instance with PSR-7
+   * Create a standard PSR-7 Response
    *
-   * @param String $vendor
-   *
-   * @return ServerRequest
+   * {@inheritdoc}
    */
-  public static function create($type, $vendor = null)
-  {
+   public function create($body = 'php://memory', $status = 200, array $headers = [])
+   {
+      return new \Zend\Diactoros\Response($body, $status, $headers);
+   }
 
-    switch ($type) {
-      default:
-        return new \Zend\Diactoros\Response\ServerResponseFactory::fromGlobals();
-        break;
-    }
+  /**
+   * Create an Empty Response
+   *
+   * {@inheritdoc}
+   */
+  public function createEmpty($status = 204, array $headers = [])
+  {
+    return new \Zend\Diactoros\Response\EmptyResponse($status, $headers);
+  }
+
+  /**
+   * Create a Text Response
+   *
+   * {@inheritdoc}
+   */
+  public function createText($text, $status = 200, array $headers = [])
+  {
+    return new \Zend\Diactoros\Response\TextResponse($text, $status, $headers);
+  }
+
+  /**
+   * Create an Html Response
+   *
+   * {@inheritdoc}
+   */
+  public function createHtml($html, $status = 200, array $headers = [])
+  {
+    return new \Zend\Diactoros\Response\HtmlResponse($html, $status, $headers);
+  }
+
+  /**
+   * Create a Json Response
+   *
+   * {@inheritdoc}
+   */
+  public function createJson($data, $status = 200, array $headers = [], $encodingOptions = self::DEFAULT_JSON_FLAGS)
+  {
+    return new \Zend\Diactoros\Response\JsonResponse($data, $status, $headers, $encodingOptions);
+  }
+
+  /**
+   * Create a Redirect Response
+   *
+   * {@inheritdoc}
+   */
+  public function createRedirect($uri, $status = 302, array $headers = [])
+  {
+    return new \Zend\Diactoros\Response\RedirectResponse($uri, $status, $headers);
   }
 }

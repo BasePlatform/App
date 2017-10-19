@@ -16,7 +16,6 @@ use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Container\ContainerInterface;
 use InvalidArgumentException;
 use LogicException;
 
@@ -29,9 +28,9 @@ use LogicException;
  * explaining how a Dispatcher works based on the beautiful work of above class of oscarotero
  *
  * It also adds a small change to support make() method
- * of Auryn container
+ * of Auryn container and removes the requirements of ContainerInterface
  */
-class Dispatcher
+class Dispatcher implements MiddlewareInterface
 {
     /**
      * @var MiddlewareInterface[] queue
@@ -39,14 +38,14 @@ class Dispatcher
     private $middlewares;
 
     /**
-     * @var ContainerInterface|null
+     * @var mixed
      */
     private $container;
 
     /**
      * @param MiddlewareInterface[] $middleware
      */
-    public function __construct(array $middlewares, ContainerInterface $container = null)
+    public function __construct(array $middlewares, $container = null)
     {
         if (empty($middlewares)) {
             throw new InvalidArgumentException('Middleware dispatcher requires at least one middleware');
@@ -131,7 +130,7 @@ class Dispatcher
                 if (is_string($condition) && $condition[0] == '/') {
                     $declaredPath = $condition;
                     $path = $request->getUri()->getPath();
-                    $checkPathResult = (($path === is_string) || stripos($path, is_string.'/') === 0);
+                    $checkPathResult = (($path === $declaredPath) || stripos($path, $declaredPath.'/') === 0);
                     if ($checkPathResult) {
                         continue;
                     } else {
@@ -157,11 +156,11 @@ class Dispatcher
             }
             // A small tweak for supporting
             // the make() function of Auryn dependency injector
-            if (method_exists($his->container, 'make')) {
-                return $this->container->make($frame);
+            if (method_exists($this->container, 'make')) {
+                return $this->container->make($middlewareDefinition);
             } else {
                 // We assume that the other container has 'get' method
-                return $this->container->get($frame);
+                return $this->container->get($middlewareDefinition);
             }
         }
 
@@ -185,7 +184,7 @@ class Dispatcher
      */
     public function getNextMiddleware(ServerRequestInterface $request)
     {
-        next($this->middleware);
+        next($this->middlewares);
         return $this->getMiddleware($request);
     }
 
