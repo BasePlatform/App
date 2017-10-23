@@ -4,8 +4,46 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "81c144a3d21e13e38f5fe49b408a4cf4",
+    "content-hash": "0029bb443e25edfd98421d691967b82d",
     "packages": [
+        {
+            "name": "baseplatform/exception",
+            "version": "1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BasePlatform/Exception.git",
+                "reference": "60178b01bd2b4c083e6aa2a936a300d76848bb7f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BasePlatform/Exception/zipball/60178b01bd2b4c083e6aa2a936a300d76848bb7f",
+                "reference": "60178b01bd2b4c083e6aa2a936a300d76848bb7f",
+                "shasum": ""
+            },
+            "type": "project",
+            "autoload": {
+                "classmap": [],
+                "psr-4": {
+                    "Base\\Exception\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tuan Nguyen",
+                    "email": "nganhtuan63@gmail.com"
+                }
+            ],
+            "description": "The Application template for integrating services of BasePlatform",
+            "keywords": [
+                "base platform",
+                "rest exceptions"
+            ],
+            "time": "2017-10-20T23:33:59+00:00"
+        },
         {
             "name": "container-interop/container-interop",
             "version": "1.2.0",

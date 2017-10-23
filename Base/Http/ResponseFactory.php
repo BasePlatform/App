@@ -10,6 +10,7 @@
 
 namespace Base\Http;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -70,6 +71,30 @@ class ResponseFactory implements ResponseFactoryInterface
   public function createJson($data, $status = 200, array $headers = [], $encodingOptions = self::DEFAULT_JSON_FLAGS)
   {
     return new \Zend\Diactoros\Response\JsonResponse($data, $status, $headers, $encodingOptions);
+  }
+
+  /**
+   * Create an Error Response
+   *
+   * {@inheritdoc}
+   */
+  public function createError($e, ServerRequestInterface $request)
+  {
+    $response = [
+      'code' => $e->getCode(),
+      'message' => $e->getMessage()
+    ];
+    if (property_exists($e, 'reference')) {
+      $response['reference'] = $e->getReference();
+    }
+    if (property_exists($e, 'details')) {
+      $response['details'] = $e->getDetails();
+    }
+    if (property_exists($e, 'additionalData')) {
+      $response['additionalData'] = $e->getAdditionalData();
+    }
+    return new \Zend\Diactoros\Response\JsonResponse($response
+      , 500);
   }
 
   /**

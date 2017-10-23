@@ -16,7 +16,6 @@ use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use LogicException;
 
 /**
  * Delegate Middleware for creating middleware from
@@ -30,18 +29,14 @@ class DelegateClosureMiddleware implements MiddlewareInterface
    */
   public function __construct(Closure $handler)
   {
-      $this->handler = $handler;
+    $this->handler = $handler;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
+  public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
   {
-      $response = call_user_func($this->handler, $request, $next);
-      if (!($response instanceof ResponseInterface)) {
-          throw new LogicException('The middleware must return a ResponseInterface');
-      }
-      return $response;
+    return call_user_func($this->handler, $request, $handler);
   }
 }

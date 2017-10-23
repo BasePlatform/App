@@ -30,7 +30,7 @@ use LogicException;
  * It also adds a small change to support make() method
  * of Auryn container and removes the requirements of ContainerInterface
  */
-class Dispatcher implements MiddlewareInterface
+class Dispatcher
 {
     /**
      * @var MiddlewareInterface[] queue
@@ -38,17 +38,19 @@ class Dispatcher implements MiddlewareInterface
     private $middlewares;
 
     /**
-     * @var mixed
+     * @var Object
      */
     private $container;
 
     /**
      * @param MiddlewareInterface[] $middleware
+     *
+     * @param Object $container
      */
     public function __construct(array $middlewares, $container = null)
     {
         if (empty($middlewares)) {
-            throw new InvalidArgumentException('Middleware dispatcher requires at least one middleware');
+            throw new InvalidArgumentException('Missing Middleware Definition');
         }
         $this->middlewares = $middlewares;
         $this->container = $container;
@@ -80,15 +82,6 @@ class Dispatcher implements MiddlewareInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
-    {
-        reset($this->middlewares);
-        return $this->getMiddleware($request)->process($request, $this->createRequestHandler($next));
-    }
-
-    /**
      * This function get the current first middleware definition of the
      * middlewares array and create a Middleware Instance based on the
      * type of the definitions
@@ -99,9 +92,6 @@ class Dispatcher implements MiddlewareInterface
      */
     public function getMiddleware(ServerRequestInterface $request): MiddlewareInterface
     {
-        // Move the internal pointer to the first element of the middlewares
-        reset($this->middlewares);
-
         // Get the current middleware definition
         $middlewareDefinition = current($this->middlewares);
 
@@ -137,7 +127,7 @@ class Dispatcher implements MiddlewareInterface
                         return $this->getNextMiddleware($request);
                     }
                 } elseif (!is_callable($condition)) {
-                    throw new InvalidArgumentException('Invalid condition type. It must be a boolean, string or a callable');
+                    throw new InvalidArgumentException('Invalid Condition Middleware Provided');
                 }
                 if (!$condition($request)) {
                     return $this->getNextMiddleware($request);
@@ -152,7 +142,7 @@ class Dispatcher implements MiddlewareInterface
             // If we do not provide a container
             // so that we cannot create an instance of the provided class
             if ($this->container === null) {
-                throw new InvalidArgumentException(sprintf('No valid middleware provided (%s)', $middlewareDefinition));
+                throw new InvalidArgumentException(sprintf('Invalid Middleware Provided (%s)', $middlewareDefinition));
             }
             // A small tweak for supporting
             // the make() function of Auryn dependency injector
@@ -173,7 +163,7 @@ class Dispatcher implements MiddlewareInterface
             return $this->createMiddlewareFromClosure($middlewareDefinition);
         }
 
-        throw new InvalidArgumentException(sprintf('Unsupporting middleware type provided (%s)', is_object($middlewareDefinition) ? get_class($middlewareDefinition) : gettype($middlewareDefinition)));
+        throw new InvalidArgumentException(sprintf('Invalid Middleware Provided (%s)', is_object($middlewareDefinition) ? get_class($middlewareDefinition) : gettype($middlewareDefinition)));
 
     }
 
