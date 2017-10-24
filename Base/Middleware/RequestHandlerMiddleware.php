@@ -2,7 +2,8 @@
 /*
  * This file is part of the BasePlatform project.
  *
- * (c) BasePlatform project <https://github.com/BasePlatform>
+ * @link https://github.com/BasePlatform
+ * @license https://github.com/BasePlatform/Base/blob/master/LICENSE.txt
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -65,8 +66,8 @@ class RequestHandlerMiddleware implements MiddlewareInterface
    */
   public function process(ServerRequestInterface $request, RequestHandlerInterface $next)
   {
-    // // The request now has all the information
-    // // parsed by previous RouteMiddleware
+    // The request now has all the information
+    // parsed by previous RouteMiddleware
     $handler = $request->getAttribute(self::HANDLER_ATTRIBUTE);
 
     $args = array_merge([$request, $next], $this->args);

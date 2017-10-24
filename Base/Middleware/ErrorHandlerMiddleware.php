@@ -2,7 +2,8 @@
 /*
  * This file is part of the BasePlatform project.
  *
- * (c) BasePlatform project <https://github.com/BasePlatform>
+ * @link https://github.com/BasePlatform
+ * @license https://github.com/BasePlatform/Base/blob/master/LICENSE.txt
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -35,8 +36,6 @@ use Throwable;
  *
  * You can override the function of process() or handleThrowable() for
  * your own logic error handler
- *
- * @author Tuan Nguyen <nganhtuan63@gmail.com>
  */
 class ErrorHandlerMiddleware implements MiddlewareInterface
 {

@@ -2,12 +2,12 @@
 /*
  * This file is part of the BasePlatform project.
  *
- * (c) BasePlatform project <https://github.com/BasePlatform>
+ * @link https://github.com/BasePlatform
+ * @license https://github.com/BasePlatform/Base/blob/master/LICENSE.txt
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Base\Rest;
 
 use Interop\Http\Server\MiddlewareInterface;
@@ -21,8 +21,6 @@ use Base\Exception\MethodNotAllowedException;
  * for working with a Resource
  *
  * Structure suggestion from https://github.com/acelaya
- *
- * @author Tuan Nguyen <nganhtuan63@gmail.com>
  */
 abstract class RestController implements MiddlewareInterface
 {

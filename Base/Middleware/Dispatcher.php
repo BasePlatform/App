@@ -2,7 +2,8 @@
 /*
  * This file is part of the BasePlatform project.
  *
- * (c) BasePlatform project <https://github.com/BasePlatform>
+ * @link https://github.com/BasePlatform
+ * @license https://github.com/BasePlatform/Base/blob/master/LICENSE.txt
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -99,13 +100,9 @@ class Dispatcher
             return $middlewareDefinition;
         }
 
-        // If this is an array,
-        // we will set the middlewareDefinition to the last element
-        // of the array
-        //
-        // Then we check all the conditions which are the remaining
-        // items of the array. If they pass all, the middlewareDefinition
-        // will be created in the below.
+        // If this is an array, we will set the middlewareDefinition to the last element of the array
+        // Then we check all the conditions which are the remaining items of the array.
+        // If they pass all, the middlewareDefinition will be created
         //
         if (is_array($middlewareDefinition)) {
             $conditions = $middlewareDefinition;

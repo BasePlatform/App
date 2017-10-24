@@ -2,7 +2,8 @@
 /*
  * This file is part of the BasePlatform project.
  *
- * (c) BasePlatform project <https://github.com/BasePlatform>
+ * @link https://github.com/BasePlatform
+ * @license https://github.com/BasePlatform/Base/blob/master/LICENSE.txt
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,9 +18,6 @@ use Psr\Http\Message\StreamInterface;
 /**
  * ResponseFactory that provides a Response Instance in
  * PSR-7 Standard based on Zend\Diactoros package
- *
- *
- * @author Tuan Nguyen <nganhtuan63@gmail.com>
  */
 class ResponseFactory implements ResponseFactoryInterface
 {

@@ -1,10 +1,17 @@
 <?php
+/*
+ * This file is part of the BasePlatform project.
+ *
+ * (c) BasePlatform project <https://github.com/BasePlatform>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Base\Exception;
 
 /**
  * The interface for the detail-oriented exceptions within a specific service
- *
  */
 interface ServiceExceptionInterface
 {
