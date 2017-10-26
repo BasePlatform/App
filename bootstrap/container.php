@@ -38,6 +38,8 @@ $container->share($config);
 $container->alias(Base\Http\ResponseFactoryInterface::class, Base\Http\ResponseFactory::class);
 $container->alias(Psr\Log\LoggerInterface::class, Monolog\Logger::class);
 
+$container->alias(Base\TenantService\Service\TenantServiceInterface::class, Base\TenantService\Service\TenantService::class);
+
 /**
  * Create a logger and register it with the container
  */
@@ -47,9 +49,17 @@ $logger->pushHandler(new Monolog\Handler\ErrorLogHandler());
 $container->share($logger);
 
 /**
- * Setup the Entity Manager
+ * Setup the PDO
  */
-$entityManager = new Base\Factory\EntityManagerFactory($config->getAll());
-$container->share($entityManager);
+$dbConfig = $config->get('db');
+$dbConfig = isset($dbConfig['mysql']) ? $dbConfig : [];
+if (count($dbConfig) > 0) {
+  $container->share('PDO');
+  $container->define('PDO', [
+    ':dsn' => 'mysql:dbname='.$dbConfig['dbname'].';host='.$dbConfig['host'],
+    ':username' => $dbConfig['user'],
+    ':passwd' => $dbConfig['password']
+  ]);
+}
 
 return $container;

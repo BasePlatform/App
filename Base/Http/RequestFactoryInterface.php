@@ -16,18 +16,16 @@ namespace Base\Http;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * RequestFactory that provides a Request Instance follows
- * PSR-7 Standard
+ * Interface for RequestFactory
  *
  * @package Base\Http
  */
-class RequestFactory implements RequestFactoryInterface
+interface RequestFactoryInterface
 {
   /**
-   * {@inheritdoc}
+   * Create a Request instance with PSR-7 Standard
+   *
+   * @return ServerRequest
    */
-  public static function create(): ServerRequestInterface
-  {
-    return \Zend\Diactoros\ServerRequestFactory::fromGlobals();
-  }
+  public static function create(): ServerRequestInterface;
 }

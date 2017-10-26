@@ -9,7 +9,16 @@
  * file that was distributed with this source code.
  */
 
-return [
-  'roles' => [
-  ]
-];
+declare(strict_types=1);
+
+namespace Base\TenantService\Service;
+
+/**
+ * Tenant Service Interface
+ *
+ * @package Base\TenantService\Service
+ */
+interface TenantServiceInterface
+{
+
+}

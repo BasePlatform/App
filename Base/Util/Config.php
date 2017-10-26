@@ -35,10 +35,12 @@ class Config
   public  function __construct(array $providers, string $cacheFilePath, bool $isDevMode = true) {
     $config = [];
     // Check if file exits
-    if (file_exists($cacheFilePath)) {
+    if (file_exists($cacheFilePath) && !$isDevMode) {
       $config = unserialize(file_get_contents($cacheFilePath));;
     } else {
-      $config = array_merge($providers);
+      foreach ($providers as $provider) {
+        $config = array_merge($config, $provider);
+      }
       if (!$isDevMode) {
         if (file_exists($cacheFilePath) && !is_writable($cacheFilePath)) {
           throw new RuntimeException(

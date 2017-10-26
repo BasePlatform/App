@@ -27,8 +27,6 @@ use Exception;
 class ResponseFactory implements ResponseFactoryInterface
 {
   /**
-   * Create a standard PSR-7 Response
-   *
    * {@inheritdoc}
    */
    public function create(string $body = 'php://memory', int $status = 200, array $headers = []): ResponseInterface
@@ -37,8 +35,6 @@ class ResponseFactory implements ResponseFactoryInterface
    }
 
   /**
-   * Create an Empty Response
-   *
    * {@inheritdoc}
    */
   public function createEmpty(int $status = 204, array $headers = []): ResponseInterface
@@ -47,8 +43,6 @@ class ResponseFactory implements ResponseFactoryInterface
   }
 
   /**
-   * Create a Text Response
-   *
    * {@inheritdoc}
    */
   public function createText(string $text, int $status = 200, array $headers = []): ResponseInterface
@@ -57,8 +51,6 @@ class ResponseFactory implements ResponseFactoryInterface
   }
 
   /**
-   * Create an Html Response
-   *
    * {@inheritdoc}
    */
   public function createHtml(string $html, int $status = 200, array $headers = []): ResponseInterface
@@ -67,8 +59,6 @@ class ResponseFactory implements ResponseFactoryInterface
   }
 
   /**
-   * Create a Json Response
-   *
    * {@inheritdoc}
    */
   public function createJson(array $data, int $status = 200, array $headers = [], int $encodingOptions = self::DEFAULT_JSON_FLAGS): ResponseInterface
@@ -77,8 +67,6 @@ class ResponseFactory implements ResponseFactoryInterface
   }
 
   /**
-   * Create an Error Response
-   *
    * {@inheritdoc}
    */
   public function createError(Exception $e, ServerRequestInterface $request): ResponseInterface
@@ -101,8 +89,6 @@ class ResponseFactory implements ResponseFactoryInterface
   }
 
   /**
-   * Create a Redirect Response
-   *
    * {@inheritdoc}
    */
   public function createRedirect(string $uri, int $status = 302, array $headers = []): ResponseInterface

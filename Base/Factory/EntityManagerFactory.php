@@ -11,11 +11,6 @@
 
 declare(strict_types=1);
 
-use Doctrine\Common\Cache\ArrayCache;
-use Doctrine\Common\Cache\Cache;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\Setup;
-
 namespace Base\Factory;
 
 /**
@@ -31,18 +26,20 @@ class EntityManagerFactory
    * @param array $config
    * @param Doctrine\Common\Cache\Cache $cache
    *
-   * @return EntityManager
+   * @return \Doctrine\ORM\EntityManager
    */
-   public static function create(array $config, Cache $cache = null): EntityManager
+   public static function create(array $config, \Doctrine\Common\Cache\Cache $cache = null): \Doctrine\ORM\EntityManager
    {
+
       $isDevMode = isset($config['debug']) ? ((bool) $config['debug']) : false;
       if (!$cache) {
-        $cache = new ArrayCache();
+        $cache = new \Doctrine\Common\Cache\ArrayCache();
       }
       $resourcesConfig = isset($config['resources']) ? $config['resources'] : [];
       $ormConfig = isset($resourcesConfig['orm']) ? $resourcesConfig['orm'] : [];
-      $dbConfig = isset($config['db']) ? $config['db'] : [];
-      return EntityManager::create($connecitonConfig, Setup::createAnnotationMetadataConfiguration(
+      $connConfig = (isset($config['db']) && isset($config['db']['mysql'])) ? $config['db']['mysql'] : [];
+
+      return \Doctrine\ORM\EntityManager::create($connConfig, \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(
           isset($ormConfig['entityPaths']) ? $ormConfig['entityPaths'] : [],
           $isDevMode,
           isset($ormConfig['proxiesDir']) ? $ormConfig['proxiesFir'] : null,

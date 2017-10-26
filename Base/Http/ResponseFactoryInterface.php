@@ -19,8 +19,7 @@ use Psr\Http\Message\StreamInterface;
 use Exception;
 
 /**
- * ResponseFactoryInterface that provides a Response Factory Interface
- * PSR-7 Standard
+ * Interface for ResponseFactory
  *
  * @package Base\Http
  */

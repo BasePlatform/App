@@ -16,11 +16,11 @@ namespace Base\TenantService\ValueObject;
 use Ramsey\Uuid\Uuid;
 
 /**
- * TenantId Object
+ * TenantId ValueObject
  *
  * @package Base\TenantService\ValueObject
  */
-class TenantId
+class TenantId implements TenantIdInterface
 {
   /**
    * @var string
@@ -36,14 +36,7 @@ class TenantId
   }
 
   /**
-   * Create a TenantId from a tenantId and domain
-   *
-   * If no tenantId is provided, it will generate a uuid4() with domain
-   *
-   * @param string $tenantId
-   * @param string $domain
-   *
-   * @return TenantId
+   * {@inheritdoc}
    */
   public static function create(string $tenantId = '', string $domain = ''): TenantId
   {
@@ -56,9 +49,7 @@ class TenantId
   }
 
   /**
-   * Return the value of id
-   *
-   * @return integer
+   * {@inheritdoc}
    */
   public function getId(): string
   {

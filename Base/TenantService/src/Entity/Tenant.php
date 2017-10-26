@@ -51,11 +51,16 @@ class Tenant
   protected $updatedAt;
 
   /**
-   * Set the value of field domain
-   *
-   * @param  string $domain
-   *
-   * @return $this
+   * {@inheritdoc}
+   */
+  public function setId(string $id)
+  {
+    $this->id = $id;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function setDomain(string $domain)
   {
@@ -64,11 +69,7 @@ class Tenant
   }
 
   /**
-   * Set the value of field Platform
-   *
-   * @param  string $platform
-   *
-   * @return $this
+   * {@inheritdoc}
    */
   public function setPlatform(string $platform)
   {
@@ -77,11 +78,7 @@ class Tenant
   }
 
   /**
-   * Set the value of field status
-   *
-   * @param  string $status
-   *
-   * @return $this
+   * {@inheritdoc}
    */
   public function setStatus(string $status)
   {
@@ -91,11 +88,7 @@ class Tenant
   }
 
   /**
-   * Set the value of field createdAt
-   *
-   * @param  integer $createdAt
-   *
-   * @return $this
+   * {@inheritdoc}
    */
   public function setCreatedAt(int $createdAt)
   {
@@ -104,11 +97,7 @@ class Tenant
   }
 
   /**
-   * Set the value of field updatedAt
-   *
-   * @param  integer $updatedAt
-   *
-   * @return $this
+   * {@inheritdoc}
    */
   public function setUpdatedAt(int $updatedAt)
   {
@@ -117,9 +106,7 @@ class Tenant
   }
 
   /**
-   * Return the value of field id
-   *
-   * @return string
+   * {@inheritdoc}
    */
   public function getId(): string
   {
@@ -127,19 +114,7 @@ class Tenant
   }
 
   /**
-   * Return the value of field tenantId
-   *
-   * @return string
-   */
-  public function getTenantId(): string
-  {
-    return $this->tenantId;
-  }
-
-  /**
-   * Return the value of field domain
-   *
-   * @return string
+   * {@inheritdoc}
    */
   public function getDomain(): string
   {
@@ -147,9 +122,7 @@ class Tenant
   }
 
   /**
-   * Return the value of field platform
-   *
-   * @return string
+   * {@inheritdoc}
    */
   public function getPlatform(): string
   {
@@ -157,9 +130,7 @@ class Tenant
   }
 
   /**
-   * Return the value of field status
-   *
-   * @return string
+   * {@inheritdoc}
    */
   public function getStatus(): string
   {
@@ -167,9 +138,7 @@ class Tenant
   }
 
   /**
-   * Return the value of field createdAt
-   *
-   * @return integer
+   * {@inheritdoc}
    */
   public function getCreatedAt(): int
   {
@@ -177,9 +146,7 @@ class Tenant
   }
 
   /**
-   * Return the value of field updatedAt
-   *
-   * @return integer
+   * {@inheritdoc}
    */
   public function getUpdatedAt(): int
   {

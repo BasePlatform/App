@@ -10,4 +10,6 @@
  */
 
 return [
+  'dependencies' => [
+  ]
 ];

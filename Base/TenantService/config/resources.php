@@ -10,16 +10,16 @@
  */
 
 return [
-  // Configure for ORM
-  'orm' => [
-    [
+  'resources' => [
+    // Configure for ORM
+    'orm' => [
       'entityPaths' => [
         __DIR__ . '/../src/Entity',
         __DIR__ . '/../src/ValueObject'
       ]
+    ],
+    // Configure for ODM
+    'odm' => [
     ]
-  ],
-  // Configure for ODM
-  'odm' => [
   ]
 ];

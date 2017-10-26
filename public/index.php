@@ -10,7 +10,6 @@
  */
 
 use Base\Http\RequestFactory;
-use Base\Middleware\Dispatcher;
 
 require __DIR__.'/../bootstrap/autoload.php';
 
@@ -30,14 +29,15 @@ $routeDispatcher = require_once __DIR__.'/../bootstrap/route-dispatcher.php';;
 $middlewares = [
   Base\Middleware\ErrorHandlerMiddleware::class,
   new Base\Middleware\FastRouteMiddleware($routeDispatcher),
+  new Base\Middleware\BodyParserMiddleware('json'),
   new Base\Middleware\RequestHandlerMiddleware($container)
 ];
 
 /**
  * Dispatch the request through middleware queue and get a response
  */
-$dispatcher = new Dispatcher($middlewares, $container);
-$response = $dispatcher->dispatch(RequestFactory::create());
+$middlewareDispatcher = new Base\Middleware\Dispatcher($middlewares, $container);
+$response = $middlewareDispatcher->dispatch(RequestFactory::create());
 
 /**
  * Return the response

@@ -8,17 +8,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+require __DIR__.'/../bootstrap/autoload.php';
 
-declare(strict_types=1);
-
-namespace Base\TenantService\Service;
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
 
 /**
- * Tenant Service
- *
- * @package Base\TenantService\Service
+ * Get the container
  */
-class TenantService implements TenantServiceInterface
-{
+$container = require_once __DIR__.'/../bootstrap/container.php';
 
-}
+$entityManager = new Base\Factory\EntityManagerFactory($config->getAll());
+
+return ConsoleRunner::createHelperSet($entityManager);

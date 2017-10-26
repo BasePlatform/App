@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Base\TenantService\Controller\Tenant;
+namespace Base\TenantService\Controller;
 
 use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;

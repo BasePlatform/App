@@ -10,6 +10,6 @@
  */
 
 return \FastRoute\simpleDispatcher(function (\FastRoute\RouteCollector $r) {
-  $r->addRoute(['GET'], '/tenants/register', \Base\TenantService\Controller\Tenant\TenantController::class.':'.'register');
-  $r->addRoute(['GET'], '/admin/tenants/self/settings[/{group}]', \Base\TenantService\Controller\Tenant\TenantAdminController::class.':'.'getSettings');
+  $r->addRoute(['GET', 'POST'], '/tenants/register', \Base\TenantService\Controller\TenantController::class.':'.'register');
+  $r->addRoute(['GET'], '/admin/tenants/self/settings[/{group}]', \Base\TenantService\Controller\TenantAdminController::class.':'.'getSettings');
 });
