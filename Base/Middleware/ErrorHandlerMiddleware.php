@@ -9,12 +9,13 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Base\Middleware;
 
 use Interop\Http\Server\MiddlewareInterface;
 use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Base\Http\ResponseFactoryInterface;
@@ -36,6 +37,8 @@ use Throwable;
  *
  * You can override the function of process() or handleThrowable() for
  * your own logic error handler
+ *
+ * @package Base\Middleware
  */
 class ErrorHandlerMiddleware implements MiddlewareInterface
 {
@@ -69,7 +72,7 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
   /**
    * {@inheritdoc}
    */
-  public function process(ServerRequestInterface $request, RequestHandlerInterface $next)
+  public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
   {
     set_error_handler(function ($errno, $errstr, $errfile, $errline) {
       if ((error_reporting() & $errno)) {
@@ -107,7 +110,7 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
    * @param ServerRequestInterface $request
    * @return ResponseInterface
    */
-  public function handleThrowable($e, ServerRequestInterface $request)
+  public function handleThrowable($e, ServerRequestInterface $request): ResponseInterface
   {
     // Using a logger and Error is NOT an instance of HttpExceptionInterface // Then we log the error
     $logException = false;
@@ -133,7 +136,7 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
     // Currently, it wont't show the real value $message if $e is
     // an instance of Error - Check log at error_log or logger
     if (($e instanceof Error) || ($e instanceof ErrorException)) {
-      $e = new Error('Internal Server Error', 500);
+      $e = new Exception('Internal Server Error', 500);
     }
     return $this->responseFactory->createError($e, $request);
   }

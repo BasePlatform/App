@@ -15,6 +15,8 @@ use RuntimeException;
 
 /**
  * Represents an HTTP 422 error - Unprocessable Entity
+ *
+ * @package Base\Exception
  */
 class UnprocessableEntityException extends RuntimeException implements HttpExceptionInterface
 {

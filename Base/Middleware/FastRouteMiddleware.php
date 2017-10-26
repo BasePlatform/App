@@ -9,17 +9,22 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Base\Middleware;
 
 use Interop\Http\Server\MiddlewareInterface;
 use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use FastRoute\Dispatcher;
 use Base\Exception\NotFoundException;
 use Base\Exception\MethodNotAllowedException;
 
 /**
  * FastRoute middleware based on FastRoute package
+ *
+ * @package Base\Middleware
  */
 class FastRouteMiddleware implements MiddlewareInterface
 {
@@ -43,7 +48,7 @@ class FastRouteMiddleware implements MiddlewareInterface
   /**
    * {@inheritdoc}
    */
-  public function process(ServerRequestInterface $request, RequestHandlerInterface $next)
+  public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
   {
     $routeInfo = $this->routeDispatcher->dispatch($request->getMethod(), $request->getUri()->getPath());
 

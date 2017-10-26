@@ -15,6 +15,8 @@ use RuntimeException;
 
 /**
  * Represents an HTTP 405 error - Method Not Allowed
+ *
+ * @package Base\Exception
  */
 class MethodNotAllowedException extends RuntimeException implements HttpExceptionInterface
 {

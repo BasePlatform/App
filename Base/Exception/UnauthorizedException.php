@@ -15,6 +15,8 @@ use RuntimeException;
 
 /**
  * Represents an HTTP 401 error - Unauthorized
+ *
+ * @package Base\Exception
  */
 class UnauthorizedException extends RuntimeException implements HttpExceptionInterface
 {

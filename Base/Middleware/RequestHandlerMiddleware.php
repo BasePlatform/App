@@ -9,11 +9,14 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Base\Middleware;
 
 use Interop\Http\Server\MiddlewareInterface;
 use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use ReflectionClass;
 use ReflectionMethod;
 use InvalidArgumentException;
@@ -27,6 +30,8 @@ use RuntimeException;
  * Modify to support a MiddlewareInterface object as a callabe handler
  *
  * Based on the work of https://github.com/middlewares/request-handler
+ *
+ * @package Base\Middleware
  */
 class RequestHandlerMiddleware implements MiddlewareInterface
 {
@@ -64,7 +69,7 @@ class RequestHandlerMiddleware implements MiddlewareInterface
   /**
    * {@inheritdoc}
    */
-  public function process(ServerRequestInterface $request, RequestHandlerInterface $next)
+  public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
   {
     // The request now has all the information
     // parsed by previous RouteMiddleware

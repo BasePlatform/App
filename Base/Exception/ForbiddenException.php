@@ -15,6 +15,8 @@ use RuntimeException;
 
 /**
  * Represents an HTTP 403 error - Forbidden Exception
+ *
+ * @package Base\Exception
  */
 class ForbiddenException extends RuntimeException implements HttpExceptionInterface
 {

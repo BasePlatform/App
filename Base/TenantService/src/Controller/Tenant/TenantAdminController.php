@@ -17,20 +17,20 @@ use Base\Http\ResponseFactoryInterface;
 use Base\Rest\RestController;
 
 /**
- * This class provides the actions for Tenant in Public section
+ * This class provides the actions for Tenant in Admin zone
  */
-class TenantController extends RestController
+class TenantAdminController extends RestController
 {
-  /**
-   * Register a tenant to the system
-   * and Activate the default App
-   *
-   */
-  public function register(ServerRequestInterface $request, RequestHandlerInterface $next)
-  {
-    $id = $request->getAttribute(self::RESOURCE_ID);
+
+  public function getSettings(ServerRequestInterface $request, RequestHandlerInterface $next) {
     return $this->responseFactory->createJson([
-     'action' => 'register'
+      'action' => 'getSettings'
+    ]);
+  }
+
+  public function updateSettings(ServerRequestInterface $request, RequestHandlerInterface $next) {
+    return $this->responseFactory->createJson([
+      'action' => 'updateSettings'
     ]);
   }
 }

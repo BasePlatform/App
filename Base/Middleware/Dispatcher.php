@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Base\Middleware;
 
 use Closure;
@@ -29,7 +31,9 @@ use LogicException;
  * explaining how a Dispatcher works based on the beautiful work of above class of oscarotero
  *
  * It also adds a small change to support make() method
- * of Auryn container and removes the requirements of ContainerInterface
+ * of Auryn container and removes the requirements of ContainerInterface in construction method
+ *
+ * @package Base\Middleware
  */
 class Dispatcher
 {
@@ -39,14 +43,14 @@ class Dispatcher
     private $middlewares;
 
     /**
-     * @var Object
+     * @var object
      */
     private $container;
 
     /**
      * @param MiddlewareInterface[] $middleware
      *
-     * @param Object $container
+     * @param object $container
      */
     public function __construct(array $middlewares, $container = null)
     {
@@ -169,7 +173,7 @@ class Dispatcher
      *
      * @return MiddlewareInterface|false
      */
-    public function getNextMiddleware(ServerRequestInterface $request)
+    public function getNextMiddleware(ServerRequestInterface $request): MiddlewareInterface
     {
         next($this->middlewares);
         return $this->getMiddleware($request);

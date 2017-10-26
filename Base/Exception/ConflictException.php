@@ -15,6 +15,8 @@ use RuntimeException;
 
 /**
  * Represents an HTTP 409 error - Conflict Exception
+ *
+ * @package Base\Exception
  */
 class ConflictException extends RuntimeException implements HttpExceptionInterface
 {

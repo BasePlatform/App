@@ -12,6 +12,8 @@ namespace Base\Exception;
 
 /**
  * The interface for the detail-oriented exceptions within a specific service
+ *
+ * @package Base\Exception
  */
 interface ServiceExceptionInterface
 {
@@ -25,40 +27,40 @@ interface ServiceExceptionInterface
    *
    * @return ServiceExceptionInterface
    */
-  public static function create(string $message, string $details = null, array $additionalData = null, bool $notification = false) : ServiceExceptionInterface;
+  public static function create(string $message, string $details = null, array $additionalData = null, bool $notification = false): ServiceExceptionInterface;
 
   /**
    * Return Exception Reference URL
    *
    * @return string
    */
-  public function getReference(string $path = '');
+  public function getReference(string $path = ''): string;
 
   /**
    * Return Status Code
    *
    * @return int
    */
-  public function getStatusCode();
+  public function getStatusCode(): int;
 
   /**
    * Return Exception Details
    *
    * @return string
    */
-  public function getDetails();
+  public function getDetails(): string;
 
   /**
    * Return Exception Additional Data
    *
    * @return array
    */
-  public function getAdditionalData();
+  public function getAdditionalData(): array;
 
   /**
    * Notify the exception to
    *
    * @return boolean
    */
-  public function getNotification();
+  public function getNotification(): bool;
 }

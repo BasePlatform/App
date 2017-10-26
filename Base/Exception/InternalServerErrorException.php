@@ -15,6 +15,8 @@ use RuntimeException;
 
 /**
  * Represents an HTTP 500 error - Internal Server Error
+ *
+ * @package Base\Exception
  */
 class InternalServerErrorException extends RuntimeException implements HttpExceptionInterface
 {

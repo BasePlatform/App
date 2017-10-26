@@ -9,17 +9,20 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Base\Middleware;
 
 use Closure;
 use Interop\Http\Server\MiddlewareInterface;
 use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
  * Delegate Middleware for creating middleware from Closure
+ *
+ * @package Base\Middleware
  */
 class DelegateClosureMiddleware implements MiddlewareInterface
 {

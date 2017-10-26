@@ -9,13 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Base\Exception;
-
-/**
- * Marker interface for package-specific exceptions
- *
- * @package Base\Exception
- */
-interface HttpExceptionInterface
-{
-}
+return [
+  // Configure for ORM
+  'orm' => [
+    [
+      'entityPaths' => [
+        __DIR__ . '/../src/Entity',
+        __DIR__ . '/../src/ValueObject'
+      ]
+    ]
+  ],
+  // Configure for ODM
+  'odm' => [
+  ]
+];

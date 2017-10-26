@@ -13,6 +13,8 @@ namespace Base\Exception;
 
 /**
  * The trait that provides the common methods of a ServiceException defined by ServiceExceptionInterface
+ *
+ * @package Base\Exception
  */
 trait ServiceExceptionTrait
 {
@@ -41,7 +43,7 @@ trait ServiceExceptionTrait
    *
    * @return int
    */
-  public function getStatusCode()
+  public function getStatusCode(): int
   {
     return $this->statusCode;
   }
@@ -51,7 +53,7 @@ trait ServiceExceptionTrait
    *
    * @return string
    */
-  public function getDetails()
+  public function getDetails(): string
   {
     return $this->details;
   }
@@ -61,7 +63,7 @@ trait ServiceExceptionTrait
    *
    * @return array
    */
-  public function getAdditionalData()
+  public function getAdditionalData(): array
   {
     return $this->additionalData;
   }
@@ -71,7 +73,7 @@ trait ServiceExceptionTrait
    *
    * @return boolean
    */
-  public function getNotification()
+  public function getNotification(): bool
   {
     return $this->notification;
   }

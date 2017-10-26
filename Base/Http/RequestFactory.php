@@ -9,11 +9,17 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Base\Http;
+
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * RequestFactory that provides a Request Instance in
  * PSR-7 Standard
+ *
+ * @package Base\Http
  */
 class RequestFactory
 {
@@ -22,7 +28,7 @@ class RequestFactory
    *
    * @return ServerRequest
    */
-  public static function create()
+  public static function create(): ServerRequestInterface
   {
     return \Zend\Diactoros\ServerRequestFactory::fromGlobals();
   }

@@ -9,15 +9,20 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Base\Http;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Exception;
 
 /**
  * ResponseFactory that provides a Response Instance in
  * PSR-7 Standard based on Zend\Diactoros package
+ *
+ * @package Base\Http
  */
 class ResponseFactory implements ResponseFactoryInterface
 {
@@ -26,7 +31,7 @@ class ResponseFactory implements ResponseFactoryInterface
    *
    * {@inheritdoc}
    */
-   public function create($body = 'php://memory', $status = 200, array $headers = [])
+   public function create(string $body = 'php://memory', int $status = 200, array $headers = []): ResponseInterface
    {
       return new \Zend\Diactoros\Response($body, $status, $headers);
    }
@@ -36,7 +41,7 @@ class ResponseFactory implements ResponseFactoryInterface
    *
    * {@inheritdoc}
    */
-  public function createEmpty($status = 204, array $headers = [])
+  public function createEmpty(int $status = 204, array $headers = []): ResponseInterface
   {
     return new \Zend\Diactoros\Response\EmptyResponse($status, $headers);
   }
@@ -46,7 +51,7 @@ class ResponseFactory implements ResponseFactoryInterface
    *
    * {@inheritdoc}
    */
-  public function createText($text, $status = 200, array $headers = [])
+  public function createText(string $text, int $status = 200, array $headers = []): ResponseInterface
   {
     return new \Zend\Diactoros\Response\TextResponse($text, $status, $headers);
   }
@@ -56,7 +61,7 @@ class ResponseFactory implements ResponseFactoryInterface
    *
    * {@inheritdoc}
    */
-  public function createHtml($html, $status = 200, array $headers = [])
+  public function createHtml(string $html, int $status = 200, array $headers = []): ResponseInterface
   {
     return new \Zend\Diactoros\Response\HtmlResponse($html, $status, $headers);
   }
@@ -66,7 +71,7 @@ class ResponseFactory implements ResponseFactoryInterface
    *
    * {@inheritdoc}
    */
-  public function createJson($data, $status = 200, array $headers = [], $encodingOptions = self::DEFAULT_JSON_FLAGS)
+  public function createJson(array $data, int $status = 200, array $headers = [], int $encodingOptions = self::DEFAULT_JSON_FLAGS): ResponseInterface
   {
     return new \Zend\Diactoros\Response\JsonResponse($data, $status, $headers, $encodingOptions);
   }
@@ -76,7 +81,7 @@ class ResponseFactory implements ResponseFactoryInterface
    *
    * {@inheritdoc}
    */
-  public function createError($e, ServerRequestInterface $request)
+  public function createError(Exception $e, ServerRequestInterface $request): ResponseInterface
   {
     $response = [
       'code' => $e->getCode(),
@@ -91,7 +96,7 @@ class ResponseFactory implements ResponseFactoryInterface
     if (property_exists($e, 'additionalData')) {
       $response['additionalData'] = $e->getAdditionalData();
     }
-    return new \Zend\Diactoros\Response\JsonResponse($response
+    return static::createJson($response
       , 500);
   }
 
@@ -100,7 +105,7 @@ class ResponseFactory implements ResponseFactoryInterface
    *
    * {@inheritdoc}
    */
-  public function createRedirect($uri, $status = 302, array $headers = [])
+  public function createRedirect(string $uri, int $status = 302, array $headers = []): ResponseInterface
   {
     return new \Zend\Diactoros\Response\RedirectResponse($uri, $status, $headers);
   }

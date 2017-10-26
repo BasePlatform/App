@@ -9,10 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Base\TenantService\Domain\Tenant;
+declare(strict_types=1);
+
+namespace Base\TenantService\Entity;
 
 /**
  * Tenant Entity
+ *
+ * @package Base\TenantService\Entity
  */
 class Tenant
 {
@@ -47,21 +51,10 @@ class Tenant
   protected $updatedAt;
 
   /**
-   * Set the value of field id
-   *
-   * @param  string $id
-   * @return $this
-   */
-  public function setId(string $id)
-  {
-    $this->id = $id;
-    return $this;
-  }
-
-  /**
    * Set the value of field domain
    *
    * @param  string $domain
+   *
    * @return $this
    */
   public function setDomain(string $domain)
@@ -74,6 +67,7 @@ class Tenant
    * Set the value of field Platform
    *
    * @param  string $platform
+   *
    * @return $this
    */
   public function setPlatform(string $platform)
@@ -86,11 +80,13 @@ class Tenant
    * Set the value of field status
    *
    * @param  string $status
+   *
    * @return $this
    */
   public function setStatus(string $status)
   {
     $this->status = $status;
+
     return $this;
   }
 
@@ -98,6 +94,7 @@ class Tenant
    * Set the value of field createdAt
    *
    * @param  integer $createdAt
+   *
    * @return $this
    */
   public function setCreatedAt(int $createdAt)
@@ -110,6 +107,7 @@ class Tenant
    * Set the value of field updatedAt
    *
    * @param  integer $updatedAt
+   *
    * @return $this
    */
   public function setUpdatedAt(int $updatedAt)
@@ -123,7 +121,7 @@ class Tenant
    *
    * @return string
    */
-  public function getId()
+  public function getId(): string
   {
     return $this->id;
   }
@@ -133,7 +131,7 @@ class Tenant
    *
    * @return string
    */
-  public function getTenantId()
+  public function getTenantId(): string
   {
     return $this->tenantId;
   }
@@ -143,7 +141,7 @@ class Tenant
    *
    * @return string
    */
-  public function getDomain()
+  public function getDomain(): string
   {
     return $this->domain;
   }
@@ -153,7 +151,7 @@ class Tenant
    *
    * @return string
    */
-  public function getPlatform()
+  public function getPlatform(): string
   {
     return $this->platform;
   }
@@ -163,7 +161,7 @@ class Tenant
    *
    * @return string
    */
-  public function getStatus()
+  public function getStatus(): string
   {
     return $this->status;
   }
@@ -173,7 +171,7 @@ class Tenant
    *
    * @return integer
    */
-  public function getCreatedAt()
+  public function getCreatedAt(): int
   {
     return $this->createdAt;
   }
@@ -183,7 +181,7 @@ class Tenant
    *
    * @return integer
    */
-  public function getUpdatedAt()
+  public function getUpdatedAt(): int
   {
     return $this->updatedAt;
   }

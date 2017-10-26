@@ -17,6 +17,8 @@ use RuntimeException;
  * Represents a Server Error from Service Exception
  *
  * Use this class for adding additional information to error response
+ *
+ * @package Base\Exception
  */
 class ServerErrorException extends RuntimeException implements ServiceExceptionInterface
 {
@@ -26,7 +28,7 @@ class ServerErrorException extends RuntimeException implements ServiceExceptionI
   /**
    * {@inheritdoc}
    */
-  public static function create(string $message, string $details = null, array $additionalData = null, bool $notification = false) : ServiceExceptionInterface
+  public static function create(string $message, string $details = null, array $additionalData = null, bool $notification = false): ServiceExceptionInterface
   {
     $e = new self($message, 500);
     $e->statusCode = 500;
@@ -39,7 +41,7 @@ class ServerErrorException extends RuntimeException implements ServiceExceptionI
   /**
    * {@inheritdoc}
    */
-  public function getReference(string $path = '')
+  public function getReference(string $path = ''): string
   {
     return $url.'/api/problems/server-error';
   }

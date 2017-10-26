@@ -15,6 +15,8 @@ use RuntimeException;
 
 /**
  * Represents an HTTP 404 error - Not Found
+ *
+ * @package Base\Exception
  */
 class NotFoundException extends RuntimeException implements HttpExceptionInterface
 {
