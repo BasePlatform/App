@@ -19,6 +19,11 @@ namespace Base\TenantService;
 class Service
 {
   /**
+   * @var int Error Code Space
+   */
+  const ERROR_CODE_SPACE = 1000;
+
+  /**
    * Get Service Config
    *
    * @return array Config array

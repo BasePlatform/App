@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Base\Exception;
+namespace Base\TenantService\Exception;
 
 use RuntimeException;
+use Base\Exception\ServiceExceptionInterface;
+use Base\Exception\ServiceExceptionTrait;
 
 /**
- * Represents a Server Error from Service Exception
- *
- * Use this class for adding additional information to error response
+ * Represents an Invalid Tenant Id Exception
  *
  * @package Base\Exception
  */
-class ServerErrorException extends RuntimeException implements ServiceExceptionInterface
+class InvalidTenantRegistrationInfodException extends RuntimeException implements ServiceExceptionInterface
 {
 
   use ServiceExceptionTrait;
@@ -28,11 +28,11 @@ class ServerErrorException extends RuntimeException implements ServiceExceptionI
   /**
    * {@inheritdoc}
    */
-  public function __construct(string $message = 'Internal Server Error', string $details = '', array $additionalData = [], bool $notification = false)
+  public function __construct(string $message = 'Invalid Tenant Registration Info', string $details = '', array $additionalData = [], bool $notification = false)
   {
     $this->message = $message;
-    $this->statusCode = 500;
-    $this->code = 0;
+    $this->statusCode = 400;
+    $this->code = \Base\TenantService\Service::ERROR_CODE_SPACE+1;
     $this->details = $details;
     $this->additionalData = $additionalData;
     $this->notification = $notification;
@@ -43,6 +43,6 @@ class ServerErrorException extends RuntimeException implements ServiceExceptionI
    */
   public function getReference(string $pathPrefix = ''): string
   {
-    return $pathPrefix.'/api/problems/server-error';
+    return $pathPrefix.'/api/problems/tenants/invalid-tenant-registration-info';
   }
 }

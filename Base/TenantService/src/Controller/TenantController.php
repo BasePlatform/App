@@ -29,13 +29,21 @@ class TenantController extends RestController
   private $tenantService;
 
   /**
+   * @var string
+   */
+  private $domain;
+
+  /**
    * @param TenantServiceInterface $response
+   * @param string $domain
    * @param ResponseFactoryInterface $response
    */
-  public function __construct(TenantServiceInterface $tenantService, ResponseFactoryInterface $response)
+  public function __construct(TenantServiceInterface $tenantService,
+  string $domain, ResponseFactoryInterface $responseFactory)
   {
     $this->tenantService = $tenantService;
-    parent::__construct($response);
+    $this->domain = $domain;
+    parent::__construct($responseFactory);
   }
 
   /**
@@ -45,15 +53,14 @@ class TenantController extends RestController
    * 2. Send Request to Auth Service to create the Tenant Owner User Info
    * 2. Send Request to App Service Activate the default App
    *
+   * @param ServerRequestInterface $request
+   * @param RequestHandlerInterface $next
    *
+   * @return ResponseInterface
    */
   public function register(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
   {
-    $id = $request->getAttribute(self::RESOURCE_ID);
-    $body = $request->getParsedBody();
-    return $this->responseFactory->createJson([
-     'action' => 'register',
-     'body' => $request->getParsedBody()
-    ]);
+    $data = $request->getParsedBody();
+    return $this->responseFactory->createJson($this->tenantService->register($data, $this->domain));
   }
 }

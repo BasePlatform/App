@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Base\Util;
+namespace Base\Component;
 
 use RuntimeException;
 
 /**
  * Config
  *
- * @package Base\Util
+ * @package Base\Component
  */
-class Config
+class Config implements ConfigInterface
 {
   /**
    * @var array
@@ -55,9 +55,7 @@ class Config
   }
 
   /**
-   * Return the full content of the config
-   *
-   * @return array
+   * {@inheritdoc}
    */
   public function getAll()
   {
@@ -65,11 +63,7 @@ class Config
   }
 
   /**
-   * Return the full content of the config
-   *
-   * @param string $key
-   *
-   * @return mixed
+   * {@inheritdoc}
    */
   public function get(string $key)
   {

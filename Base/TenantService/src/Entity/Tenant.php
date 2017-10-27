@@ -18,7 +18,7 @@ namespace Base\TenantService\Entity;
  *
  * @package Base\TenantService\Entity
  */
-class Tenant
+class Tenant implements TenantInterface
 {
   /**
    * @var string

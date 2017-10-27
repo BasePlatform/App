@@ -75,13 +75,13 @@ class ResponseFactory implements ResponseFactoryInterface
       'code' => $e->getCode(),
       'message' => $e->getMessage()
     ];
-    if (property_exists($e, 'reference')) {
+    if (property_exists($e, 'reference') && !empty($e->getReference())) {
       $response['reference'] = $e->getReference();
     }
-    if (property_exists($e, 'details')) {
+    if (property_exists($e, 'details') && !empty($e->getDetails())) {
       $response['details'] = $e->getDetails();
     }
-    if (property_exists($e, 'additionalData')) {
+    if (property_exists($e, 'additionalData') && !empty($e->getAdditionalData())) {
       $response['additionalData'] = $e->getAdditionalData();
     }
     return static::createJson($response

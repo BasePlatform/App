@@ -19,6 +19,11 @@ namespace Base\Exception;
 trait ServiceExceptionTrait
 {
   /**
+   * @var string
+   */
+  private $reference;
+
+  /**
    * @var int
    */
   private $statusCode;

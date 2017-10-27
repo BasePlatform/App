@@ -18,23 +18,11 @@ namespace Base\Exception;
 interface ServiceExceptionInterface
 {
   /**
-   * Create a Service Exception
-   *
-   * @param string $message
-   * @param string $details
-   * @param array $additionalData
-   * @param bool $notification
-   *
-   * @return ServiceExceptionInterface
-   */
-  public static function create(string $message, string $details = null, array $additionalData = null, bool $notification = false): ServiceExceptionInterface;
-
-  /**
    * Return Exception Reference URL
    *
    * @return string
    */
-  public function getReference(string $path = ''): string;
+  public function getReference(string $pathPrefix = ''): string;
 
   /**
    * Return Status Code

@@ -40,6 +40,9 @@ $container->alias(Psr\Log\LoggerInterface::class, Monolog\Logger::class);
 
 $container->alias(Base\TenantService\Service\TenantServiceInterface::class, Base\TenantService\Service\TenantService::class);
 
+// Define some params
+$container->define('Base\TenantService\Controller\TenantController', [':domain' => $config->get('domain')]);
+
 /**
  * Create a logger and register it with the container
  */
