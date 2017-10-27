@@ -15,8 +15,7 @@ namespace Base\TenantService\Repository;
 
 use Base\TenantService\ValueObject\TenantId;
 use Base\TenantService\Entity\TenantInterface;
-use Base\Factory\Factory;
-use Base\Factory\FactoryInterface;
+use Base\PDO\PDOProxyInterface;
 
 /**
  * Tenant Repository
@@ -31,18 +30,12 @@ class TenantRepository implements TenantRepositoryInterface
   private $pdo;
 
   /**
-   * @var FactoryInterface
-   */
-  private $entityFactory;
-
-  /**
-   * @param object $pdo
+   * @param PDOProxyInterface $pdo
    * @param FactoryInterface $entityFactory
    */
-  public function __construct($pdo, FactoryInterface $entityFactory = Factory)
+  public function __construct(PDOProxyInterface $pdo)
   {
     $this->pdo = $pdo;
-    $this->entityFactory = $entityFactory;
   }
 
   /**
@@ -54,9 +47,8 @@ class TenantRepository implements TenantRepositoryInterface
    */
   public function findOneById(TenantId $tenantId)
   {
-    $sql = 'SELECT * FROM BaseTenant t
-            WHERE t.id = ?';
-    $tenant = $this->pdo->query($sql, [(string) $tenantId])->fetch();
-
+    $stmt = $this->pdo->prepare('SELECT * FROM BaseTenant t WHERE t.id = :id limit 0,1');
+    $stmt->execute(['id' => (string) $tenantId]);
+    return $stmt->fetch();
   }
 }

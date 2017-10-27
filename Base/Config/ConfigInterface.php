@@ -9,14 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Base\Component;
+declare(strict_types=1);
+
+namespace Base\Config;
 
 use RuntimeException;
 
 /**
  * Config Interface
  *
- * @package Base\Component
+ * @package Base\Config
  */
 interface ConfigInterface
 {
@@ -35,4 +37,14 @@ interface ConfigInterface
    * @return mixed
    */
   public function get(string $key);
+
+  /**
+   * Set a config
+   *
+   * @param string $key
+   * @param mixed $value
+   *
+   * @return void
+   */
+  public function set(string $key, $value);
 }

@@ -38,6 +38,8 @@ $container->share($config);
 $container->alias(Base\Http\ResponseFactoryInterface::class, Base\Http\ResponseFactory::class);
 $container->alias(Psr\Log\LoggerInterface::class, Monolog\Logger::class);
 
+$container->alias(Base\PDO\PDOProxyInterface::class, Base\PDO\PDOProxy::class);
+$container->alias(Base\TenantService\Repository\TenantRepositoryInterface::class, Base\TenantService\Repository\TenantRepository::class);
 $container->alias(Base\TenantService\Service\TenantServiceInterface::class, Base\TenantService\Service\TenantService::class);
 
 // Define some params
@@ -52,17 +54,41 @@ $logger->pushHandler(new Monolog\Handler\ErrorLogHandler());
 $container->share($logger);
 
 /**
- * Setup the PDO
+ * Setup the PDO for MySQL
  */
 $dbConfig = $config->get('db');
-$dbConfig = isset($dbConfig['mysql']) ? $dbConfig : [];
-if (count($dbConfig) > 0) {
-  $container->share('PDO');
-  $container->define('PDO', [
-    ':dsn' => 'mysql:dbname='.$dbConfig['dbname'].';host='.$dbConfig['host'],
-    ':username' => $dbConfig['user'],
-    ':passwd' => $dbConfig['password']
-  ]);
+
+$mysqlConfig = isset($dbConfig['mysql']) ? $dbConfig['mysql'] : [];
+if (!empty($mysqlConfig)) {
+  $pdoOptions = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+  ];
+  $pdo = new Base\PDO\PDOProxy($pdoOptions);
+  $pdo->addMaster($mysqlConfig['master']['m1']);
+  $pdo->addSlave($mysqlConfig['slave']['s1']);
+  // Share it
+  $container->share($pdo);
 }
+
+
+// if (!empty($dbConfig)) {
+//   $pdoOptions = [
+//     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+//     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+//     PDO::ATTR_EMULATE_PREPARES   => false,
+//   ];
+//   $container->share('PDO');
+//   $container->define('PDO', [
+//     ':dsn' => 'mysql:dbname='.$dbConfig['database'].';host='.$dbConfig['host'].';port='.$dbConfig['port'],
+//     ':username' => $dbConfig['username'],
+//     ':passwd' => $dbConfig['password'],
+//     ':options' => $pdoOptions
+//   ]);
+
+//   // $pdo = new PDO('mysql:host='.$dbConfig['host'].';dbname='.$dbConfig['dbname'], $dbConfig['user'], $dbConfig['password'], $pdoOptions);
+//   // $container->share($pdo);
+// }
 
 return $container;

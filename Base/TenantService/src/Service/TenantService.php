@@ -24,8 +24,18 @@ use Base\TenantService\Exception\InvalidTenantRegistrationInfodException;
  */
 class TenantService implements TenantServiceInterface
 {
-
+  /**
+   * @var TenantRepositoryInterface
+   */
   private $tenantRepository;
+
+  /**
+   * @param TenantRepositoryInterface $tenantRepository
+   */
+  public function __construct(TenantRepositoryInterface $tenantRepository)
+  {
+    $this->tenantRepository = $tenantRepository;
+  }
 
   /**
    * @param array $data
@@ -36,24 +46,27 @@ class TenantService implements TenantServiceInterface
   public function register(array $data, string $domain)
   {
     // Do the step to register the data
+    $email = $data['email'] ?? '';
+    $password = $data['password'] ?? '';
     $tenantName = $data['tenantName'] ?? '';
-    $tenantEmail = $data['tenantEmail'] ?? '';
-    $tenantPassword = $data['tenantPassword'] ?? '';
-    if (empty($tenantName)) {
-      throw new InvalidTenantRegistrationInfodException('Empty Tenant Name');
-    }
-    if (empty($tenantEmail)) {
-      throw new InvalidTenantRegistrationInfodException('Empty/Invalid Email');
-    }
-    if (empty($tenantPassword)) {
-      throw new InvalidTenantRegistrationInfodException('Empty/Invalid Password');
-    }
 
-    $tenantId = TenantId::create($name, $domain);
+    // if (empty($tenantName)) {
+    //   throw new InvalidTenantRegistrationInfodException('Empty Tenant Name');
+    // }
+    // if (empty($tenantEmail)) {
+    //   throw new InvalidTenantRegistrationInfodException('Empty/Invalid Email');
+    // }
+    // if (empty($tenantPassword)) {
+    //   throw new InvalidTenantRegistrationInfodException('Empty/Invalid Password');
+    // }
 
-    return [
-      'tenantId' => $tenantId
-    ];
+    $tenantId = TenantId::create($tenantName, $domain);
+    $tenant = $this->tenantRepository->findOneById($tenantId);
+    if ($tenant) {
+      return $tenant;
+    } else {
+      return ['tenant' => 'EMPTY :('];
+    }
     // 1. Create the TenantId
     //
     // 2. Get Tenant Info Based on Tenant
