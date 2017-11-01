@@ -15,7 +15,8 @@ namespace Base\TenantService\Service;
 
 use Base\TenantService\ValueObject\TenantId;
 use Base\TenantService\Repository\TenantRepositoryInterface;
-use Base\TenantService\Exception\InvalidTenantRegistrationInfodException;
+use Base\TenantService\Exception\InvalidTenantRegistrationInfoException;
+use Base\TenantService\Factory\TenantIdFactoryInterface;
 
 /**
  * Tenant Service
@@ -30,11 +31,17 @@ class TenantService implements TenantServiceInterface
   private $tenantRepository;
 
   /**
+   * @var TenantIdFactoryInterface
+   */
+  private $tenantIdFactory;
+
+  /**
    * @param TenantRepositoryInterface $tenantRepository
    */
-  public function __construct(TenantRepositoryInterface $tenantRepository)
+  public function __construct(TenantRepositoryInterface $tenantRepository, TenantIdFactoryInterface $tenantIdFactory)
   {
     $this->tenantRepository = $tenantRepository;
+    $this->tenantIdFactory = $tenantIdFactory;
   }
 
   /**
@@ -46,9 +53,9 @@ class TenantService implements TenantServiceInterface
   public function register(array $data, string $domain)
   {
     // Do the step to register the data
+    $name = $data['name'] ?? '';
     $email = $data['email'] ?? '';
     $password = $data['password'] ?? '';
-    $tenantName = $data['tenantName'] ?? '';
 
     // if (empty($tenantName)) {
     //   throw new InvalidTenantRegistrationInfodException('Empty Tenant Name');
@@ -60,7 +67,10 @@ class TenantService implements TenantServiceInterface
     //   throw new InvalidTenantRegistrationInfodException('Empty/Invalid Password');
     // }
 
-    $tenantId = TenantId::create($tenantName, $domain);
+    $tenantId = call_user_func_array([$this->tenantIdFactory->getClassName(), 'create'], [$name, $domain]);
+
+    // Validate the Info here
+
     $tenant = $this->tenantRepository->findOneById($tenantId);
     if ($tenant) {
       return $tenant;
@@ -94,5 +104,18 @@ class TenantService implements TenantServiceInterface
     //  + Communicate to Auth Service to Create Owner Account
     //
     //  7. Return the Response
+  }
+
+  /**
+   * Validate the data for service
+   *
+   * @param array $data
+   * @param string $context The context of validation
+   *
+   * @return bool
+   */
+  public function validate(array $data, string $context = null)
+  {
+
   }
 }

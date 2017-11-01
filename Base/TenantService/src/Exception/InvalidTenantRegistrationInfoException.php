@@ -20,15 +20,20 @@ use Base\Exception\ServiceExceptionTrait;
  *
  * @package Base\Exception
  */
-class InvalidTenantRegistrationInfodException extends RuntimeException implements ServiceExceptionInterface
+class InvalidTenantRegistrationInfoException extends RuntimeException implements ServiceExceptionInterface
 {
 
   use ServiceExceptionTrait;
 
   /**
+   * @param string $message
+   * @param bool $notification send notifcation or not
+   * @param string $details
+   * @param array $additionalData
+   *
    * {@inheritdoc}
    */
-  public function __construct(string $message = 'Invalid Tenant Registration Info', string $details = '', array $additionalData = [], bool $notification = false)
+  public function __construct(string $message = 'Invalid Tenant Registration Info', bool $notification = false, string $details = '', array $additionalData = [])
   {
     $this->message = $message;
     $this->statusCode = 400;

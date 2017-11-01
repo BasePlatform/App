@@ -42,8 +42,22 @@ $container->alias(Base\PDO\PDOProxyInterface::class, Base\PDO\PDOProxy::class);
 $container->alias(Base\TenantService\Repository\TenantRepositoryInterface::class, Base\TenantService\Repository\TenantRepository::class);
 $container->alias(Base\TenantService\Service\TenantServiceInterface::class, Base\TenantService\Service\TenantService::class);
 
+// Factory
+$container->alias(Base\TenantService\Factory\TenantIdFactoryInterface::class, Base\TenantService\Factory\TenantIdFactory::class);
+$container->alias(Base\TenantService\Factory\TenantFactoryInterface::class, Base\TenantService\Factory\TenantFactory::class);
+
+// Entity
+$container->alias(Base\TenantService\Entity\TenantInterface::class, Base\TenantService\Entity\Tenant::class);
+
+// Value Object
+$container->alias(Base\TenantService\ValueObject\TenantIdInterface::class, Base\TenantService\ValueObject\TenantId::class);
+
+$container->define(Base\TenantService\Factory\TenantFactory::class, [':factory' => new Base\Factory\Factory(Base\TenantService\Entity\Tenant::class)]);
+
+$container->define(Base\TenantService\Factory\TenantIdFactory::class, [':factory' => new Base\Factory\Factory(Base\TenantService\ValueObject\TenantId::class)]);
+
 // Define some params
-$container->define('Base\TenantService\Controller\TenantController', [':domain' => $config->get('domain')]);
+$container->define(Base\TenantService\Controller\TenantController::class, [':domain' => $config->get('domain')]);
 
 /**
  * Create a logger and register it with the container

@@ -10,7 +10,6 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
-        "doctrine/orm": "^2.4.8",
         "monolog/monolog": "^1.23.0",
         "nikic/fast-route": "1.2.*",
         "fig/http-message-util": "^1.1.2",

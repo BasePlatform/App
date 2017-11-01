@@ -40,4 +40,12 @@ class Factory implements FactoryInterface
   {
     return new $this->className();
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getClassName(): string
+  {
+    return $this->className;
+  }
 }

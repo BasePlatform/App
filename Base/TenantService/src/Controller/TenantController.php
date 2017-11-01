@@ -15,8 +15,8 @@ use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Base\Http\ResponseFactoryInterface;
-use Base\Rest\RestController;
 use Base\TenantService\Service\TenantServiceInterface;
+use Base\Rest\RestController;
 
 /**
  * This class provides the actions for Tenant in Public zone

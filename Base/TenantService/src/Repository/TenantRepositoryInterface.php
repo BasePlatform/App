@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Base\TenantService\Repository;
 
-use Base\TenantService\ValueObject\TenantId;
+use Base\TenantService\ValueObject\TenantIdInterface;
 use Base\TenantService\Entity\TenantInterface;
 
 /**
@@ -26,9 +26,9 @@ interface TenantRepositoryInterface
   /**
    * Find Tenant by TenantId
    *
-   * @param TenantId $tenantId
+   * @param TenantIdInterface $tenantId
    *
    * @return TenantInterface
    */
-  public function findOneById(TenantId $tenantId);
+  public function findOneById(TenantIdInterface $tenantId): ?TenantInterface;
 }

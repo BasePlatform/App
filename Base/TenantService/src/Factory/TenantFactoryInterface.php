@@ -11,22 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Base\Factory;
+namespace Base\TenantService\Factory;
+
+use Base\Factory\FactoryInterface;
 
 /**
- * Factory Interface
+ * Tenant Factory Interface
  *
- * @package Base\Factory
+ * @package Base\TenantService\Factory
  */
-interface FactoryInterface
+interface TenantFactoryInterface extends FactoryInterface
 {
-  /**
-   * @return object
-   */
-  public function createNew();
-
-  /**
-   * @return string
-   */
-  public function getClassName();
 }

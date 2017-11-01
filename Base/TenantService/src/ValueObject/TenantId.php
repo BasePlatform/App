@@ -20,7 +20,7 @@ use Ramsey\Uuid\Uuid;
  *
  * @package Base\TenantService\ValueObject
  */
-class TenantId
+class TenantId implements TenantIdInterface
 {
   /**
    * @var string
@@ -30,25 +30,20 @@ class TenantId
   /**
    * @param string $id
    */
-  public function __construct(string $id)
+  public function __construct(string $id = '')
   {
-    $this->id = $id;
+    if (!empty($id)) {
+      $this->id = $id;
+    }
   }
 
   /**
-   * Create a Tenant Id
-   *
-   * Generate a unique id if tenantName is blank
-   *
-   * @param string $tenantName
-   * @param string $domain
-   *
-   * @return self
+   * {@inheritdoc}
    */
-  public static function create(string $tenantName = '', string $domain = '')
+  public static function create(string $name = '', string $domain = ''): TenantIdInterface
   {
-    if ($tenantName != '') {
-      return new self($tenantName.$domain);
+    if ($name != '') {
+      return new self($name.$domain);
     } else {
       $uuid = Uuid::uuid4()->toString();
       return new self($uuid.$domain);
@@ -56,9 +51,16 @@ class TenantId
   }
 
   /**
-   * Return the value of id
-   *
-   * @return string
+   * {@inheritdoc}
+   */
+  public function setId(string $id)
+  {
+    $this->id = $id;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function getId(): string
   {
@@ -66,7 +68,7 @@ class TenantId
   }
 
   /**
-   * @return string
+   * {@inheritdoc}
    */
   public function __toString(): string
   {

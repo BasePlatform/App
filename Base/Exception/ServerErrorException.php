@@ -26,9 +26,14 @@ class ServerErrorException extends RuntimeException implements ServiceExceptionI
   use ServiceExceptionTrait;
 
   /**
+   * @param string $message
+   * @param bool $notification send notifcation or not
+   * @param string $details
+   * @param array $additionalData
+   *
    * {@inheritdoc}
    */
-  public function __construct(string $message = 'Internal Server Error', string $details = '', array $additionalData = [], bool $notification = false)
+  public function __construct(string $message = 'Internal Server Error', bool $notification = false, string $details = '', array $additionalData = [])
   {
     $this->message = $message;
     $this->statusCode = 500;

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Base\TenantService\Entity;
 
+use Base\TenantService\ValueObject\TenantIdInterface;
+
 /**
  * Tenant Entity
  *
@@ -21,7 +23,7 @@ namespace Base\TenantService\Entity;
 class Tenant implements TenantInterface
 {
   /**
-   * @var string
+   * @var TenantIdInterface
    */
   protected $id;
 
@@ -53,7 +55,7 @@ class Tenant implements TenantInterface
   /**
    * {@inheritdoc}
    */
-  public function setId(string $id)
+  public function setId(TenantIdInterface $id)
   {
     $this->id = $id;
     return $this;
@@ -62,7 +64,7 @@ class Tenant implements TenantInterface
   /**
    * {@inheritdoc}
    */
-  public function setDomain(string $domain)
+  public function setDomain(string $domain = null)
   {
     $this->domain = $domain;
     return $this;
@@ -71,9 +73,9 @@ class Tenant implements TenantInterface
   /**
    * {@inheritdoc}
    */
-  public function setPlatform(string $platform)
+  public function setPlatform(string $platform = null)
   {
-    $this->platfrom = $platfrom;
+    $this->platform = $platform;
     return $this;
   }
 
@@ -90,7 +92,7 @@ class Tenant implements TenantInterface
   /**
    * {@inheritdoc}
    */
-  public function setCreatedAt(int $createdAt)
+  public function setCreatedAt(int $createdAt = null)
   {
     $this->createdAt = $createdAt;
     return $this;
@@ -99,7 +101,7 @@ class Tenant implements TenantInterface
   /**
    * {@inheritdoc}
    */
-  public function setUpdatedAt(int $updatedAt)
+  public function setUpdatedAt(int $updatedAt = null)
   {
     $this->updatedAt = $updatedAt;
     return $this;
@@ -108,7 +110,7 @@ class Tenant implements TenantInterface
   /**
    * {@inheritdoc}
    */
-  public function getId(): string
+  public function getId(): TenantInterface
   {
     return $this->id;
   }
