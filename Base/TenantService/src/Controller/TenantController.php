@@ -34,6 +34,11 @@ class TenantController extends RestController
     private $domain;
 
   /**
+   * @var string
+   */
+    private $platform = null;
+
+  /**
    * @param TenantServiceInterface $response
    * @param string $domain
    * @param ResponseFactoryInterface $response
@@ -41,10 +46,12 @@ class TenantController extends RestController
     public function __construct(
         TenantServiceInterface $tenantService,
         string $domain,
+        string $platform,
         ResponseFactoryInterface $responseFactory
     ) {
         $this->tenantService = $tenantService;
         $this->domain = $domain;
+        $this->platform = $platform;
         parent::__construct($responseFactory);
     }
 
@@ -63,6 +70,6 @@ class TenantController extends RestController
     public function register(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         $data = $request->getParsedBody();
-        return $this->responseFactory->createJson($this->tenantService->register($data, $this->domain));
+        return $this->responseFactory->createJson($this->tenantService->register($data, $this->domain, $this->platform));
     }
 }

@@ -30,7 +30,7 @@ class TenantId implements TenantIdInterface
   /**
    * @param string $id
    */
-    public function __construct(string $id = '')
+    public function __construct(string $id = null)
     {
         if (!empty($id)) {
             $this->id = $id;
@@ -42,7 +42,7 @@ class TenantId implements TenantIdInterface
    */
     public static function create(string $name = '', string $domain = ''): TenantIdInterface
     {
-        if ($name != '') {
+        if (!empty($name)) {
             return new self($name.$domain);
         } else {
             $uuid = Uuid::uuid4()->toString();

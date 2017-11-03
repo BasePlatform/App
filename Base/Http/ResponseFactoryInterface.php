@@ -25,9 +25,6 @@ use Exception;
  */
 interface ResponseFactoryInterface
 {
-
-    const DEFAULT_JSON_FLAGS = 79;
-
   /**
    * Create a standard PSR-7 Response
    *
@@ -81,7 +78,7 @@ interface ResponseFactoryInterface
    *
    * @return ResponseInterface
    */
-    public function createJson(array $data, int $status = 200, array $headers = [], int $encodingOptions = self::DEFAULT_JSON_FLAGS): ResponseInterface;
+    public function createJson(array $data, int $status = 200, array $headers = [], int $encodingOptions = 79): ResponseInterface;
 
   /**
    * Create an Error Response

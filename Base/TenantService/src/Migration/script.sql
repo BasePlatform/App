@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS `BaseTenant`;
+DROP TABLE IF EXISTS `Base_Tenant`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `BaseTenant` (
+CREATE TABLE `Base_Tenant` (
   `id` varchar(255) NOT NULL DEFAULT '',
   `domain` varchar(255) DEFAULT NULL,
   `platform` varchar(64) DEFAULT NULL,

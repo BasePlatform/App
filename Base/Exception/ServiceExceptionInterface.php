@@ -22,28 +22,28 @@ interface ServiceExceptionInterface
    *
    * @return string
    */
-    public function getReference(string $pathPrefix = ''): string;
+    public function getReference(string $pathPrefix = ''): ?string;
 
   /**
    * Return Status Code
    *
    * @return int
    */
-    public function getStatusCode(): int;
+    public function getStatusCode(): ?int;
 
   /**
    * Return Exception Details
    *
    * @return string
    */
-    public function getDetails(): string;
+    public function getDetails(): ?string;
 
   /**
    * Return Exception Additional Data
    *
    * @return array
    */
-    public function getAdditionalData(): array;
+    public function getAdditionalData(): ?array;
 
   /**
    * Notify the exception to

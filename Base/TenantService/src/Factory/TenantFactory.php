@@ -21,7 +21,7 @@ use Base\TenantService\Entity\TenantInterface;
  *
  * @package Base\TenantService\Factory
  */
-class TenantFactory implements TenantIdFactoryInterface
+class TenantFactory implements TenantFactoryInterface
 {
   /**
    * @var FactoryInterface

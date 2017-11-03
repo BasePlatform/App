@@ -16,6 +16,7 @@ namespace Base\TenantService\Service;
 use Base\TenantService\ValueObject\TenantId;
 use Base\TenantService\Repository\TenantRepositoryInterface;
 use Base\TenantService\Factory\TenantIdFactoryInterface;
+use Base\TenantService\Factory\TenantFactoryInterface;
 use Base\TenantService\Exception\InvalidTenantRegistrationInfoException;
 use Base\TenantService\Exception\NotActiveTenantException;
 
@@ -26,74 +27,78 @@ use Base\TenantService\Exception\NotActiveTenantException;
  */
 class TenantService implements TenantServiceInterface
 {
-  /**
-   * Active Status of Tenant
-   */
-    const STATUS_ACTIVE = 'active';
-
-  /**
-   * Disabled Status of Tenant
-   */
-    const STATUS_DISABLED = 'disabled';
-
-  /**
-   * @var TenantRepositoryInterface
-   */
+    /**
+     * @var TenantRepositoryInterface
+     */
     private $tenantRepository;
 
-  /**
-   * @var TenantIdFactoryInterface
-   */
+    /**
+     * @var TenantIdFactoryInterface
+     */
     private $tenantIdFactory;
 
-  /**
-   * @param TenantRepositoryInterface $tenantRepository
-   */
-    public function __construct(TenantRepositoryInterface $tenantRepository, TenantIdFactoryInterface $tenantIdFactory)
+    /**
+     * @var TenantFactoryInterface
+     */
+    private $tenantFactory;
+
+    /**
+     * @param TenantRepositoryInterface $tenantRepository
+     */
+    public function __construct(TenantRepositoryInterface $tenantRepository, TenantIdFactoryInterface $tenantIdFactory, TenantFactoryInterface $tenantFactory)
     {
         $this->tenantRepository = $tenantRepository;
         $this->tenantIdFactory = $tenantIdFactory;
+        $this->tenantFactory = $tenantFactory;
     }
 
-  /**
-   * @param array $data
-   * @param string $domain
-   *
-   * @return mixed
-   */
-    public function register(array $data, string $domain)
+    /**
+     * @param array $data
+     * @param string $domain
+     *
+     * @return mixed
+     */
+    public function register(array $data, string $domain, string $platform = null)
     {
-      // Do the step to register the data
+        // Do the step to register the data
         $name = $data['name'] ?? '';
         $email = $data['email'] ?? '';
         $password = $data['password'] ?? '';
 
-      // if (empty($tenantName)) {
-      //   throw new InvalidTenantRegistrationInfodException('Empty Tenant Name');
-      // }
-      // if (empty($tenantEmail)) {
-      //   throw new InvalidTenantRegistrationInfodException('Empty/Invalid Email');
-      // }
-      // if (empty($tenantPassword)) {
-      //   throw new InvalidTenantRegistrationInfodException('Empty/Invalid Password');
-      // }
+        // Validate the Data first
 
+        // Create TenantId
         $tenantId = call_user_func_array([$this->tenantIdFactory->getClassName(), 'create'], [$name, $domain]);
 
-      // Validate the Info here
+        $tenant = $this->tenantRepository->get($tenantId);
+        if (!$tenant || ($tenant && $tenant->getStatusOptions('STATUS_ACTIVE') == $tenant->getStatus())) {
+            // So we could go ahead with current registration info
 
-        $tenant = $this->tenantRepository->findOneById($tenantId);
-        if (!$tenant || ($tenant && $tenant->getStatus() == self::STATUS_ACTIVE)) {
-          // So we could go ahead with current registration info
-          // $this->tenantRepository->store();
-          // $this->serviceRequest->request(['/app/default/activate']);
-          // $this->serviceRequest->request(['/user/create']);
-            echo 'hehehe';
+            // No Tenant Record? Add it
+            if (!$tenant) {
+                $nowTime = time();
+                $tenant = $this->tenantFactory->createNew();
+                $tenant->setId($tenantId);
+                $tenant->setPlatform($platform);
+                $tenant->setStatus($tenant->getStatusOptions('STATUS_ACTIVE'));
+                $tenant->setCreatedAt($nowTime);
+                $tenant->setupdatedAt($nowTime);
+
+                $this->tenantRepository->add($tenant);
+            }
+
+            // Call to other services to finish the registration process
+
+            // $this->serviceRequest->request(['/app/default/activate']);
+            // $this->serviceRequest->request(['/user/create']);
+            return [
+              'run' => 'run'
+            ];
         } else {
             throw new NotActiveTenantException();
         }
 
-      // 1. Create the TenantId
+        // 1. Create the TenantId
       //
       // 2. Get Tenant Info Based on Tenant
       //
@@ -122,14 +127,14 @@ class TenantService implements TenantServiceInterface
       //  7. Return the Response
     }
 
-  /**
-   * Validate the data for service
-   *
-   * @param array $data
-   * @param string $context The context of validation
-   *
-   * @return bool
-   */
+    /**
+     * Validate the data for service
+     *
+     * @param array $data
+     * @param string $context The context of validation
+     *
+     * @return bool
+     */
     public function validate(array $data, string $context = null)
     {
     }

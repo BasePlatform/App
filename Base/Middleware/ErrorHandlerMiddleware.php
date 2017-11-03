@@ -21,6 +21,7 @@ use Psr\Log\LoggerInterface;
 use Base\Http\ResponseFactoryInterface;
 use Base\Exception\HttpExceptionInterface;
 use Base\Exception\ServiceExceptionInterface;
+use Base\Exception\ServerErrorException;
 use Error;
 use RuntimeException;
 use ErrorException;
@@ -135,8 +136,17 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
       // Consider the ENV dev, etc.
       // Currently, it wont't show the real value $message if $e is
       // an instance of Error - Check log at error_log or logger
-        if (($e instanceof Error) || ($e instanceof ErrorException)) {
-            $e = new Exception('Internal Server Error', 500);
+        $debug = env('APP_DEBUG', false);
+        if (!$debug) {
+            if (($e instanceof Error) ||
+               ($e instanceof ErrorException) ||
+               ($e instanceof ServerErrorException)) {
+                if ($e instanceof ServerErrorException) {
+                    $e = new ServerErrorException($e->getMessage(), $e->getNotification(), null, null);
+                } else {
+                    $e = new Exception('Internal Server Error', 500);
+                }
+            }
         }
         return $this->responseFactory->createError($e, $request);
     }

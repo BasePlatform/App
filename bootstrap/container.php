@@ -16,6 +16,11 @@ use Psr\Log\LoggerInterface;
  */
 $config = require __DIR__ . '/../config/config.php';
 
+// Define the SERVICES CONSTANTS
+foreach ($config->get('services') as $key => $value) {
+    define($key, $value);
+}
+
 /**
  * Create a container
  *
@@ -57,7 +62,7 @@ $container->define(Base\TenantService\Factory\TenantFactory::class, [':factory' 
 $container->define(Base\TenantService\Factory\TenantIdFactory::class, [':factory' => new Base\Factory\Factory(Base\TenantService\ValueObject\TenantId::class)]);
 
 // Define some params
-$container->define(Base\TenantService\Controller\TenantController::class, [':domain' => $config->get('domain')]);
+$container->define(Base\TenantService\Controller\TenantController::class, [':domain' => $config->get('domain'), ':platform' => $config->get('platform')]);
 
 /**
  * Create a logger and register it with the container

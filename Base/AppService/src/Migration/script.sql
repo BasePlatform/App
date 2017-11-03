@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS `BaseApp`;
+DROP TABLE IF EXISTS `Base_App`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `BaseApp` (
+CREATE TABLE `Base_App` (
   `id` varchar(64) NOT NULL DEFAULT 'default',
   `roles` json DEFAULT NULL,
   `params` json DEFAULT NULL,
@@ -11,10 +11,10 @@ CREATE TABLE `BaseApp` (
   KEY `status` (`status`)
 ) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_general_ci;
 
-DROP TABLE IF EXISTS `BaseTenantApp`;
+DROP TABLE IF EXISTS `Base_TenantApp`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `BaseTenantApp` (
+CREATE TABLE `Base_TenantApp` (
   `id` BIGINT(20) unsigned NOT NULL AUTO_INCREMENT,
   `tenantId` varchar(255) NOT NULL DEFAULT '',
   `appId` varchar(64) NOT NULL DEFAULT '',

@@ -24,13 +24,22 @@ use Base\TenantService\Entity\TenantInterface;
 interface TenantRepositoryInterface
 {
   /**
-   * Find Tenant by TenantId
+   * Get Tenant by TenantId
    *
    * @param TenantIdInterface $tenantId
    *
    * @return TenantInterface|null
    */
-    public function findOneById(TenantIdInterface $tenantId): ?TenantInterface;
+    public function get(TenantIdInterface $tenantId): ?TenantInterface;
+
+  /**
+   * Add a Tenant
+   *
+   * @param TenantInterface $tenant
+   *
+   * @return TenantIdInterface
+   */
+    public function add(TenantInterface $tenant): ?TenantIdInterface;
 
   /**
    * Convert an array data from fetch assoc to Entity

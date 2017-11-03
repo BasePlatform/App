@@ -30,16 +30,15 @@ class NotActiveTenantException extends RuntimeException implements ServiceExcept
    * @param string $details
    * @param array $additionalData
    *
-   * {@inheritdoc}
    */
-    public function __construct(string $message = 'Tenant Is Not In Active Status', bool $notification = false, string $details = '', array $additionalData = [])
+    public function __construct(string $message = 'Tenant Existed and Is Not In Active Status', bool $notification = false, string $details = null, array $additionalData = null)
     {
         $this->message = $message;
         $this->statusCode = 403;
-        $this->code = \Base\TenantService\Service::ERROR_CODE_SPACE+2;
+        $this->code = TENANT_SERVICE['ERROR_CODE_SPACE']+2;
+        $this->notification = $notification;
         $this->details = $details;
         $this->additionalData = $additionalData;
-        $this->notification = $notification;
     }
 
   /**

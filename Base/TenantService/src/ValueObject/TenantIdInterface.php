@@ -30,7 +30,7 @@ interface TenantIdInterface
    *
    * @return self
    */
-    public static function create(string $name = null, string $domain = null): TenantIdInterface;
+    public static function create(string $name, string $domain): TenantIdInterface;
 
   /**
    * Set the value of field id

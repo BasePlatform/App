@@ -31,16 +31,15 @@ class InvalidTenantRegistrationInfoException extends RuntimeException implements
    * @param string $details
    * @param array $additionalData
    *
-   * {@inheritdoc}
    */
-    public function __construct(string $message = 'Invalid Tenant Registration Info', bool $notification = false, string $details = '', array $additionalData = [])
+    public function __construct(string $message = 'Invalid Tenant Registration Info', bool $notification = false, string $details = null, array $additionalData = null)
     {
         $this->message = $message;
         $this->statusCode = 400;
-        $this->code = \Base\TenantService\Service::ERROR_CODE_SPACE+1;
+        $this->code = TENANT_SERVICE['ERROR_CODE_SPACE']+1;
+        $this->notification = $notification;
         $this->details = $details;
         $this->additionalData = $additionalData;
-        $this->notification = $notification;
     }
 
   /**

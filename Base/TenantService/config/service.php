@@ -10,16 +10,12 @@
  */
 
 return [
-  'resources' => [
-    // Configure for ORM
-    'orm' => [
-      'entityPaths' => [
-        __DIR__ . '/../src/Entity',
-        __DIR__ . '/../src/ValueObject'
-      ]
-    ],
-    // Configure for ODM
-    'odm' => [
+  'services' => [
+    'TENANT_SERVICE' => [
+      // Table Prefix
+      'TABLE_PREFIX' => 'Base_',
+      // Error Code Space
+      'ERROR_CODE_SPACE' => 1000
     ]
   ]
 ];

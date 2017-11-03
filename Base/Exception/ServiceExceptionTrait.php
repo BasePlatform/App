@@ -48,7 +48,7 @@ trait ServiceExceptionTrait
    *
    * @return int
    */
-    public function getStatusCode(): int
+    public function getStatusCode(): ?int
     {
         return $this->statusCode;
     }
@@ -58,7 +58,7 @@ trait ServiceExceptionTrait
    *
    * @return string
    */
-    public function getDetails(): string
+    public function getDetails(): ?string
     {
         return $this->details;
     }
@@ -68,7 +68,7 @@ trait ServiceExceptionTrait
    *
    * @return array
    */
-    public function getAdditionalData(): array
+    public function getAdditionalData(): ?array
     {
         return $this->additionalData;
     }

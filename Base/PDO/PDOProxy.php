@@ -334,7 +334,7 @@ class PDOProxy implements PDOProxyInterface
    * @link http://php.net/manual/pdo.rollback.php
    * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
    */
-    public static function rollBack()
+    public function rollBack()
     {
         $this->latestReplicateDb = $replicateDb = $this->getAReplicateDb('master');
         $result = $replicateDb->rollBack();

@@ -56,17 +56,61 @@ class TenantRepository implements TenantRepositoryInterface
   /**
    * {@inheritdoc}
    */
-    public function findOneById(TenantIdInterface $tenantId): ?TenantInterface
+    public function get(TenantIdInterface $tenantId): ?TenantInterface
     {
         try {
-            $stmt = $this->pdo->prepare('SELECT * FROM BaseTenant t WHERE t.id = :id limit 0,1');
+            $sql = 'SELECT * FROM '. TENANT_SERVICE['TABLE_PREFIX'] . 'Tenant t WHERE t.id = :id limit 0,1';
+            $stmt = $this->pdo->prepare($sql);
             $stmt->execute(['id' => (string) $tenantId]);
           // Return which type
             $result = $stmt->fetch();
           // Convert to the desired return type
             return $this->convertToEntity($result);
         } catch (\PDOException $e) {
-            throw new ServerErrorException('Failed Querying findOneById Tenant', false, $e->getMessage());
+            throw new ServerErrorException('Failed Getting Tenant', false, $e->getMessage());
+        }
+    }
+
+  /**
+   * {@inheritdoc}
+   */
+    public function add(TenantInterface $tenant): ?TenantIdInterface
+    {
+        try {
+            $this->pdo->beginTransaction();
+            $sql = 'INSERT INTO ' . TENANT_SERVICE['TABLE_PREFIX'] . 'Tenant (
+                id,
+                domain,
+                platform,
+                status,
+                createdAt,
+                updatedAt
+              ) VALUES (
+                :id,
+                :domain,
+                :platform,
+                :status,
+                :createdAt,
+                :updatedAt
+              )';
+            $stmt = $this->pdo->prepare($sql);
+            $result = $stmt->execute([
+              'id' => (string) $tenant->getId(),
+              'domain' => (string) $tenant->getDomain(),
+              'platform' => (string) $tenant->getPlatform(),
+              'status' => (string) $tenant->getStatus(),
+              'createdAt' => (int) $tenant->getCreatedAt(),
+              'updatedAt' => (int) $tenant->getUpdatedAt()
+            ]);
+            $id = null;
+            if ($result) {
+                $id = $tenant->getId();
+            }
+            $this->pdo->commit();
+            return $id;
+        } catch (\PDOException $e) {
+            $this->pdo->rollBack();
+            throw new ServerErrorException('Failed Adding Tenant to Storage', false, $e->getMessage());
         }
     }
 

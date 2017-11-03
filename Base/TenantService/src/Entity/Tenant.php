@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Base\TenantService\Entity;
 
 use Base\TenantService\ValueObject\TenantIdInterface;
+use ReflectionClass;
 
 /**
  * Tenant Entity
@@ -22,6 +23,16 @@ use Base\TenantService\ValueObject\TenantIdInterface;
  */
 class Tenant implements TenantInterface
 {
+  /**
+   * Active Status
+   */
+    const STATUS_ACTIVE = 'active';
+
+  /**
+   * Disabled Status
+   */
+    const STATUS_DISABLED = 'disabled';
+
   /**
    * @var TenantIdInterface
    */
@@ -110,7 +121,7 @@ class Tenant implements TenantInterface
   /**
    * {@inheritdoc}
    */
-    public function getId(): TenantInterface
+    public function getId(): TenantIdInterface
     {
         return $this->id;
     }
@@ -118,7 +129,7 @@ class Tenant implements TenantInterface
   /**
    * {@inheritdoc}
    */
-    public function getDomain(): string
+    public function getDomain(): ?string
     {
         return $this->domain;
     }
@@ -126,7 +137,7 @@ class Tenant implements TenantInterface
   /**
    * {@inheritdoc}
    */
-    public function getPlatform(): string
+    public function getPlatform(): ?string
     {
         return $this->platform;
     }
@@ -153,5 +164,26 @@ class Tenant implements TenantInterface
     public function getUpdatedAt(): int
     {
         return $this->updatedAt;
+    }
+
+  /**
+   * {@inheritdoc}
+   */
+    public function getStatusOptions(string $status = null)
+    {
+        $reflector = new ReflectionClass(get_class($this));
+        $constants = $reflector->getConstants();
+        $result = [];
+        foreach ($constants as $constant => $value) {
+            if (!empty($status) && $constant == $status) {
+                $result = $value;
+                break;
+            }
+            $prefix = "STATUS_";
+            if (strpos($constant, $prefix) !==false) {
+                $result[] = $value;
+            }
+        }
+        return $result;
     }
 }

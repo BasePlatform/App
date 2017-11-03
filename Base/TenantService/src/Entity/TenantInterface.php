@@ -81,21 +81,21 @@ interface TenantInterface
    *
    * @return TenantInterface
    */
-    public function getId(): TenantInterface;
+    public function getId(): TenantIdInterface;
 
   /**
    * Return the value of field domain
    *
    * @return string
    */
-    public function getDomain(): string;
+    public function getDomain(): ?string;
 
   /**
    * Return the value of field platform
    *
    * @return string
    */
-    public function getPlatform(): string;
+    public function getPlatform(): ?string;
 
   /**
    * Return the value of field status
@@ -117,4 +117,14 @@ interface TenantInterface
    * @return integer
    */
     public function getUpdatedAt(): int;
+
+  /**
+   * Get Status Options from Constants
+   * If $status is passed, it will return the value of the status constant
+   *
+   * @param  string $domain
+   *
+   * @return array|string
+   */
+    public function getStatusOptions(string $status = null);
 }
