@@ -16,13 +16,12 @@ use Base\Exception\ServiceExceptionInterface;
 use Base\Exception\ServiceExceptionTrait;
 
 /**
- * Represents an Invalid Tenant Registration Info Exception
+ * Represents a Not Active Tenant Status Exception
  *
  * @package Base\TenantService\Exception
  */
-class InvalidTenantRegistrationInfoException extends RuntimeException implements ServiceExceptionInterface
+class NotActiveTenantException extends RuntimeException implements ServiceExceptionInterface
 {
-
     use ServiceExceptionTrait;
 
   /**
@@ -33,11 +32,11 @@ class InvalidTenantRegistrationInfoException extends RuntimeException implements
    *
    * {@inheritdoc}
    */
-    public function __construct(string $message = 'Invalid Tenant Registration Info', bool $notification = false, string $details = '', array $additionalData = [])
+    public function __construct(string $message = 'Tenant Is Not In Active Status', bool $notification = false, string $details = '', array $additionalData = [])
     {
         $this->message = $message;
-        $this->statusCode = 400;
-        $this->code = \Base\TenantService\Service::ERROR_CODE_SPACE+1;
+        $this->statusCode = 403;
+        $this->code = \Base\TenantService\Service::ERROR_CODE_SPACE+2;
         $this->details = $details;
         $this->additionalData = $additionalData;
         $this->notification = $notification;
@@ -48,6 +47,6 @@ class InvalidTenantRegistrationInfoException extends RuntimeException implements
    */
     public function getReference(string $pathPrefix = ''): string
     {
-        return $pathPrefix.'/api/problems/tenants/invalid-tenant-registration-info';
+        return $pathPrefix.'/api/problems/tenants/not-active-tenant';
     }
 }

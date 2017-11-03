@@ -60,18 +60,23 @@ class PDOProxy implements PDOProxyInterface
     protected $options = [];
 
     /**
+     * @var bool inTransaction
+     */
+    protected $inTransaction = false;
+
+    /**
      * @param array $options
      */
     public function __construct(array $options)
     {
-        if(!empty($options)) {
+        if (!empty($options)) {
             $this->options = $options;
         } else {
             $this->options =  [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES   => false,
-          ];
+            ];
         }
     }
 
@@ -146,7 +151,7 @@ class PDOProxy implements PDOProxyInterface
      */
     public function prepare(string $sql)
     {
-        $this->latestReplicateDb = $replicateDb = $this->getReplicateDb($sql);
+        $this->latestReplicateDb = $replicateDb = $this->selectReplicateDbAutomatically($sql);
         $stmt = $replicateDb->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         return $stmt;
@@ -157,7 +162,7 @@ class PDOProxy implements PDOProxyInterface
      */
     public function query(string $sql, array $params = [])
     {
-        $this->latestReplicateDb = $replicateDb = $this->getReplicateDb($sql);
+        $this->latestReplicateDb = $replicateDb = $this->selectReplicateDbAutomatically($sql);
         $stmt = $replicateDb->query($sql, $params);
         return $stmt;
     }
@@ -175,14 +180,20 @@ class PDOProxy implements PDOProxyInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Init Connection
+     *
+     * @param  string $mode
+     * @param  string $identifier
+     *
+     * @return \PDO|null
+     *
      */
-    public function initConnection($isMaster, $identifier)
+    public function initConnection(string $identifier, string $mode = 'master')
     {
-        $replicate = $isMaster ? 'master' : 'slave';
+        $replicate = $mode == 'master' ? 'master' : 'slave';
         if (!isset($this->connectedConnections[$replicate . '-' . $identifier])) {
             try {
-                if ($isMaster) {
+                if ($mode == 'master') {
                     $dsn = 'mysql:dbname='.$this->connections['master'][$identifier]['database'].';host='.$this->connections['master'][$identifier]['host'].';port='.$this->connections['master'][$identifier]['port'];
                     $this->masters[$identifier] = new \PDO(
                         $dsn,
@@ -192,7 +203,7 @@ class PDOProxy implements PDOProxyInterface
                     );
                     $this->masters[$identifier]->query('SET NAMES utf8');
                 } else {
-                   $dsn = 'mysql:dbname='.$this->connections['slave'][$identifier]['database'].';host='.$this->connections['slave'][$identifier]['host'].';port='.$this->connections['slave'][$identifier]['port'];
+                    $dsn = 'mysql:dbname='.$this->connections['slave'][$identifier]['database'].';host='.$this->connections['slave'][$identifier]['host'].';port='.$this->connections['slave'][$identifier]['port'];
                     $this->slaves[$identifier] = new \PDO(
                         $dsn,
                         $this->connections['slave'][$identifier]['username'],
@@ -210,7 +221,7 @@ class PDOProxy implements PDOProxyInterface
         $db = null;
         if (isset($this->connectedConnections[$replicate . '-' . $identifier])
             && $this->connectedConnections[$replicate . '-' . $identifier]) {
-            if ($isMaster) {
+            if ($mode == 'master') {
                 if (!empty($this->masters[$identifier])) {
                     $db = $this->masters[$identifier];
                 }
@@ -224,75 +235,118 @@ class PDOProxy implements PDOProxyInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get a Relicate DB Based on the mode
+     *
+     * If it is in transaction, and there is a latestReplicateDb, it will return that instance. Otherwise, it will call initConnection function
+     *
+     * @param  string $mode
+     *
+     * @return \PDO
+     *
      */
-    public function getReplicateDb(string $sql)
+    public function getAReplicateDb(string $mode = 'master')
     {
-        $sql = trim($sql);
-        if (stripos($sql, 'SELECT') !== 0) {
-            //Not select query
-            if (preg_match('/insert\s+into\s+([a-z0-9_]+)/ims', $sql, $match)) {
-                $table = $match[1];
-                $querytype = 'INSERT';
-            } elseif (preg_match('/update\s+([a-z0-9_]+)/ims', $sql, $match)) {
-                $table = $match[1];
-                $querytype = 'UPDATE';
-            } elseif (preg_match('/delete\s+from\s+([a-z0-9_]+)/ims', $sql, $match)) {
-                $table = $match[1];
-                $querytype = 'DELETE';
-            } else {
-                $querytype = 'OTHER';
-            }
-        } else {
-            $querytype = 'SELECT';
-            if (preg_match('/^select.*?from\s+([a-z0-9_]+)/ims', $sql, $match)) {
-                $table = $match[1];
-            }
+        // If inTransaction and we have made a connection
+        // Return that
+        if ($this->inTransaction && $this->latestReplicateDb) {
+            return $this->latestReplicateDb;
         }
-        //////////////////////
-        // SELECT DB BASE ON QUERY TYPE
-        if ($querytype == 'SELECT') {
-            $replicateCount = count($this->connections['slave']);
-            //select slave
-            if ($replicateCount == 0) {
-                throw new InvalidArgumentException('Slave DB Config Not Found');
-            } else {
-                // Select a random slave info
-                $randomconnections = array();
-                $randseed = rand(1, $replicateCount);
-                $i = 1;
-                foreach ($this->connections['slave'] as $connections) {
-                    if ($i == $randseed) {
-                        $randomconnections = $connections;
-                    }
-                    $i++;
-                }
-                $db = $this->initConnection(false, $randomconnections['identifier']);
-            }
+
+        $replicateCount = count($this->connections[$mode]);
+        //select slave
+        if ($replicateCount == 0) {
+            throw new InvalidArgumentException('DB '.$mode.' Config Not Found');
         } else {
-            $replicateCount = count($this->connections['master']);
-            if ($replicateCount == 0) {
-                throw new InvalidArgumentException('Master DB Config Not Found');
-            } else {
-                // Select a random master info
-                $randomconnections = array();
-                $randseed = rand(1, $replicateCount);
-                $i = 1;
-                foreach ($this->connections['master'] as $connections) {
-                    if ($i == $randseed) {
-                        $randomconnections = $connections;
-                    }
-                    $i++;
+            // Select a random slave info
+            $randomconnections = [];
+            $randseed = rand(1, $replicateCount);
+            $i = 1;
+            foreach ($this->connections[$mode] as $connections) {
+                if ($i == $randseed) {
+                    $randomconnections = $connections;
                 }
-                $db = $this->initConnection(true, $randomconnections['identifier']);
+                $i++;
             }
+            return $this->initConnection($randomconnections['identifier'], $mode);
+        }
+    }
+
+    /**
+     * Automatically select a Replicate Db master or slave based on the sql query
+     * If it is in transaction, it returns a Master
+     *
+     * @param  string $sql
+     *
+     * @return \PDO
+     *
+     */
+    public function selectReplicateDbAutomatically(string $sql)
+    {
+        // Check for case in transaction
+        if ($this->inTransaction) {
+            return $this->getAReplicateDb('master');
+        }
+
+        $sql = trim($sql);
+        if (stripos($sql, 'SELECT') === 0) {
+            $db = $this->getAReplicateDb('slave');
+        } else {
+            $db = $this->getAReplicateDb('master');
         }
         return $db;
     }
 
-   /**
-    * {@inheritdoc}
-    */
+    /**
+     * Initiates a transaction
+     *
+     * @link http://php.net/manual/pdo.begintransaction.php
+     * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
+     */
+    public function beginTransaction()
+    {
+        $this->latestReplicateDb = $replicateDb = $this->getAReplicateDb('master');
+        $result = $replicateDb->beginTransaction();
+        if ($result) {
+            $this->inTransaction = true;
+        }
+        return $result;
+    }
+
+    /**
+     * Commits a transaction
+     *
+     * @link http://php.net/manual/pdo.commit.php
+     * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
+     */
+    public function commit()
+    {
+        $this->latestReplicateDb = $replicateDb = $this->getAReplicateDb('master');
+        $result = $replicateDb->commit();
+        if ($result) {
+            $this->inTransaction = true;
+        }
+        return $result;
+    }
+
+    /**
+     * Rolls back a transaction
+     *
+     * @link http://php.net/manual/pdo.rollback.php
+     * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
+     */
+    public static function rollBack()
+    {
+        $this->latestReplicateDb = $replicateDb = $this->getAReplicateDb('master');
+        $result = $replicateDb->rollBack();
+        if ($result) {
+            $this->inTransaction = true;
+        }
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function __destruct()
     {
         foreach ($this->masters as $pdoObject) {

@@ -23,7 +23,7 @@ use Base\Exception\ServerErrorException;
 /**
  * Tenant Repository
  *
- * @package Base\TenantService\Service
+ * @package Base\TenantService\Repository
  */
 class TenantRepository implements TenantRepositoryInterface
 {
@@ -54,11 +54,7 @@ class TenantRepository implements TenantRepositoryInterface
   }
 
   /**
-   * Find Tenant by TenantId
-   *
-   * @param TenantIdInterface $tenantId
-   *
-   * @return TenantInterface
+   * {@inheritdoc}
    */
   public function findOneById(TenantIdInterface $tenantId): ?TenantInterface
   {
@@ -75,11 +71,7 @@ class TenantRepository implements TenantRepositoryInterface
   }
 
   /**
-   * Convert an array data from fetch assoc to Entity
-   *
-   * @param array|boolean $data
-   *
-   * @return TenantInterface|null
+   * {@inheritdoc}
    */
   public function convertToEntity($data): ?TenantInterface
   {

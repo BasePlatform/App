@@ -26,30 +26,30 @@ class TenantFactory implements TenantIdFactoryInterface
   /**
    * @var FactoryInterface
    */
-  private $factory;
+    private $factory;
 
   /**
    * @param FactoryInterface $factory
    * @param FactoryInterface $variantFactory
    */
-  public function __construct(FactoryInterface $factory)
-  {
-    $this->factory = $factory;
-  }
+    public function __construct(FactoryInterface $factory)
+    {
+        $this->factory = $factory;
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function createNew(): TenantInterface
-  {
-    return $this->factory->createNew();
-  }
+    public function createNew(): TenantInterface
+    {
+        return $this->factory->createNew();
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function getClassName(): string
-  {
-    return $this->factory->getClassName();
-  }
+    public function getClassName(): string
+    {
+        return $this->factory->getClassName();
+    }
 }

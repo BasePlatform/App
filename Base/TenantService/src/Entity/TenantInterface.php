@@ -29,7 +29,7 @@ interface TenantInterface
    *
    * @return $this
    */
-  public function setId(TenantIdInterface $id);
+    public function setId(TenantIdInterface $id);
 
   /**
    * Set the value of field domain
@@ -38,7 +38,7 @@ interface TenantInterface
    *
    * @return $this
    */
-  public function setDomain(string $domain);
+    public function setDomain(string $domain);
 
   /**
    * Set the value of field Platform
@@ -47,7 +47,7 @@ interface TenantInterface
    *
    * @return $this
    */
-  public function setPlatform(string $platform);
+    public function setPlatform(string $platform);
 
   /**
    * Set the value of field status
@@ -56,7 +56,7 @@ interface TenantInterface
    *
    * @return $this
    */
-  public function setStatus(string $status);
+    public function setStatus(string $status);
 
   /**
    * Set the value of field createdAt
@@ -65,7 +65,7 @@ interface TenantInterface
    *
    * @return $this
    */
-  public function setCreatedAt(int $createdAt);
+    public function setCreatedAt(int $createdAt);
 
   /**
    * Set the value of field updatedAt
@@ -74,47 +74,47 @@ interface TenantInterface
    *
    * @return $this
    */
-  public function setUpdatedAt(int $updatedAt);
+    public function setUpdatedAt(int $updatedAt);
 
   /**
    * Return the value of field id
    *
    * @return TenantInterface
    */
-  public function getId(): TenantInterface;
+    public function getId(): TenantInterface;
 
   /**
    * Return the value of field domain
    *
    * @return string
    */
-  public function getDomain(): string;
+    public function getDomain(): string;
 
   /**
    * Return the value of field platform
    *
    * @return string
    */
-  public function getPlatform(): string;
+    public function getPlatform(): string;
 
   /**
    * Return the value of field status
    *
    * @return string
    */
-  public function getStatus(): string;
+    public function getStatus(): string;
 
   /**
    * Return the value of field createdAt
    *
    * @return integer
    */
-  public function getCreatedAt(): int;
+    public function getCreatedAt(): int;
 
   /**
    * Return the value of field updatedAt
    *
    * @return integer
    */
-  public function getUpdatedAt(): int;
+    public function getUpdatedAt(): int;
 }

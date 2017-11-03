@@ -27,6 +27,7 @@ $routeDispatcher = require_once __DIR__.'/../bootstrap/route-dispatcher.php';;
  * Setup the middleware queue
  */
 $middlewares = [
+  Base\Middleware\RequestIdMiddleware::class,
   Base\Middleware\ErrorHandlerMiddleware::class,
   new Base\Middleware\FastRouteMiddleware($routeDispatcher),
   new Base\Middleware\BodyParserMiddleware('json'),

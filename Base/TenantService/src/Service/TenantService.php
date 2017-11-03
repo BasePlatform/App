@@ -15,8 +15,9 @@ namespace Base\TenantService\Service;
 
 use Base\TenantService\ValueObject\TenantId;
 use Base\TenantService\Repository\TenantRepositoryInterface;
-use Base\TenantService\Exception\InvalidTenantRegistrationInfoException;
 use Base\TenantService\Factory\TenantIdFactoryInterface;
+use Base\TenantService\Exception\InvalidTenantRegistrationInfoException;
+use Base\TenantService\Exception\NotActiveTenantException;
 
 /**
  * Tenant Service
@@ -25,6 +26,16 @@ use Base\TenantService\Factory\TenantIdFactoryInterface;
  */
 class TenantService implements TenantServiceInterface
 {
+  /**
+   * Active Status of Tenant
+   */
+  const STATUS_ACTIVE = 'active';
+
+  /**
+   * Disabled Status of Tenant
+   */
+  const STATUS_DISABLED = 'disabled';
+
   /**
    * @var TenantRepositoryInterface
    */
@@ -72,11 +83,17 @@ class TenantService implements TenantServiceInterface
     // Validate the Info here
 
     $tenant = $this->tenantRepository->findOneById($tenantId);
-    if ($tenant) {
-      return $tenant;
+    if (!$tenant || ($tenant && $tenant->getStatus() == self::STATUS_ACTIVE)) {
+      // So we could go ahead with current registration info
+      // $this->tenantRepository->store();
+      // $this->serviceRequest->request(['/app/default/activate']);
+      // $this->serviceRequest->request(['/user/create']);
+      echo 'hehehe';
+
     } else {
-      return ['tenant' => 'EMPTY :('];
+      throw new NotActiveTenantException();
     }
+
     // 1. Create the TenantId
     //
     // 2. Get Tenant Info Based on Tenant

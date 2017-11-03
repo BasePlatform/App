@@ -25,133 +25,133 @@ class Tenant implements TenantInterface
   /**
    * @var TenantIdInterface
    */
-  protected $id;
+    protected $id;
 
   /**
    * @var string
    */
-  protected $domain;
+    protected $domain;
 
   /**
    * @var string
    */
-  protected $platform;
+    protected $platform;
 
   /**
    * @var string
    */
-  protected $status = 'disabled';
+    protected $status = 'disabled';
 
   /**
    * @var integer
    */
-  protected $createdAt;
+    protected $createdAt;
 
   /**
    * @var integer
    */
-  protected $updatedAt;
+    protected $updatedAt;
 
   /**
    * {@inheritdoc}
    */
-  public function setId(TenantIdInterface $id)
-  {
-    $this->id = $id;
-    return $this;
-  }
+    public function setId(TenantIdInterface $id)
+    {
+        $this->id = $id;
+        return $this;
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function setDomain(string $domain = null)
-  {
-    $this->domain = $domain;
-    return $this;
-  }
+    public function setDomain(string $domain = null)
+    {
+        $this->domain = $domain;
+        return $this;
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function setPlatform(string $platform = null)
-  {
-    $this->platform = $platform;
-    return $this;
-  }
+    public function setPlatform(string $platform = null)
+    {
+        $this->platform = $platform;
+        return $this;
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function setStatus(string $status)
-  {
-    $this->status = $status;
+    public function setStatus(string $status)
+    {
+        $this->status = $status;
 
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setCreatedAt(int $createdAt = null)
-  {
-    $this->createdAt = $createdAt;
-    return $this;
-  }
+        return $this;
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function setUpdatedAt(int $updatedAt = null)
-  {
-    $this->updatedAt = $updatedAt;
-    return $this;
-  }
+    public function setCreatedAt(int $createdAt = null)
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function getId(): TenantInterface
-  {
-    return $this->id;
-  }
+    public function setUpdatedAt(int $updatedAt = null)
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function getDomain(): string
-  {
-    return $this->domain;
-  }
+    public function getId(): TenantInterface
+    {
+        return $this->id;
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function getPlatform(): string
-  {
-    return $this->platform;
-  }
+    public function getDomain(): string
+    {
+        return $this->domain;
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function getStatus(): string
-  {
-    return $this->status;
-  }
+    public function getPlatform(): string
+    {
+        return $this->platform;
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function getCreatedAt(): int
-  {
-    return $this->createdAt;
-  }
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function getUpdatedAt(): int
-  {
-    return $this->updatedAt;
-  }
+    public function getCreatedAt(): int
+    {
+        return $this->createdAt;
+    }
+
+  /**
+   * {@inheritdoc}
+   */
+    public function getUpdatedAt(): int
+    {
+        return $this->updatedAt;
+    }
 }

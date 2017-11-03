@@ -19,7 +19,7 @@ use Base\TenantService\Entity\TenantInterface;
 /**
  * Tenant Repository Interface
  *
- * @package Base\TenantService\Service
+ * @package Base\TenantService\Repository
  */
 interface TenantRepositoryInterface
 {
@@ -28,7 +28,16 @@ interface TenantRepositoryInterface
    *
    * @param TenantIdInterface $tenantId
    *
-   * @return TenantInterface
+   * @return TenantInterface|null
    */
   public function findOneById(TenantIdInterface $tenantId): ?TenantInterface;
+
+  /**
+   * Convert an array data from fetch assoc to Entity
+   *
+   * @param array|boolean $data
+   *
+   * @return TenantInterface|null
+   */
+  public function convertToEntity($data): ?TenantInterface;
 }
