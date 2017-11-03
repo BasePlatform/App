@@ -37,21 +37,21 @@ use LogicException;
  */
 class Dispatcher implements DispatcherInterface
 {
-    /**
-     * @var MiddlewareInterface[] queue
-     */
+  /**
+   * @var MiddlewareInterface[] queue
+   */
     private $middlewares;
 
-    /**
-     * @var object
-     */
+  /**
+   * @var object
+   */
     private $container;
 
-    /**
-     * @param MiddlewareInterface[] $middleware
-     *
-     * @param object $container
-     */
+  /**
+   * @param MiddlewareInterface[] $middleware
+   *
+   * @param object $container
+   */
     public function __construct(array $middlewares, $container = null)
     {
         if (empty($middlewares)) {
@@ -61,37 +61,37 @@ class Dispatcher implements DispatcherInterface
         $this->container = $container;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+  /**
+   * {@inheritdoc}
+   */
     public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
         reset($this->middlewares);
         return $this->getMiddleware($request)->process($request, $this->createRequestHandler());
     }
 
-    /**
-     * This function get the current first middleware definition of the
-     * middlewares array and create a Middleware Instance based on the
-     * type of the definitions
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return MiddlewareInterface|false
-     */
+  /**
+   * This function get the current first middleware definition of the
+   * middlewares array and create a Middleware Instance based on the
+   * type of the definitions
+   *
+   * @param ServerRequestInterface $request
+   *
+   * @return MiddlewareInterface|false
+   */
     public function getMiddleware(ServerRequestInterface $request): MiddlewareInterface
     {
-        // Get the current middleware definition
+      // Get the current middleware definition
         $middlewareDefinition = current($this->middlewares);
 
         if ($middlewareDefinition === false) {
             return $middlewareDefinition;
         }
 
-        // If this is an array, we will set the middlewareDefinition to the last element of the array
-        // Then we check all the conditions which are the remaining items of the array.
-        // If they pass all, the middlewareDefinition will be created
-        //
+      // If this is an array, we will set the middlewareDefinition to the last element of the array
+      // Then we check all the conditions which are the remaining items of the array.
+      // If they pass all, the middlewareDefinition will be created
+      //
         if (is_array($middlewareDefinition)) {
             $conditions = $middlewareDefinition;
             $middlewareDefinition = array_pop($conditions);
@@ -120,26 +120,26 @@ class Dispatcher implements DispatcherInterface
             }
         }
 
-        // Middleware is defined through a class of string
-        // E.g \App\Middleware\SampleMiddleware
-        //
+      // Middleware is defined through a class of string
+      // E.g \App\Middleware\SampleMiddleware
+      //
         if (is_string($middlewareDefinition)) {
-            // If we do not provide a container
-            // so that we cannot create an instance of the provided class
+          // If we do not provide a container
+          // so that we cannot create an instance of the provided class
             if ($this->container === null) {
                 throw new InvalidArgumentException(sprintf('Invalid Middleware Provided (%s)', $middlewareDefinition));
             }
-            // A small tweak for supporting
-            // the make() function of Auryn dependency injector
+          // A small tweak for supporting
+          // the make() function of Auryn dependency injector
             if (method_exists($this->container, 'make')) {
                 return $this->container->make($middlewareDefinition);
             } else {
-                // We assume that the other container has 'get' method
+              // We assume that the other container has 'get' method
                 return $this->container->get($middlewareDefinition);
             }
         }
 
-        // Direct middleware instance
+      // Direct middleware instance
         if ($middlewareDefinition instanceof MiddlewareInterface) {
             return $middlewareDefinition;
         }
@@ -149,39 +149,38 @@ class Dispatcher implements DispatcherInterface
         }
 
         throw new InvalidArgumentException(sprintf('Invalid Middleware Provided (%s)', is_object($middlewareDefinition) ? get_class($middlewareDefinition) : gettype($middlewareDefinition)));
-
     }
 
-    /**
-     * Return the next available middleware in the queue.
-     *
-     * @return MiddlewareInterface|false
-     */
+  /**
+   * Return the next available middleware in the queue.
+   *
+   * @return MiddlewareInterface|false
+   */
     public function getNextMiddleware(ServerRequestInterface $request): MiddlewareInterface
     {
         next($this->middlewares);
         return $this->getMiddleware($request);
     }
 
-    /**
-     * Create a request handler for the current queue
-     *
-     * @param RequestHandlerInterface $next
-     *
-     * @return RequestHandlerInterface
-     */
+  /**
+   * Create a request handler for the current queue
+   *
+   * @param RequestHandlerInterface $next
+   *
+   * @return RequestHandlerInterface
+   */
     private function createRequestHandler(RequestHandlerInterface $next = null): RequestHandlerInterface
     {
         return new DelegateRequestHandler($this, $next);
     }
 
-    /**
-     * Create a middleware from a closure
-     *
-     * @param Closure $handler
-     *
-     * @return MiddlewareInterface
-     */
+  /**
+   * Create a middleware from a closure
+   *
+   * @param Closure $handler
+   *
+   * @return MiddlewareInterface
+   */
     private function createMiddlewareFromClosure(Closure $handler): MiddlewareInterface
     {
         return new DelegateClosureMiddleware($handler);

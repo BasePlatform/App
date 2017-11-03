@@ -26,8 +26,8 @@ class RequestFactory implements RequestFactoryInterface
   /**
    * {@inheritdoc}
    */
-  public static function create(): ServerRequestInterface
-  {
-    return \Zend\Diactoros\ServerRequestFactory::fromGlobals();
-  }
+    public static function create(): ServerRequestInterface
+    {
+        return \Zend\Diactoros\ServerRequestFactory::fromGlobals();
+    }
 }

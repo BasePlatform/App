@@ -21,7 +21,8 @@ $container = require_once __DIR__.'/../bootstrap/container.php';
 /**
  * Get the route dispatcher
  */
-$routeDispatcher = require_once __DIR__.'/../bootstrap/route-dispatcher.php';;
+$routeDispatcher = require_once __DIR__.'/../bootstrap/route-dispatcher.php';
+;
 
 /**
  * Setup the middleware queue

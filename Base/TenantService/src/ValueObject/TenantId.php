@@ -25,53 +25,53 @@ class TenantId implements TenantIdInterface
   /**
    * @var string
    */
-  protected $id;
+    protected $id;
 
   /**
    * @param string $id
    */
-  public function __construct(string $id = '')
-  {
-    if (!empty($id)) {
-      $this->id = $id;
+    public function __construct(string $id = '')
+    {
+        if (!empty($id)) {
+            $this->id = $id;
+        }
     }
-  }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(string $name = '', string $domain = ''): TenantIdInterface
-  {
-    if ($name != '') {
-      return new self($name.$domain);
-    } else {
-      $uuid = Uuid::uuid4()->toString();
-      return new self($uuid.$domain);
+    public static function create(string $name = '', string $domain = ''): TenantIdInterface
+    {
+        if ($name != '') {
+            return new self($name.$domain);
+        } else {
+            $uuid = Uuid::uuid4()->toString();
+            return new self($uuid.$domain);
+        }
     }
-  }
 
   /**
    * {@inheritdoc}
    */
-  public function setId(string $id)
-  {
-    $this->id = $id;
-    return $this;
-  }
+    public function setId(string $id)
+    {
+        $this->id = $id;
+        return $this;
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function getId(): string
-  {
-    return $this->id;
-  }
+    public function getId(): string
+    {
+        return $this->id;
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function __toString(): string
-  {
-    return $this->id;
-  }
+    public function __toString(): string
+    {
+        return $this->id;
+    }
 }

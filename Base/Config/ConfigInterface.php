@@ -22,29 +22,29 @@ use RuntimeException;
  */
 interface ConfigInterface
 {
-  /**
-   * Return the full content of the config
-   *
-   * @return array
-   */
-  public function getAll();
+    /**
+     * Return the full content of the config
+     *
+     * @return array
+     */
+    public function getAll();
 
-  /**
-   * Return the full content of the config
-   *
-   * @param string $key
-   *
-   * @return mixed
-   */
-  public function get(string $key);
+    /**
+     * Return the full content of the config
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function get(string $key);
 
-  /**
-   * Set a config
-   *
-   * @param string $key
-   * @param mixed $value
-   *
-   * @return void
-   */
-  public function set(string $key, $value);
+    /**
+     * Set a config
+     *
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return void
+     */
+    public function set(string $key, $value);
 }

@@ -25,8 +25,8 @@ class BadRequestException extends RuntimeException implements HttpExceptionInter
    *
    * @param string|integer $code
    */
-  public function __construct(string $message = 'Bad Request', $code = 400)
-  {
-    parent::__construct($message, $code);
-  }
+    public function __construct(string $message = 'Bad Request', $code = 400)
+    {
+        parent::__construct($message, $code);
+    }
 }

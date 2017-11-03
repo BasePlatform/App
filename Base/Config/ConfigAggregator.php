@@ -25,12 +25,12 @@ class ConfigAggregator implements ConfigInterface
   /**
    * @var array
    */
-  private $config = [];
+    private $config = [];
 
   /**
    * @var string
    */
-  private $cacheFilePath;
+    private $cacheFilePath;
 
   /**
    * Aggregate the config from multiple arrays source
@@ -39,62 +39,64 @@ class ConfigAggregator implements ConfigInterface
    * @param  string       $cacheFilePath
    * @param  bool|boolean $enableCache
    */
-  public  function __construct(array $providers, string $cacheFilePath, bool $enableCache = true) {
-    $this->cacheFilePath = $cacheFilePath;
-    // Check if file exits
-    if (!$enableCache && file_exists($this->cacheFilePath)) {
-      $this->config = unserialize(file_get_contents($this->cacheFilePath));;
-    } else {
-      foreach ($providers as $provider) {
-        $this->config = array_merge($this->config, $provider);
-      }
-      if (!$enableCache) {
-        $this->saveCache();
-      }
+    public function __construct(array $providers, string $cacheFilePath, bool $enableCache = true)
+    {
+        $this->cacheFilePath = $cacheFilePath;
+      // Check if file exits
+        if (!$enableCache && file_exists($this->cacheFilePath)) {
+            $this->config = unserialize(file_get_contents($this->cacheFilePath));
+            ;
+        } else {
+            foreach ($providers as $provider) {
+                $this->config = array_merge($this->config, $provider);
+            }
+            if (!$enableCache) {
+                $this->saveCache();
+            }
+        }
     }
-  }
 
   /**
    * {@inheritdoc}
    */
-  public function getAll()
-  {
-    return $this->config;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function get(string $key)
-  {
-    if ($key && array_key_exists($key, $this->config)) {
-      return $this->config[$key];
+    public function getAll()
+    {
+        return $this->config;
     }
-    return false;
-  }
 
   /**
    * {@inheritdoc}
    */
-  public function set(string $key, $value)
-  {
-    $this->config[$key] = $value;
-    return $this;
-  }
+    public function get(string $key)
+    {
+        if ($key && array_key_exists($key, $this->config)) {
+            return $this->config[$key];
+        }
+        return false;
+    }
+
+  /**
+   * {@inheritdoc}
+   */
+    public function set(string $key, $value)
+    {
+        $this->config[$key] = $value;
+        return $this;
+    }
 
   /**
    * Save config to a file Cache
    *
    * @return void
    */
-  public function saveCache()
-  {
-    if (file_exists($this->cacheFilePath) && !is_writable($this->cacheFilePath)) {
-      throw new RuntimeException(
-        "Cannot write in path '{$cacheFilePath}'"
-      );
-    } else {
-      file_put_contents($this->cacheFilePath, serialize($this->config));
+    public function saveCache()
+    {
+        if (file_exists($this->cacheFilePath) && !is_writable($this->cacheFilePath)) {
+            throw new RuntimeException(
+                "Cannot write in path '{$cacheFilePath}'"
+            );
+        } else {
+            file_put_contents($this->cacheFilePath, serialize($this->config));
+        }
     }
-  }
 }

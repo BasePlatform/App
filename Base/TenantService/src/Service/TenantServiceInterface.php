@@ -20,5 +20,4 @@ namespace Base\TenantService\Service;
  */
 interface TenantServiceInterface
 {
-
 }

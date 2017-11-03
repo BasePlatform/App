@@ -47,57 +47,57 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
    *
    * STATUS [METHOD] path: message
    */
-  const LOG_FORMAT = '%d [%s] %s: %s %s %s';
+    const LOG_FORMAT = '%d [%s] %s: %s %s %s';
 
   /**
    * @var ResponseFactoryInterface
    */
-  private $responseFactory;
+    private $responseFactory;
 
   /**
    * @var LoggerInterface
    */
-  private $logger;
+    private $logger;
 
   /**
    * @param LoggerInterface $logger
    *
    */
-  public function __construct(ResponseFactoryInterface $responseFactory, LoggerInterface $logger = null)
-  {
-    $this->responseFactory = $responseFactory;
-    $this->logger = $logger;
-  }
+    public function __construct(ResponseFactoryInterface $responseFactory, LoggerInterface $logger = null)
+    {
+        $this->responseFactory = $responseFactory;
+        $this->logger = $logger;
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
-  {
-    set_error_handler(function ($errno, $errstr, $errfile, $errline) {
-      if ((error_reporting() & $errno)) {
-        // Error is not in mask
-        // Throw ErrorException with special error_code
-        throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-      }
-      throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-    });
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
+    {
+        set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+            if ((error_reporting() & $errno)) {
+              // Error is not in mask
+              // Throw ErrorException with special error_code
+                throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+            }
+            throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+        });
 
-    try {
-      $response = $next->handle($request);
-      if (!$response instanceof ResponseInterface) {
-        throw new RuntimeException('Invalid Response');
-      }
-      return $response;
-    } catch (Throwable $e) {
-      $response = $this->handleThrowable($e, $request);
-    } catch (Exception $e) {
-      $response = $this->handleThrowable($e, $request);
+        try {
+            $response = $next->handle($request);
+            if (!$response instanceof ResponseInterface) {
+                throw new RuntimeException('Invalid Response');
+            }
+            return $response;
+        } catch (Throwable $e) {
+            $response = $this->handleThrowable($e, $request);
+        } catch (Exception $e) {
+            $response = $this->handleThrowable($e, $request);
+        }
+        restore_error_handler();
+      // So we have an ErrorResponse - let's return it
+        return $response;
     }
-    restore_error_handler();
-    // So we have an ErrorResponse - let's return it
-    return $response;
-  }
 
   /**
    * This function is turned to public function as it might be overrided
@@ -110,34 +110,34 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
    * @param ServerRequestInterface $request
    * @return ResponseInterface
    */
-  public function handleThrowable($e, ServerRequestInterface $request): ResponseInterface
-  {
-    // Using a logger and Error is NOT an instance of HttpExceptionInterface // Then we log the error
-    $logException = false;
-    if (!($e instanceof HttpExceptionInterface) && !($e instanceof ServiceExceptionInterface)) {
-      $logException = true;
-    } elseif ($e instanceof ServiceExceptionInterface && $e->getNotification() == true) {
-      $logException = true;
-    }
-    if ($this->logger && $logException) {
-      $this->logger->error(sprintf(
-        self::LOG_FORMAT,
-        $e->getCode(),
-        $request->getMethod(),
-        (string) $request->getUri(),
-        $e->getMessage(),
-        $e->getFile(),
-        $e->getLine()
-      ));
-    }
+    public function handleThrowable($e, ServerRequestInterface $request): ResponseInterface
+    {
+      // Using a logger and Error is NOT an instance of HttpExceptionInterface // Then we log the error
+        $logException = false;
+        if (!($e instanceof HttpExceptionInterface) && !($e instanceof ServiceExceptionInterface)) {
+            $logException = true;
+        } elseif ($e instanceof ServiceExceptionInterface && $e->getNotification() == true) {
+            $logException = true;
+        }
+        if ($this->logger && $logException) {
+            $this->logger->error(sprintf(
+                self::LOG_FORMAT,
+                $e->getCode(),
+                $request->getMethod(),
+                (string) $request->getUri(),
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine()
+            ));
+        }
 
-    // Handle to hide the message if needed
-    // Consider the ENV dev, etc.
-    // Currently, it wont't show the real value $message if $e is
-    // an instance of Error - Check log at error_log or logger
-    if (($e instanceof Error) || ($e instanceof ErrorException)) {
-      $e = new Exception('Internal Server Error', 500);
+      // Handle to hide the message if needed
+      // Consider the ENV dev, etc.
+      // Currently, it wont't show the real value $message if $e is
+      // an instance of Error - Check log at error_log or logger
+        if (($e instanceof Error) || ($e instanceof ErrorException)) {
+            $e = new Exception('Internal Server Error', 500);
+        }
+        return $this->responseFactory->createError($e, $request);
     }
-    return $this->responseFactory->createError($e, $request);
-  }
 }

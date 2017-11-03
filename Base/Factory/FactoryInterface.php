@@ -20,13 +20,13 @@ namespace Base\Factory;
  */
 interface FactoryInterface
 {
-  /**
-   * @return object
-   */
-  public function createNew();
+    /**
+     * @return object
+     */
+    public function createNew();
 
-  /**
-   * @return string
-   */
-  public function getClassName();
+    /**
+     * @return string
+     */
+    public function getClassName();
 }

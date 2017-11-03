@@ -20,13 +20,13 @@ use RuntimeException;
  */
 class ConflictException extends RuntimeException implements HttpExceptionInterface
 {
-  /**
-   * @param string $message
-   *
-   * @param string|integer $code
-   */
-  public function __construct($message = 'Conflict Exception', $code = 409)
-  {
-    parent::__construct($message, $code);
-  }
+    /**
+     * @param string $message
+     *
+     * @param string|integer $code
+     */
+    public function __construct($message = 'Conflict Exception', $code = 409)
+    {
+        parent::__construct($message, $code);
+    }
 }

@@ -31,10 +31,10 @@ class Service
     public static function getConfig()
     {
         return array_merge(
-      require __DIR__.'/../config/dependencies.php',
-      require __DIR__.'/../config/resources.php',
-      require __DIR__.'/../config/routes.php',
-      require __DIR__.'/../config/roles.php'
-    );
+            require __DIR__.'/../config/dependencies.php',
+            require __DIR__.'/../config/resources.php',
+            require __DIR__.'/../config/routes.php',
+            require __DIR__.'/../config/roles.php'
+        );
     }
 }

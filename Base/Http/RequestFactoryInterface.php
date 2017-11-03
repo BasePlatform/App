@@ -27,5 +27,5 @@ interface RequestFactoryInterface
    *
    * @return ServerRequest
    */
-  public static function create(): ServerRequestInterface;
+    public static function create(): ServerRequestInterface;
 }

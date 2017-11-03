@@ -21,65 +21,65 @@ trait ServiceExceptionTrait
   /**
    * @var string
    */
-  private $reference;
+    private $reference;
 
   /**
    * @var int
    */
-  private $statusCode;
+    private $statusCode;
 
   /**
    * @var string
    */
-  private $details;
+    private $details;
 
   /**
    * @var array
    */
-  private $additionalData = [];
+    private $additionalData = [];
 
   /**
    * @var boolean
    */
-  private $notification = false;
+    private $notification = false;
 
   /**
    * Return Status Code
    *
    * @return int
    */
-  public function getStatusCode(): int
-  {
-    return $this->statusCode;
-  }
+    public function getStatusCode(): int
+    {
+        return $this->statusCode;
+    }
 
   /**
    * Return Exception Details
    *
    * @return string
    */
-  public function getDetails(): string
-  {
-    return $this->details;
-  }
+    public function getDetails(): string
+    {
+        return $this->details;
+    }
 
   /**
    * Return Exception Additional Data
    *
    * @return array
    */
-  public function getAdditionalData(): array
-  {
-    return $this->additionalData;
-  }
+    public function getAdditionalData(): array
+    {
+        return $this->additionalData;
+    }
 
   /**
    * Return Notification
    *
    * @return boolean
    */
-  public function getNotification(): bool
-  {
-    return $this->notification;
-  }
+    public function getNotification(): bool
+    {
+        return $this->notification;
+    }
 }

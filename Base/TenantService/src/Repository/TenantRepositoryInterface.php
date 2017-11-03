@@ -30,7 +30,7 @@ interface TenantRepositoryInterface
    *
    * @return TenantInterface|null
    */
-  public function findOneById(TenantIdInterface $tenantId): ?TenantInterface;
+    public function findOneById(TenantIdInterface $tenantId): ?TenantInterface;
 
   /**
    * Convert an array data from fetch assoc to Entity
@@ -39,5 +39,5 @@ interface TenantRepositoryInterface
    *
    * @return TenantInterface|null
    */
-  public function convertToEntity($data): ?TenantInterface;
+    public function convertToEntity($data): ?TenantInterface;
 }

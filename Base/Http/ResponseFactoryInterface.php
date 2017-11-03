@@ -26,7 +26,7 @@ use Exception;
 interface ResponseFactoryInterface
 {
 
-  const DEFAULT_JSON_FLAGS = 79;
+    const DEFAULT_JSON_FLAGS = 79;
 
   /**
    * Create a standard PSR-7 Response
@@ -37,7 +37,7 @@ interface ResponseFactoryInterface
    *
    * @return ResponseInterface
    */
-  public function create(string $body = 'php://memory', int $status = 200, array $headers = []): ResponseInterface;
+    public function create(string $body = 'php://memory', int $status = 200, array $headers = []): ResponseInterface;
 
   /**
    * Create an Empty Response
@@ -47,7 +47,7 @@ interface ResponseFactoryInterface
    *
    * @return ResponseInterface
    */
-  public function createEmpty(int $status = 204, array $headers = []): ResponseInterface;
+    public function createEmpty(int $status = 204, array $headers = []): ResponseInterface;
 
   /**
    * Create a Text Response
@@ -58,7 +58,7 @@ interface ResponseFactoryInterface
    *
    * @return ResponseInterface
    */
-  public function createText(string $text, int $status = 200, array $headers = []): ResponseInterface;
+    public function createText(string $text, int $status = 200, array $headers = []): ResponseInterface;
 
   /**
    * Create an Html Response
@@ -69,7 +69,7 @@ interface ResponseFactoryInterface
    *
    * @return ResponseInterface
    */
-  public function createHtml(string $html, int $status = 200, array $headers = []): ResponseInterface;
+    public function createHtml(string $html, int $status = 200, array $headers = []): ResponseInterface;
 
   /**
    * Create a Json Response
@@ -81,7 +81,7 @@ interface ResponseFactoryInterface
    *
    * @return ResponseInterface
    */
-  public function createJson(array $data, int $status = 200, array $headers = [], int $encodingOptions = self::DEFAULT_JSON_FLAGS): ResponseInterface;
+    public function createJson(array $data, int $status = 200, array $headers = [], int $encodingOptions = self::DEFAULT_JSON_FLAGS): ResponseInterface;
 
   /**
    * Create an Error Response
@@ -91,7 +91,7 @@ interface ResponseFactoryInterface
    *
    * @return ResponseInterface
    */
-  public function createError(Exception $e, ServerRequestInterface $request): ResponseInterface;
+    public function createError(Exception $e, ServerRequestInterface $request): ResponseInterface;
 
   /**
    * Create a Redirect Response
@@ -102,5 +102,5 @@ interface ResponseFactoryInterface
    *
    * @return ResponseInterface
    */
-  public function createRedirect(string $uri, int $status = 302, array $headers = []): ResponseInterface;
+    public function createRedirect(string $uri, int $status = 302, array $headers = []): ResponseInterface;
 }

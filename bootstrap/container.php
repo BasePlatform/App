@@ -74,16 +74,16 @@ $dbConfig = $config->get('db');
 
 $mysqlConfig = isset($dbConfig['mysql']) ? $dbConfig['mysql'] : [];
 if (!empty($mysqlConfig)) {
-  $pdoOptions = [
+    $pdoOptions = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     PDO::ATTR_EMULATE_PREPARES   => false,
-  ];
-  $pdo = new Base\PDO\PDOProxy($pdoOptions);
-  $pdo->addMaster($mysqlConfig['master']['m1']);
-  $pdo->addSlave($mysqlConfig['slave']['s1']);
-  // Share it
-  $container->share($pdo);
+    ];
+    $pdo = new Base\PDO\PDOProxy($pdoOptions);
+    $pdo->addMaster($mysqlConfig['master']['m1']);
+    $pdo->addSlave($mysqlConfig['slave']['s1']);
+    // Share it
+    $container->share($pdo);
 }
 
 

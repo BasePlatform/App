@@ -29,24 +29,24 @@ use LogicException;
  */
 interface DispatcherInterface
 {
-    /**
-     * Dispatch the request, return a response.
-     *
-     * This function will perform the following steps
-     *
-     * 1. Get the first remaining middleware in the
-     * middlewares property of this class
-     *
-     * 2. Create a middleware instance based on the middleware information
-     *
-     * 3. Run the process() function of the newly created middleware
-     *
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return ResponseInterface
-     *
-     * @throws LogicException on unexpected result from any middleware on the queue
-     */
+  /**
+   * Dispatch the request, return a response.
+   *
+   * This function will perform the following steps
+   *
+   * 1. Get the first remaining middleware in the
+   * middlewares property of this class
+   *
+   * 2. Create a middleware instance based on the middleware information
+   *
+   * 3. Run the process() function of the newly created middleware
+   *
+   *
+   * @param ServerRequestInterface $request
+   *
+   * @return ResponseInterface
+   *
+   * @throws LogicException on unexpected result from any middleware on the queue
+   */
     public function dispatch(ServerRequestInterface $request): ResponseInterface;
 }

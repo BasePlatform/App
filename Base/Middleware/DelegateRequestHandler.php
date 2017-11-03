@@ -26,29 +26,29 @@ use Base\Exception\InternalServerError;
  */
 class DelegateRequestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var Dispatcher
-     */
+  /**
+   * @var Dispatcher
+   */
     private $dispatcher;
 
-    /**
-     * @var RequestHandlerInterface|null
-     */
+  /**
+   * @var RequestHandlerInterface|null
+   */
     private $next;
 
-    /**
-     * @param Dispatcher                   $dispatcher
-     * @param RequestHandlerInterface|null $next
-     */
+  /**
+   * @param Dispatcher                   $dispatcher
+   * @param RequestHandlerInterface|null $next
+   */
     public function __construct(Dispatcher $dispatcher, RequestHandlerInterface $next = null)
     {
         $this->dispatcher = $dispatcher;
         $this->next = $next;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+  /**
+   * {@inheritdoc}
+   */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $middlewareDefinition = $this->dispatcher->getNextMiddleware($request);

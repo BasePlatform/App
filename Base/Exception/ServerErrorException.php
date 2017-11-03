@@ -23,7 +23,7 @@ use RuntimeException;
 class ServerErrorException extends RuntimeException implements ServiceExceptionInterface
 {
 
-  use ServiceExceptionTrait;
+    use ServiceExceptionTrait;
 
   /**
    * @param string $message
@@ -33,21 +33,21 @@ class ServerErrorException extends RuntimeException implements ServiceExceptionI
    *
    * {@inheritdoc}
    */
-  public function __construct(string $message = 'Internal Server Error', bool $notification = false, string $details = '', array $additionalData = [])
-  {
-    $this->message = $message;
-    $this->statusCode = 500;
-    $this->code = 0;
-    $this->details = $details;
-    $this->additionalData = $additionalData;
-    $this->notification = $notification;
-  }
+    public function __construct(string $message = 'Internal Server Error', bool $notification = false, string $details = '', array $additionalData = [])
+    {
+        $this->message = $message;
+        $this->statusCode = 500;
+        $this->code = 0;
+        $this->details = $details;
+        $this->additionalData = $additionalData;
+        $this->notification = $notification;
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function getReference(string $pathPrefix = ''): string
-  {
-    return $pathPrefix.'/api/problems/server-error';
-  }
+    public function getReference(string $pathPrefix = ''): string
+    {
+        return $pathPrefix.'/api/problems/server-error';
+    }
 }

@@ -20,13 +20,13 @@ use RuntimeException;
  */
 class NotFoundException extends RuntimeException implements HttpExceptionInterface
 {
-  /**
-   * @param string $message
-   *
-   * @param string|integer $code
-   */
-  public function __construct($message = 'Not Found', $code = 404)
-  {
-    parent::__construct($message, $code);
-  }
+    /**
+     * @param string $message
+     *
+     * @param string|integer $code
+     */
+    public function __construct($message = 'Not Found', $code = 404)
+    {
+        parent::__construct($message, $code);
+    }
 }

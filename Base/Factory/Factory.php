@@ -23,29 +23,29 @@ class Factory implements FactoryInterface
   /**
    * @var string
    */
-  private $className;
+    private $className;
 
   /**
    * @param string $className
    */
-  public function __construct(string $className)
-  {
-    $this->className = $className;
-  }
+    public function __construct(string $className)
+    {
+        $this->className = $className;
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function createNew()
-  {
-    return new $this->className();
-  }
+    public function createNew()
+    {
+        return new $this->className();
+    }
 
   /**
    * {@inheritdoc}
    */
-  public function getClassName(): string
-  {
-    return $this->className;
-  }
+    public function getClassName(): string
+    {
+        return $this->className;
+    }
 }
