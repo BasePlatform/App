@@ -54,11 +54,11 @@ class TenantService implements TenantServiceInterface
 
     /**
      * @param array $data
-     * @param string $domain
+     * @param string $serviceDomain
      *
      * @return mixed
      */
-    public function register(array $data, string $domain, string $platform = null)
+    public function register(array $data, string $serviceDomain, string $platform = null)
     {
         // Do the step to register the data
         $name = $data['name'] ?? '';
@@ -68,7 +68,7 @@ class TenantService implements TenantServiceInterface
         // Validate the Data first
 
         // Create TenantId
-        $tenantId = call_user_func_array([$this->tenantIdFactory->getClassName(), 'create'], [$name, $domain]);
+        $tenantId = call_user_func_array([$this->tenantIdFactory->getClassName(), 'create'], [$name, $serviceDomain]);
 
         $tenant = $this->tenantRepository->get($tenantId);
         if (!$tenant || ($tenant && $tenant->getStatusOptions('STATUS_ACTIVE') == $tenant->getStatus())) {
@@ -79,6 +79,7 @@ class TenantService implements TenantServiceInterface
                 $nowTime = time();
                 $tenant = $this->tenantFactory->createNew();
                 $tenant->setId($tenantId);
+                $tenant->setDomain((string) $tenantId);
                 $tenant->setPlatform($platform);
                 $tenant->setStatus($tenant->getStatusOptions('STATUS_ACTIVE'));
                 $tenant->setCreatedAt($nowTime);

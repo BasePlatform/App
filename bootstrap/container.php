@@ -62,7 +62,7 @@ $container->define(Base\TenantService\Factory\TenantFactory::class, [':factory' 
 $container->define(Base\TenantService\Factory\TenantIdFactory::class, [':factory' => new Base\Factory\Factory(Base\TenantService\ValueObject\TenantId::class)]);
 
 // Define some params
-$container->define(Base\TenantService\Controller\TenantController::class, [':domain' => $config->get('domain'), ':platform' => $config->get('platform')]);
+$container->define(Base\TenantService\Controller\TenantController::class, [':serviceDomain' => $config->get('serviceDomain'), ':platform' => $config->get('platform')]);
 
 /**
  * Create a logger and register it with the container

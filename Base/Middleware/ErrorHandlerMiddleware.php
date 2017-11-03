@@ -147,6 +147,10 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
                     $e = new Exception('Internal Server Error', 500);
                 }
             }
+        } else {
+            if ($e instanceof Error) {
+                $e = new Exception('Internal Server Error', 500);
+            }
         }
         return $this->responseFactory->createError($e, $request);
     }

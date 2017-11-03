@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS `Base_Tenant`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Base_Tenant` (
   `id` varchar(255) NOT NULL DEFAULT '',
-  `domain` varchar(255) DEFAULT NULL,
+  `domain` varchar(255) NOT NULL,
   `platform` varchar(64) DEFAULT NULL,
   `status` varchar(64) NOT NULL DEFAULT 'disabled',
   `createdAt` int(11) unsigned DEFAULT NULL,

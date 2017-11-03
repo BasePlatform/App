@@ -75,7 +75,7 @@ class Tenant implements TenantInterface
   /**
    * {@inheritdoc}
    */
-    public function setDomain(string $domain = null)
+    public function setDomain(string $domain)
     {
         $this->domain = $domain;
         return $this;
@@ -129,7 +129,7 @@ class Tenant implements TenantInterface
   /**
    * {@inheritdoc}
    */
-    public function getDomain(): ?string
+    public function getDomain(): string
     {
         return $this->domain;
     }

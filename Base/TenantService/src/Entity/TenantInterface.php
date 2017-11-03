@@ -88,7 +88,7 @@ interface TenantInterface
    *
    * @return string
    */
-    public function getDomain(): ?string;
+    public function getDomain(): string;
 
   /**
    * Return the value of field platform
