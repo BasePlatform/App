@@ -37,8 +37,8 @@ class DelegateClosureMiddleware implements MiddlewareInterface
   /**
    * {@inheritdoc}
    */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
-        return call_user_func($this->handler, $request, $handler);
+        return call_user_func($this->handler, $request, $next);
     }
 }

@@ -21,14 +21,14 @@ use Base\Rest\RestController;
  */
 class TenantAdminController extends RestController
 {
-    public function getSettings(ServerRequestInterface $request, RequestHandlerInterface $next)
+    public function getSettings(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         return $this->responseFactory->createJson([
         'action' => 'getSettings'
         ]);
     }
 
-    public function updateSettings(ServerRequestInterface $request, RequestHandlerInterface $next)
+    public function updateSettings(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         return $this->responseFactory->createJson([
         'action' => 'updateSettings'

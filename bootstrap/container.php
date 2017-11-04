@@ -80,9 +80,9 @@ $dbConfig = $config->get('db');
 $mysqlConfig = isset($dbConfig['mysql']) ? $dbConfig['mysql'] : [];
 if (!empty($mysqlConfig)) {
     $pdoOptions = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
     ];
     $pdo = new Base\PDO\PDOProxy($pdoOptions);
     $pdo->addMaster($mysqlConfig['master']['m1']);
@@ -90,24 +90,5 @@ if (!empty($mysqlConfig)) {
     // Share it
     $container->share($pdo);
 }
-
-
-// if (!empty($dbConfig)) {
-//   $pdoOptions = [
-//     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-//     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-//     PDO::ATTR_EMULATE_PREPARES   => false,
-//   ];
-//   $container->share('PDO');
-//   $container->define('PDO', [
-//     ':dsn' => 'mysql:dbname='.$dbConfig['database'].';host='.$dbConfig['host'].';port='.$dbConfig['port'],
-//     ':username' => $dbConfig['username'],
-//     ':passwd' => $dbConfig['password'],
-//     ':options' => $pdoOptions
-//   ]);
-
-//   // $pdo = new PDO('mysql:host='.$dbConfig['host'].';dbname='.$dbConfig['dbname'], $dbConfig['user'], $dbConfig['password'], $pdoOptions);
-//   // $container->share($pdo);
-// }
 
 return $container;

@@ -138,7 +138,7 @@ class RequestHandlerMiddleware implements MiddlewareInterface
    *
    * @return object
    */
-    private function createClassFromContainer($class)
+    private function createClassFromContainer(string $class)
     {
         if (method_exists($this->container, 'make')) {
             return $this->container->make($class);
@@ -157,7 +157,7 @@ class RequestHandlerMiddleware implements MiddlewareInterface
    *
    * @return object
    */
-    private function createClass($class, $args = [])
+    private function createClass(string $class, array $args = [])
     {
         if (!class_exists($class)) {
             throw new RuntimeException("Class {$class} Does Not Exist");

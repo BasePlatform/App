@@ -246,18 +246,17 @@ class PDOProxy implements PDOProxyInterface
    */
     public function getAReplicateDb(string $mode = 'master')
     {
-      // If inTransaction and we have made a connection
-      // Return that
+      // If inTransaction and we have made a connection, return that
         if ($this->inTransaction && $this->latestReplicateDb) {
             return $this->latestReplicateDb;
         }
 
         $replicateCount = count($this->connections[$mode]);
-      //select slave
+        //select a db
         if ($replicateCount == 0) {
             throw new InvalidArgumentException('DB '.$mode.' Config Not Found');
         } else {
-          // Select a random slave info
+          // Select a random connection
             $randomconnections = [];
             $randseed = rand(1, $replicateCount);
             $i = 1;

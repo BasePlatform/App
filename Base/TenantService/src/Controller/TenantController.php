@@ -36,19 +36,15 @@ class TenantController extends RestController
   /**
    * @var string
    */
-    private $platform = null;
+    private $platform;
 
   /**
    * @param TenantServiceInterface $response
    * @param string $serviceDomain
    * @param ResponseFactoryInterface $response
    */
-    public function __construct(
-        TenantServiceInterface $tenantService,
-        string $serviceDomain,
-        string $platform,
-        ResponseFactoryInterface $responseFactory
-    ) {
+    public function __construct(TenantServiceInterface $tenantService, string $serviceDomain, string $platform, ResponseFactoryInterface $responseFactory)
+    {
         $this->tenantService = $tenantService;
         $this->serviceDomain = $serviceDomain;
         $this->platform = $platform;

@@ -26,11 +26,11 @@ interface TenantIdInterface
    * Generate a unique id if name is blank
    *
    * @param string $name
-   * @param string $domain
+   * @param string $serviceDomain
    *
    * @return self
    */
-    public static function create(string $name, string $domain): TenantIdInterface;
+    public static function create(string $name, string $serviceDomain): TenantIdInterface;
 
   /**
    * Set the value of field id

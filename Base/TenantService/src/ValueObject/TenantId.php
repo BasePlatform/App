@@ -40,13 +40,13 @@ class TenantId implements TenantIdInterface
   /**
    * {@inheritdoc}
    */
-    public static function create(string $name = '', string $domain = ''): TenantIdInterface
+    public static function create(string $name = '', string $serviceDomain = ''): TenantIdInterface
     {
         if (!empty($name)) {
-            return new self($name.$domain);
+            return new self($name.$serviceDomain);
         } else {
             $uuid = Uuid::uuid4()->toString();
-            return new self($uuid.$domain);
+            return new self($uuid.$serviceDomain);
         }
     }
 

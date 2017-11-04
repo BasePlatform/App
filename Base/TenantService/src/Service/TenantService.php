@@ -60,6 +60,7 @@ class TenantService implements TenantServiceInterface
      */
     public function register(array $data, string $serviceDomain, string $platform = null)
     {
+        // Get Info from $data
         $name = $data['name'] ?? '';
         $email = $data['email'] ?? '';
         $password = $data['password'] ?? '';
