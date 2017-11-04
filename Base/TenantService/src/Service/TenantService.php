@@ -60,12 +60,11 @@ class TenantService implements TenantServiceInterface
      */
     public function register(array $data, string $serviceDomain, string $platform = null)
     {
-        // Do the step to register the data
         $name = $data['name'] ?? '';
         $email = $data['email'] ?? '';
         $password = $data['password'] ?? '';
 
-        // Validate the Data first
+        // Validate the Data here
 
         // Create TenantId
         $tenantId = call_user_func_array([$this->tenantIdFactory->getClassName(), 'create'], [$name, $serviceDomain]);
@@ -84,7 +83,6 @@ class TenantService implements TenantServiceInterface
                 $tenant->setStatus($tenant->getStatusOptions('STATUS_ACTIVE'));
                 $tenant->setCreatedAt($nowTime);
                 $tenant->setupdatedAt($nowTime);
-
                 $this->tenantRepository->add($tenant);
             }
 

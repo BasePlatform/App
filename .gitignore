@@ -1,5 +1,5 @@
 vendor
-config/*
-*.env
+config/params-local*
+.env
 runtime/*
 **/.php_cs.cache
