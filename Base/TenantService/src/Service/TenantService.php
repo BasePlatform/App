@@ -95,55 +95,24 @@ class TenantService implements TenantServiceInterface
             }
 
             // Call to other services to finish the registration process
-
             // Prepare data to send to other services
             $options = [
               'json' => [
                 'tenantId' => (string) $tenantId,
-                'appId' => 'default'
+                'appId' => 'default',
+                'email' => $email,
+                'password' => $password
               ]
             ];
 
             $result = $this->serviceRequest->send('APP_SERVICE', 'activateAppEndpoint', $options, true);
 
-            $result = $this->serviceRequest->send('AUTH_SERVICE', 'activateAppEndpoint', $options, true);
+            // $result = $this->serviceRequest->send('AUTH_SERVICE', 'activateAppEndpoint', $options, true);
 
             return json_decode($result->getBody()->getContents(), true);
-
-            // $this->serviceRequest->send('AUTH_SERVICE', 'registerTenantOwnerEndpoint', $options, true);
-            // $this->serviceRequest->request(['/app/default/activate']);
-            // $this->serviceRequest->request(['/user/create']);
         } else {
             throw new NotActiveTenantException();
         }
-
-        // 1. Create the TenantId
-        //
-        // 2. Get Tenant Info Based on Tenant
-        //
-        // 3. Check Tenant Installed the App
-        //
-        // 4. Check Tenant Status
-        //
-        //  + Disabled: We stop processing the request
-        //
-        //  + Active or no Tenant Record: Continue
-        //
-        // 5. Check TenantApp Status
-        //
-        //  + Disabled: We stop processing the request
-        //
-        //  + Active or no Tenant Record: Continue
-        //
-        // 6. Process Registration Process
-        //
-        //  + Create Tenant
-        //
-        //  + Communicate to App Service to Activate the App
-        //
-        //  + Communicate to Auth Service to Create Owner Account
-        //
-        //  7. Return the Response
     }
 
     /**

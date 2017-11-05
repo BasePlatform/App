@@ -72,8 +72,8 @@ class ResponseFactory implements ResponseFactoryInterface
     public function createError(Exception $e, ServerRequestInterface $request): ResponseInterface
     {
         $response = [
-        'code' => $e->getCode(),
-        'message' => $e->getMessage()
+          'code' => $e->getCode(),
+          'message' => $e->getMessage()
         ];
         if (property_exists($e, 'reference') && !empty($e->getReference())) {
             $response['reference'] = $e->getReference();
