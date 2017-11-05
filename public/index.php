@@ -31,6 +31,7 @@ $middlewares = [
   Base\Middleware\RequestIdMiddleware::class,
   Base\Middleware\ErrorHandlerMiddleware::class,
   new Base\Middleware\FastRouteMiddleware($routeDispatcher),
+  new Base\Middleware\BodyParserMiddleware('urlencoded'),
   new Base\Middleware\BodyParserMiddleware('json'),
   new Base\Middleware\RequestHandlerMiddleware($container)
 ];

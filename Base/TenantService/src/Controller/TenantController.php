@@ -74,8 +74,7 @@ class TenantController extends RestController
      */
     public function activate(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
-        return $this->responseFactory->createJson([
-            'status' => 'activated'
-        ]);
+        $data = $request->getParsedBody();
+        return $this->responseFactory->createJson($data);
     }
 }

@@ -94,18 +94,21 @@ class TenantService implements TenantServiceInterface
                 $this->tenantRepository->add($tenant);
             }
 
-            $options = [];
             // Call to other services to finish the registration process
-            $result = $this->serviceRequest->send('APP_SERVICE', 'activateAppEndpoint', $options, false);
-            $result->then(
-                function (ResponseInterface $res) {
-                    return $res->getBody()->getContent();
-                },
-                function (RequestException $e) {
-                    echo $e->getMessage() . "\n";
-                    echo $e->getRequest()->getMethod();
-                }
-            );
+
+            // Prepare data to send to other services
+            $options = [
+              'json' => [
+                'tenantId' => (string) $tenantId,
+                'appId' => 'default'
+              ]
+            ];
+
+            $result = $this->serviceRequest->send('APP_SERVICE', 'activateAppEndpoint', $options, true);
+
+            $result = $this->serviceRequest->send('AUTH_SERVICE', 'activateAppEndpoint', $options, true);
+
+            return json_decode($result->getBody()->getContents(), true);
 
             // $this->serviceRequest->send('AUTH_SERVICE', 'registerTenantOwnerEndpoint', $options, true);
             // $this->serviceRequest->request(['/app/default/activate']);

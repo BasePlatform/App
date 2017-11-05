@@ -32,11 +32,6 @@ class ServiceRequest implements ServiceRequestInterface
     private $endpoints;
 
     /**
-     * @var ClientInterface
-     */
-    private $httpClient;
-
-    /**
      * @var array
      */
     private $options;
@@ -46,7 +41,7 @@ class ServiceRequest implements ServiceRequestInterface
      * @param array $options
      * @param array $httpClient
      */
-    public function __construct(array $endpoints = [], array $options = [], ClientInterface $httpClient = null)
+    public function __construct(array $endpoints = [], array $options = [])
     {
         $this->endpoints = $endpoints;
         if (empty($options)) {
@@ -58,23 +53,12 @@ class ServiceRequest implements ServiceRequestInterface
         } else {
             $this->options = $options;
         }
-        if ($httpClient) {
-            $this->httpClient = $httpClient;
-        } else {
-            $this->httpClient = new \GuzzleHttp\Client($this->options);
-        }
     }
 
     /**
-     * Send Request to the Service
-     *
-     * @param string $service
-     * @param string $endpoint
-     * @param array $options
-     * @param array $wait - true = sync, false = async
-     * @return mixed
+     * {@inheritdoc}
      */
-    public function send(string $service, string $endpoint, array $options = [], bool $wait = true)
+    public function send(string $service, string $endpoint, array $options = [], bool $wait = true, bool $sendAsync = false)
     {
         if (empty($service)) {
             throw new InvalidArgumentException('Missing Service In Service Request');
@@ -90,27 +74,42 @@ class ServiceRequest implements ServiceRequestInterface
             if (!$endpointMethod) {
                 throw new InvalidArgumentException('Invalid Endpoint Method In Service Request');
             }
-            $endpointURI = $endpoints[$service][$endpoint]['uri'] ?? '';
+
             $serviceURI = defined($service.'_URI') ? constant($service.'_URI') : SERVICE_DEFAULT_URI;
+            $endpointURI = $endpoints[$service][$endpoint]['uri'] ?? '';
+
             $endpointOptions = $endpoints[$service][$endpoint]['options'] ?? [];
             $options = array_merge($this->options, $endpointOptions, $options);
-            $method = $wait ? 'request' : 'requestAsync';
 
-            // Add Service JWT Header
-            //
-            //
-            try {
-                $result = $this->httpClient->{$method}(
-                    $endpointMethod,
-                    $serviceURI.$endpointURI,
-                    $options
-                );
-                return $result;
-            } catch (\Exception $e) {
+            $method = 'request';
+
+            if ($wait) {
+                $client = new \GuzzleHttp\Client($this->options);
+                if ($sendAsync) {
+                    $method = 'requestAsync';
+                }
+            } else {
+                $client = new FireAndForgetClient();
+                // If we have json data
+                // We only want that content for FireAndForgetClient Request
+                if (isset($options['json'])) {
+                    $options = $options['json'];
+                }
             }
-            //return $wait ? new Response($result) : $result;
+
+            $result = $client->{$method}(
+                $endpointMethod,
+                $serviceURI.$endpointURI,
+                $options
+            );
+
+            return $sendAsync ? $result->wait() : $result;
+
+            // try {
+            // } catch (\Exception $e) {
+            // }
         } else {
-            throw new InvalidArgumentException('Invalid Endpoint In Service Request');
+            throw new InvalidArgumentException('Invalid Endpoint `'.$endpoint.'` In Service `'.$service.'` Request');
         }
     }
 }
