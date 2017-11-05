@@ -20,36 +20,36 @@ namespace Base\TenantService\ValueObject;
  */
 interface TenantIdInterface
 {
-  /**
-   * Create a Tenant Id
-   *
-   * Generate a unique id if name is blank
-   *
-   * @param string $name
-   * @param string $serviceDomain
-   *
-   * @return self
-   */
+    /**
+     * Create a Tenant Id
+     *
+     * Generate a unique id if name is blank
+     *
+     * @param string $name
+     * @param string $serviceDomain
+     *
+     * @return self
+     */
     public static function create(string $name, string $serviceDomain): TenantIdInterface;
 
-  /**
-   * Set the value of field id
-   *
-   * @param  string $id
-   *
-   * @return $this
-   */
+    /**
+     * Set the value of field id
+     *
+     * @param  string $id
+     *
+     * @return $this
+     */
     public function setId(string $id);
 
-  /**
-   * Return the value of id
-   *
-   * @return string
-   */
+    /**
+     * Return the value of id
+     *
+     * @return string
+     */
     public function getId(): string;
 
-  /**
-   * @return string
-   */
+    /**
+     * @return string
+     */
     public function __toString(): string;
 }

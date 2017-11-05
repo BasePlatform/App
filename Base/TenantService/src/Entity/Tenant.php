@@ -23,76 +23,76 @@ use ReflectionClass;
  */
 class Tenant implements TenantInterface
 {
-  /**
-   * Active Status
-   */
+    /**
+     * Active Status
+     */
     const STATUS_ACTIVE = 'active';
 
-  /**
-   * Disabled Status
-   */
+    /**
+     * Disabled Status
+     */
     const STATUS_DISABLED = 'disabled';
 
-  /**
-   * @var TenantIdInterface
-   */
+    /**
+     * @var TenantIdInterface
+     */
     protected $id;
 
-  /**
-   * @var string
-   */
+    /**
+     * @var string
+     */
     protected $domain;
 
-  /**
-   * @var string
-   */
+    /**
+     * @var string
+     */
     protected $platform;
 
-  /**
-   * @var string
-   */
+    /**
+     * @var string
+     */
     protected $status = 'disabled';
 
-  /**
-   * @var integer
-   */
+    /**
+     * @var integer
+     */
     protected $createdAt;
 
-  /**
-   * @var integer
-   */
+    /**
+     * @var integer
+     */
     protected $updatedAt;
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function setId(TenantIdInterface $id)
     {
         $this->id = $id;
         return $this;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function setDomain(string $domain)
     {
         $this->domain = $domain;
         return $this;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function setPlatform(string $platform = null)
     {
         $this->platform = $platform;
         return $this;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function setStatus(string $status)
     {
         $this->status = $status;
@@ -100,75 +100,75 @@ class Tenant implements TenantInterface
         return $this;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function setCreatedAt(int $createdAt = null)
     {
         $this->createdAt = $createdAt;
         return $this;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function setUpdatedAt(int $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
         return $this;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function getId(): TenantIdInterface
     {
         return $this->id;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function getDomain(): string
     {
         return $this->domain;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function getPlatform(): ?string
     {
         return $this->platform;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function getStatus(): string
     {
         return $this->status;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function getCreatedAt(): int
     {
         return $this->createdAt;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function getUpdatedAt(): int
     {
         return $this->updatedAt;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function getStatusOptions(string $status = null)
     {
         $reflector = new ReflectionClass(get_class($this));

@@ -22,10 +22,10 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 interface RequestFactoryInterface
 {
-  /**
-   * Create a Request instance with PSR-7 Standard
-   *
-   * @return ServerRequest
-   */
+    /**
+     * Create a Request instance with PSR-7 Standard
+     *
+     * @return ServerRequest
+     */
     public static function create(): ServerRequestInterface;
 }

@@ -29,44 +29,44 @@ use Base\Exception\ServerErrorException;
  */
 class PDOProxy implements PDOProxyInterface
 {
-  /**
-   * @var array Connection Definitions
-   */
+    /**
+     * @var array Connection Definitions
+     */
     protected $connections = [];
 
-  /**
-   * @var array Connected Connections
-   */
+    /**
+     * @var array Connected Connections
+     */
     protected $connectedConnections = [];
 
-  /**
-   * @var array Master Connections
-   */
+    /**
+     * @var array Master Connections
+     */
     protected $masters = [];
 
-  /**
-   * @var array Slave Connections
-   */
+    /**
+     * @var array Slave Connections
+     */
     protected $slaves = [];
 
-  /**
-   * @var \PDO
-   */
+    /**
+     * @var \PDO
+     */
     protected $latestReplicateDb = null;
 
-  /**
-   * @var array PDO Options
-   */
+    /**
+     * @var array PDO Options
+     */
     protected $options = [];
 
-  /**
-   * @var bool inTransaction
-   */
+    /**
+     * @var bool inTransaction
+     */
     protected $inTransaction = false;
 
-  /**
-   * @param array $options
-   */
+    /**
+     * @param array $options
+     */
     public function __construct(array $options)
     {
         if (!empty($options)) {
@@ -80,9 +80,9 @@ class PDOProxy implements PDOProxyInterface
         }
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function addMaster(array $config, array $options = [])
     {
         $host = $config['host'] ?? '';
@@ -100,7 +100,7 @@ class PDOProxy implements PDOProxyInterface
         if (empty($username)) {
             throw new InvalidArgumentException('Missing Master DB User Config');
         }
-      // Create connection identifier
+        // Create connection identifier
         $identifier = md5($host.$port.$database.$username.$password);
         $this->connections['master'][$identifier] = [
         'identifier' => $identifier,
@@ -113,9 +113,9 @@ class PDOProxy implements PDOProxyInterface
         ];
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function addSlave(array $config, array $options = [])
     {
         $host = $config['host'] ?? '';
@@ -133,7 +133,7 @@ class PDOProxy implements PDOProxyInterface
         if (empty($username)) {
             throw new InvalidArgumentException('Missing Slave DB User Config');
         }
-      // Create connection identifier
+        // Create connection identifier
         $identifier = md5($host.$port.$database.$username.$password);
         $this->connections['slave'][$identifier] = [
         'identifier' => $identifier,
@@ -146,9 +146,9 @@ class PDOProxy implements PDOProxyInterface
         ];
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function prepare(string $sql)
     {
         $this->latestReplicateDb = $replicateDb = $this->selectReplicateDbAutomatically($sql);
@@ -157,9 +157,9 @@ class PDOProxy implements PDOProxyInterface
         return $stmt;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function query(string $sql, array $params = [])
     {
         $this->latestReplicateDb = $replicateDb = $this->selectReplicateDbAutomatically($sql);
@@ -167,9 +167,9 @@ class PDOProxy implements PDOProxyInterface
         return $stmt;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function __call($method, $args)
     {
         if ($this->latestReplicateDb && is_callable([$this->latestReplicateDb, $method])) {
@@ -179,15 +179,15 @@ class PDOProxy implements PDOProxyInterface
         }
     }
 
-  /**
-   * Init Connection
-   *
-   * @param  string $mode
-   * @param  string $identifier
-   *
-   * @return \PDO|null
-   *
-   */
+    /**
+     * Init Connection
+     *
+     * @param  string $mode
+     * @param  string $identifier
+     *
+     * @return \PDO|null
+     *
+     */
     public function initConnection(string $identifier, string $mode = 'master')
     {
         $replicate = $mode == 'master' ? 'master' : 'slave';
@@ -212,7 +212,7 @@ class PDOProxy implements PDOProxyInterface
                     );
                     $this->slaves[$identifier]->query('SET NAMES utf8');
                 }
-              //mark as connect to this replicate
+                //mark as connect to this replicate
                 $this->connectedConnections[$replicate . '-' . $identifier] = true;
             } catch (\PDOException $e) {
                 throw new ServerErrorException('Internal Server Error - DxB');
@@ -234,19 +234,19 @@ class PDOProxy implements PDOProxyInterface
         return $db;
     }
 
-  /**
-   * Get a Relicate DB Based on the mode
-   *
-   * If it is in transaction, and there is a latestReplicateDb, it will return that instance. Otherwise, it will call initConnection function
-   *
-   * @param  string $mode
-   *
-   * @return \PDO
-   *
-   */
+    /**
+     * Get a Relicate DB Based on the mode
+     *
+     * If it is in transaction, and there is a latestReplicateDb, it will return that instance. Otherwise, it will call initConnection function
+     *
+     * @param  string $mode
+     *
+     * @return \PDO
+     *
+     */
     public function getAReplicateDb(string $mode = 'master')
     {
-      // If inTransaction and we have made a connection, return that
+        // If inTransaction and we have made a connection, return that
         if ($this->inTransaction && $this->latestReplicateDb) {
             return $this->latestReplicateDb;
         }
@@ -256,7 +256,7 @@ class PDOProxy implements PDOProxyInterface
         if ($replicateCount == 0) {
             throw new InvalidArgumentException('DB '.$mode.' Config Not Found');
         } else {
-          // Select a random connection
+            // Select a random connection
             $randomconnections = [];
             $randseed = rand(1, $replicateCount);
             $i = 1;
@@ -270,18 +270,18 @@ class PDOProxy implements PDOProxyInterface
         }
     }
 
-  /**
-   * Automatically select a Replicate Db master or slave based on the sql query
-   * If it is in transaction, it returns a Master
-   *
-   * @param  string $sql
-   *
-   * @return \PDO
-   *
-   */
+    /**
+     * Automatically select a Replicate Db master or slave based on the sql query
+     * If it is in transaction, it returns a Master
+     *
+     * @param  string $sql
+     *
+     * @return \PDO
+     *
+     */
     public function selectReplicateDbAutomatically(string $sql)
     {
-      // Check for case in transaction
+        // Check for case in transaction
         if ($this->inTransaction) {
             return $this->getAReplicateDb('master');
         }
@@ -295,12 +295,12 @@ class PDOProxy implements PDOProxyInterface
         return $db;
     }
 
-  /**
-   * Initiates a transaction
-   *
-   * @link http://php.net/manual/pdo.begintransaction.php
-   * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
-   */
+    /**
+     * Initiates a transaction
+     *
+     * @link http://php.net/manual/pdo.begintransaction.php
+     * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
+     */
     public function beginTransaction()
     {
         $this->latestReplicateDb = $replicateDb = $this->getAReplicateDb('master');
@@ -311,12 +311,12 @@ class PDOProxy implements PDOProxyInterface
         return $result;
     }
 
-  /**
-   * Commits a transaction
-   *
-   * @link http://php.net/manual/pdo.commit.php
-   * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
-   */
+    /**
+     * Commits a transaction
+     *
+     * @link http://php.net/manual/pdo.commit.php
+     * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
+     */
     public function commit()
     {
         $this->latestReplicateDb = $replicateDb = $this->getAReplicateDb('master');
@@ -327,12 +327,12 @@ class PDOProxy implements PDOProxyInterface
         return $result;
     }
 
-  /**
-   * Rolls back a transaction
-   *
-   * @link http://php.net/manual/pdo.rollback.php
-   * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
-   */
+    /**
+     * Rolls back a transaction
+     *
+     * @link http://php.net/manual/pdo.rollback.php
+     * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
+     */
     public function rollBack()
     {
         $this->latestReplicateDb = $replicateDb = $this->getAReplicateDb('master');
@@ -343,9 +343,9 @@ class PDOProxy implements PDOProxyInterface
         return $result;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function __destruct()
     {
         foreach ($this->masters as $pdoObject) {

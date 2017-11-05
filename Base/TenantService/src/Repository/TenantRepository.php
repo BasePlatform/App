@@ -27,39 +27,49 @@ use Base\Exception\ServerErrorException;
  */
 class TenantRepository implements TenantRepositoryInterface
 {
-  /**
-   * @var PDOProxyInterface
-   */
+    /**
+     * @var string
+     */
+    private $tablePrefix = '';
+
+    /**
+     * @var PDOProxyInterface
+     */
     private $pdo;
 
-  /**
-   * @var TenantFactory
-   */
+    /**
+     * @var TenantFactory
+     */
     private $tenantFactory;
 
-  /**
-   * @var TenantIdFactory
-   */
+    /**
+     * @var TenantIdFactory
+     */
     private $tenantIdFactory;
 
-  /**
-   * @param PDOProxyInterface $pdo
-   * @param FactoryInterface $entityFactory
-   */
+    /**
+     * @param PDOProxyInterface $pdo
+     * @param FactoryInterface $entityFactory
+     */
     public function __construct(PDOProxyInterface $pdo, TenantFactory $tenantFactory, TenantIdFactory $tenantIdFactory)
     {
         $this->pdo = $pdo;
         $this->tenantFactory = $tenantFactory;
         $this->tenantIdFactory = $tenantIdFactory;
+        if (defined('TENANT_SERVICE_CONSTANTS')
+            && isset(TENANT_SERVICE_CONSTANTS['TABLE_PREFIX'])
+            && !empty(TENANT_SERVICE_CONSTANTS['TABLE_PREFIX'])) {
+            $this->tablePrefix = TENANT_SERVICE_CONSTANTS['TABLE_PREFIX'];
+        }
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function get(TenantIdInterface $tenantId): ?TenantInterface
     {
         try {
-            $sql = 'SELECT * FROM '. TENANT_SERVICE['TABLE_PREFIX'] . 'Tenant t WHERE t.id = :id limit 0,1';
+            $sql = 'SELECT * FROM '. $this->tablePrefix . 'Tenant t WHERE t.id = :id limit 0,1';
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(['id' => (string) $tenantId]);
           // Return which type
@@ -75,14 +85,14 @@ class TenantRepository implements TenantRepositoryInterface
         }
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function add(TenantInterface $tenant): ?TenantIdInterface
     {
         try {
             $this->pdo->beginTransaction();
-            $sql = 'INSERT INTO ' . TENANT_SERVICE['TABLE_PREFIX'] . 'Tenant (
+            $sql = 'INSERT INTO ' . $this->tablePrefix . 'Tenant (
                 id,
                 domain,
                 platform,
@@ -122,9 +132,9 @@ class TenantRepository implements TenantRepositoryInterface
         }
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function convertToEntity($data): ?TenantInterface
     {
         try {

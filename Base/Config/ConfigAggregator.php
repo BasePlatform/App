@@ -22,27 +22,27 @@ use RuntimeException;
  */
 class ConfigAggregator implements ConfigInterface
 {
-  /**
-   * @var array
-   */
+    /**
+     * @var array
+     */
     private $config = [];
 
-  /**
-   * @var string
-   */
+    /**
+     * @var string
+     */
     private $cacheFilePath;
 
-  /**
-   * Aggregate the config from multiple arrays source
-   *
-   * @param  array        $providers
-   * @param  string       $cacheFilePath
-   * @param  bool|boolean $enableCache
-   */
+    /**
+     * Aggregate the config from multiple arrays source
+     *
+     * @param  array        $providers
+     * @param  string       $cacheFilePath
+     * @param  bool|boolean $enableCache
+     */
     public function __construct(array $providers, string $cacheFilePath, bool $enableCache = true)
     {
         $this->cacheFilePath = $cacheFilePath;
-      // Check if file exits
+        // Check if file exits
         if (!$enableCache && file_exists($this->cacheFilePath)) {
             $this->config = unserialize(file_get_contents($this->cacheFilePath));
             ;
@@ -56,17 +56,17 @@ class ConfigAggregator implements ConfigInterface
         }
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function getAll()
     {
         return $this->config;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function get(string $key)
     {
         if ($key && array_key_exists($key, $this->config)) {
@@ -75,21 +75,21 @@ class ConfigAggregator implements ConfigInterface
         return false;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function set(string $key, $value)
     {
         $this->config[$key] = $value;
         return $this;
     }
 
-  /**
-   * Save config to a file Cache
-   *
-   * @return void
-   */
-    public function saveCache()
+    /**
+     * Save config to a file Cache
+     *
+     * @return void
+     */
+    public function saveCache(): void
     {
         if (file_exists($this->cacheFilePath) && !is_writable($this->cacheFilePath)) {
             throw new RuntimeException(

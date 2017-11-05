@@ -23,49 +23,59 @@ use Base\Rest\RestController;
  */
 class TenantController extends RestController
 {
-  /**
-   * @var TenantServiceInterface
-   */
+    /**
+     * @var TenantServiceInterface
+     */
     private $tenantService;
 
-  /**
-   * @var string
-   */
+    /**
+     * @var string
+     */
     private $serviceDomain;
 
-  /**
-   * @var string
-   */
+    /**
+     * @var string
+     */
     private $platform;
 
-  /**
-   * @param TenantServiceInterface $response
-   * @param string $serviceDomain
-   * @param ResponseFactoryInterface $response
-   */
-    public function __construct(TenantServiceInterface $tenantService, string $serviceDomain, string $platform, ResponseFactoryInterface $responseFactory)
+    /**
+     * @param TenantServiceInterface $response
+     * @param string $domain
+     * @param ResponseFactoryInterface $response
+     */
+    public function __construct(TenantServiceInterface $tenantService, string $domain, string $platform, ResponseFactoryInterface $responseFactory)
     {
         $this->tenantService = $tenantService;
-        $this->serviceDomain = $serviceDomain;
+        $this->domain = $domain;
         $this->platform = $platform;
         parent::__construct($responseFactory);
     }
 
-  /**
-   * Processing the activities when a tenant registers to the system
-   *
-   * 1. Create Tenant Info
-   * 2. Send Request to Auth Service to create the Tenant Owner User Info
-   * 2. Send Request to App Service Activate the default App
-   *
-   * @param ServerRequestInterface $request
-   * @param RequestHandlerInterface $next
-   *
-   * @return ResponseInterface
-   */
+    /**
+     * Processing the activities when a tenant registers to the system
+     *
+     * 1. Create Tenant Info
+     * 2. Send Request to Auth Service to create the Tenant Owner User Info
+     * 2. Send Request to App Service Activate the default App
+     *
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $next
+     *
+     * @return ResponseInterface
+     */
     public function register(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         $data = $request->getParsedBody();
-        return $this->responseFactory->createJson($this->tenantService->register($data, $this->serviceDomain, $this->platform));
+        return $this->responseFactory->createJson($this->tenantService->register($data, $this->domain, $this->platform));
+    }
+
+    /**
+     * Test
+     */
+    public function activate(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
+    {
+        return $this->responseFactory->createJson([
+            'status' => 'activated'
+        ]);
     }
 }

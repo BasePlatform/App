@@ -22,14 +22,14 @@ use Ramsey\Uuid\Uuid;
  */
 class TenantId implements TenantIdInterface
 {
-  /**
-   * @var string
-   */
+    /**
+     * @var string
+     */
     protected $id;
 
-  /**
-   * @param string $id
-   */
+    /**
+     * @param string $id
+     */
     public function __construct(string $id = null)
     {
         if (!empty($id)) {
@@ -37,39 +37,39 @@ class TenantId implements TenantIdInterface
         }
     }
 
-  /**
-   * {@inheritdoc}
-   */
-    public static function create(string $name = '', string $serviceDomain = ''): TenantIdInterface
+    /**
+     * {@inheritdoc}
+     */
+    public static function create(string $name = '', string $domain = ''): TenantIdInterface
     {
         if (!empty($name)) {
-            return new self($name.$serviceDomain);
+            return new self($name.$domain);
         } else {
             $uuid = Uuid::uuid4()->toString();
-            return new self($uuid.$serviceDomain);
+            return new self($uuid.$domain);
         }
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function setId(string $id)
     {
         $this->id = $id;
         return $this;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function getId(): string
     {
         return $this->id;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function __toString(): string
     {
         return $this->id;

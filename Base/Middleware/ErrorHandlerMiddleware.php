@@ -43,42 +43,42 @@ use Throwable;
  */
 class ErrorHandlerMiddleware implements MiddlewareInterface
 {
-  /**
-   * Log format for messages:
-   *
-   * STATUS [METHOD] path: message
-   */
+    /**
+     * Log format for messages:
+     *
+     * STATUS [METHOD] path: message
+     */
     const LOG_FORMAT = '%d [%s] %s: %s %s %s';
 
-  /**
-   * @var ResponseFactoryInterface
-   */
+    /**
+     * @var ResponseFactoryInterface
+     */
     private $responseFactory;
 
-  /**
-   * @var LoggerInterface
-   */
+    /**
+     * @var LoggerInterface
+     */
     private $logger;
 
-  /**
-   * @param LoggerInterface $logger
-   *
-   */
+    /**
+     * @param LoggerInterface $logger
+     *
+     */
     public function __construct(ResponseFactoryInterface $responseFactory, LoggerInterface $logger = null)
     {
         $this->responseFactory = $responseFactory;
         $this->logger = $logger;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         set_error_handler(function ($errno, $errstr, $errfile, $errline) {
             if ((error_reporting() & $errno)) {
-              // Error is not in mask
-              // Throw ErrorException with special error_code
+                // Error is not in mask
+                // Throw ErrorException with special error_code
                 throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
             }
             throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
@@ -96,24 +96,24 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
             $response = $this->handleThrowable($e, $request);
         }
         restore_error_handler();
-      // So we have an ErrorResponse - let's return it
+        // So we have an ErrorResponse - let's return it
         return $response;
     }
 
-  /**
-   * This function is turned to public function as it might be overrided
-   * by application-based ErrorHandlerMiddleware
-   *
-   * Handles all throwables/exceptions, generating and returning a response.
-   *
-   *
-   * @param Throwable|Exception $e
-   * @param ServerRequestInterface $request
-   * @return ResponseInterface
-   */
+    /**
+     * This function is turned to public function as it might be overrided
+     * by application-based ErrorHandlerMiddleware
+     *
+     * Handles all throwables/exceptions, generating and returning a response.
+     *
+     *
+     * @param Throwable|Exception $e
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
     public function handleThrowable($e, ServerRequestInterface $request): ResponseInterface
     {
-      // Using a logger and Error is NOT an instance of HttpExceptionInterface // Then we log the error
+        // Using a logger and Error is NOT an instance of HttpExceptionInterface // Then we log the error
         $logException = false;
         if (!($e instanceof HttpExceptionInterface) && !($e instanceof ServiceExceptionInterface)) {
             $logException = true;
@@ -132,10 +132,10 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
             ));
         }
 
-      // Handle to hide the message if needed
-      // Consider the ENV dev, etc.
-      // Currently, it wont't show the real value $message if $e is
-      // an instance of Error - Check log at error_log or logger
+        // Handle to hide the message if needed
+        // Consider the ENV dev, etc.
+        // Currently, it wont't show the real value $message if $e is
+        // an instance of Error - Check log at error_log or logger
         $debug = env('APP_DEBUG', false);
         if (!$debug) {
             if (($e instanceof Error) ||

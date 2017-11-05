@@ -18,66 +18,66 @@ namespace Base\Exception;
  */
 trait ServiceExceptionTrait
 {
-  /**
-   * @var string
-   */
+    /**
+     * @var string
+     */
     private $reference;
 
-  /**
-   * @var int
-   */
+    /**
+     * @var int
+     */
     private $statusCode;
 
-  /**
-   * @var string
-   */
+    /**
+     * @var string
+     */
     private $details;
 
-  /**
-   * @var array
-   */
+    /**
+     * @var array
+     */
     private $additionalData = [];
 
-  /**
-   * @var boolean
-   */
+    /**
+     * @var boolean
+     */
     private $notification = false;
 
-  /**
-   * Return Status Code
-   *
-   * @return int
-   */
+    /**
+     * Return Status Code
+     *
+     * @return int
+     */
     public function getStatusCode(): ?int
     {
         return $this->statusCode;
     }
 
-  /**
-   * Return Exception Details
-   *
-   * @return string
-   */
+    /**
+     * Return Exception Details
+     *
+     * @return string
+     */
     public function getDetails(): ?string
     {
         return $this->details;
     }
 
-  /**
-   * Return Exception Additional Data
-   *
-   * @return array
-   */
+    /**
+     * Return Exception Additional Data
+     *
+     * @return array
+     */
     public function getAdditionalData(): ?array
     {
         return $this->additionalData;
     }
 
-  /**
-   * Return Notification
-   *
-   * @return boolean
-   */
+    /**
+     * Return Notification
+     *
+     * @return boolean
+     */
     public function getNotification(): bool
     {
         return $this->notification;

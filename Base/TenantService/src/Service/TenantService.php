@@ -19,6 +19,7 @@ use Base\TenantService\Factory\TenantIdFactoryInterface;
 use Base\TenantService\Factory\TenantFactoryInterface;
 use Base\TenantService\Exception\InvalidTenantRegistrationInfoException;
 use Base\TenantService\Exception\NotActiveTenantException;
+use Base\ServiceRequest\ServiceRequestInterface;
 
 /**
  * Tenant Service
@@ -43,22 +44,28 @@ class TenantService implements TenantServiceInterface
     private $tenantFactory;
 
     /**
+     * @var ServiceRequestInterface
+     */
+    private $serviceRequest;
+
+    /**
      * @param TenantRepositoryInterface $tenantRepository
      */
-    public function __construct(TenantRepositoryInterface $tenantRepository, TenantIdFactoryInterface $tenantIdFactory, TenantFactoryInterface $tenantFactory)
+    public function __construct(TenantRepositoryInterface $tenantRepository, ServiceRequestInterface $serviceRequest, TenantIdFactoryInterface $tenantIdFactory, TenantFactoryInterface $tenantFactory)
     {
         $this->tenantRepository = $tenantRepository;
+        $this->serviceRequest = $serviceRequest;
         $this->tenantIdFactory = $tenantIdFactory;
         $this->tenantFactory = $tenantFactory;
     }
 
     /**
      * @param array $data
-     * @param string $serviceDomain
+     * @param string $domain
      *
      * @return mixed
      */
-    public function register(array $data, string $serviceDomain, string $platform = null)
+    public function register(array $data, string $domain, string $platform = null)
     {
         // Get Info from $data
         $name = $data['name'] ?? '';
@@ -68,7 +75,7 @@ class TenantService implements TenantServiceInterface
         // Validate the Data here
 
         // Create TenantId
-        $tenantId = call_user_func_array([$this->tenantIdFactory->getClassName(), 'create'], [$name, $serviceDomain]);
+        $tenantId = call_user_func_array([$this->tenantIdFactory->getClassName(), 'create'], [$name, $domain]);
 
         $tenant = $this->tenantRepository->get($tenantId);
         if (!$tenant || ($tenant && $tenant->getStatusOptions('STATUS_ACTIVE') == $tenant->getStatus())) {
@@ -87,44 +94,53 @@ class TenantService implements TenantServiceInterface
                 $this->tenantRepository->add($tenant);
             }
 
+            $options = [];
             // Call to other services to finish the registration process
+            $result = $this->serviceRequest->send('APP_SERVICE', 'activateAppEndpoint', $options, false);
+            $result->then(
+                function (ResponseInterface $res) {
+                    return $res->getBody()->getContent();
+                },
+                function (RequestException $e) {
+                    echo $e->getMessage() . "\n";
+                    echo $e->getRequest()->getMethod();
+                }
+            );
 
+            // $this->serviceRequest->send('AUTH_SERVICE', 'registerTenantOwnerEndpoint', $options, true);
             // $this->serviceRequest->request(['/app/default/activate']);
             // $this->serviceRequest->request(['/user/create']);
-            return [
-              'run' => 'run'
-            ];
         } else {
             throw new NotActiveTenantException();
         }
 
         // 1. Create the TenantId
-      //
-      // 2. Get Tenant Info Based on Tenant
-      //
-      // 3. Check Tenant Installed the App
-      //
-      // 4. Check Tenant Status
-      //
-      //  + Disabled: We stop processing the request
-      //
-      //  + Active or no Tenant Record: Continue
-      //
-      // 5. Check TenantApp Status
-      //
-      //  + Disabled: We stop processing the request
-      //
-      //  + Active or no Tenant Record: Continue
-      //
-      // 6. Process Registration Process
-      //
-      //  + Create Tenant
-      //
-      //  + Communicate to App Service to Activate the App
-      //
-      //  + Communicate to Auth Service to Create Owner Account
-      //
-      //  7. Return the Response
+        //
+        // 2. Get Tenant Info Based on Tenant
+        //
+        // 3. Check Tenant Installed the App
+        //
+        // 4. Check Tenant Status
+        //
+        //  + Disabled: We stop processing the request
+        //
+        //  + Active or no Tenant Record: Continue
+        //
+        // 5. Check TenantApp Status
+        //
+        //  + Disabled: We stop processing the request
+        //
+        //  + Active or no Tenant Record: Continue
+        //
+        // 6. Process Registration Process
+        //
+        //  + Create Tenant
+        //
+        //  + Communicate to App Service to Activate the App
+        //
+        //  + Communicate to Auth Service to Create Owner Account
+        //
+        //  7. Return the Response
     }
 
     /**

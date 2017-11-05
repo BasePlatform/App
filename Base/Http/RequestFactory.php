@@ -23,9 +23,9 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class RequestFactory implements RequestFactoryInterface
 {
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public static function create(): ServerRequestInterface
     {
         return \Zend\Diactoros\ServerRequestFactory::fromGlobals();

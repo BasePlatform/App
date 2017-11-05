@@ -26,17 +26,17 @@ use Psr\Http\Message\ResponseInterface;
  */
 class DelegateClosureMiddleware implements MiddlewareInterface
 {
-  /**
-   * @param Closure $handler
-   */
+    /**
+     * @param Closure $handler
+     */
     public function __construct(Closure $handler)
     {
         $this->handler = $handler;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         return call_user_func($this->handler, $request, $next);

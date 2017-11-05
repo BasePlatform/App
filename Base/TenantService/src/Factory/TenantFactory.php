@@ -23,31 +23,31 @@ use Base\TenantService\Entity\TenantInterface;
  */
 class TenantFactory implements TenantFactoryInterface
 {
-  /**
-   * @var FactoryInterface
-   */
+    /**
+     * @var FactoryInterface
+     */
     private $factory;
 
-  /**
-   * @param FactoryInterface $factory
-   * @param FactoryInterface $variantFactory
-   */
+    /**
+     * @param FactoryInterface $factory
+     * @param FactoryInterface $variantFactory
+     */
     public function __construct(FactoryInterface $factory)
     {
         $this->factory = $factory;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function createNew(): TenantInterface
     {
         return $this->factory->createNew();
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function getClassName(): string
     {
         return $this->factory->getClassName();

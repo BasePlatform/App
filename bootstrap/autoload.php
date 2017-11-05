@@ -29,3 +29,19 @@ require __DIR__.'/../vendor/autoload.php';
  */
 $dotenv = new Dotenv\Dotenv(__DIR__ . '/..');
 $dotenv->load();
+
+/**
+ * Define services uri
+ *
+ * If a service uri is not defined when needed, the system will use
+ * the default service uri for making a service request
+ */
+$protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, 5)) == 'https' ? 'https' : 'http';
+
+define('SERVICE_DEFAULT_URI', env('SERVICE_DEFAULT_URI', $protocol.$_SERVER['HTTP_HOST']));
+/*
+ * Uncomment and edit if you want to define custom uri per service
+ */
+// define('TENANT_SERVICE_URI', SERVICE_DEFAULT_URI);
+// define('APP_SERVICE_URI', SERVICE_DEFAULT_URI);
+// define('AUTH_SERVICE_URI', SERVICE_DEFAULT_URI);

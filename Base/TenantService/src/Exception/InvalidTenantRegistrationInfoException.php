@@ -25,13 +25,13 @@ class InvalidTenantRegistrationInfoException extends RuntimeException implements
 
     use ServiceExceptionTrait;
 
-  /**
-   * @param string $message
-   * @param bool $notification send notifcation or not
-   * @param string $details
-   * @param array $additionalData
-   *
-   */
+    /**
+     * @param string $message
+     * @param bool $notification send notifcation or not
+     * @param string $details
+     * @param array $additionalData
+     *
+     */
     public function __construct(string $message = 'Invalid Tenant Registration Info', bool $notification = false, string $details = null, array $additionalData = null)
     {
         $this->message = $message;
@@ -42,9 +42,9 @@ class InvalidTenantRegistrationInfoException extends RuntimeException implements
         $this->additionalData = $additionalData;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function getReference(string $pathPrefix = ''): string
     {
         return $pathPrefix.'/api/problems/tenants/invalid-tenant-registration-info';

@@ -29,48 +29,48 @@ use Base\Exception\BadRequestException;
  */
 class BodyParserMiddleware implements MiddlewareInterface
 {
-  /**
-   * @var string[]
-   */
+    /**
+     * @var string[]
+     */
     protected $methods = ['POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'LOCK', 'UNLOCK'];
 
-  /**
-   * Strategies and their allowed header content type
-   *
-   * @var string[]
-   */
+    /**
+     * Strategies and their allowed header content type
+     *
+     * @var string[]
+     */
     private $contentTypes = [
-    // strategy => header content type
-    'json' => ['application/json'],
-    'urlencoded' => ['application/x-www-form-urlencoded']
+      // strategy => header content type
+      'json' => ['application/json'],
+      'urlencoded' => ['application/x-www-form-urlencoded']
     ];
 
-  /**
-   * Body Parse Strategy
-   *
-   * @var string
-   */
+    /**
+     * Body Parse Strategy
+     *
+     * @var string
+     */
     private $strategy;
 
-  /**
-   * Override parsed body or not
-   *
-   * @var bool
-   */
+    /**
+     * Override parsed body or not
+     *
+     * @var bool
+     */
     private $overrideParsedBody;
 
-  /**
-   * Parse Options
-   *
-   * @var array
-   */
+    /**
+     * Parse Options
+     *
+     * @var array
+     */
     private $options;
 
-  /**
-   * @param string $strategy
-   * @param bool $overrideParsedBody
-   * @param array $options
-   */
+    /**
+     * @param string $strategy
+     * @param bool $overrideParsedBody
+     * @param array $options
+     */
     public function __construct(string $strategy = 'json', bool $overrideParsedBody = false, array $options = [])
     {
         $this->strategy = $strategy;
@@ -78,9 +78,9 @@ class BodyParserMiddleware implements MiddlewareInterface
         $this->options = $options;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         if ($this->checkRequestAndStrategy($request)) {
@@ -114,13 +114,13 @@ class BodyParserMiddleware implements MiddlewareInterface
         }
     }
 
-  /**
-   * Check whether the request payload need to be processed based on the strategy
-   *
-   * @param ServerRequestInterface $request
-   *
-   * @return bool
-   */
+    /**
+     * Check whether the request payload need to be processed based on the strategy
+     *
+     * @param ServerRequestInterface $request
+     *
+     * @return bool
+     */
     private function checkRequestAndStrategy(ServerRequestInterface $request)
     {
       // Check body has been parsed or not

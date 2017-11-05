@@ -28,19 +28,19 @@ use Ramsey\Uuid\Uuid;
  */
 class RequestIdMiddleware implements MiddlewareInterface
 {
-  /**
-   * Attribute name in Response Header
-   */
+    /**
+     * Attribute name in Response Header
+     */
     const RESPONSE_HEADER_ATTRIBUTE_NAME = 'X-Request-Id';
 
-  /**
-   * Attribute name in Request Header
-   */
+    /**
+     * Attribute name in Request Header
+     */
     const REQUEST_ATTRIBUTE_NAME = 'request-id';
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         $requestId = $request->getAttribute(self::REQUEST_ATTRIBUTE_NAME);

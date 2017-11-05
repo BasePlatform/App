@@ -10,8 +10,8 @@
  */
 
 return [
-  'services' => [
-    'TENANT_SERVICE' => [
+  'constants' => [
+    'TENANT_SERVICE_CONSTANTS' => [
       // Table Prefix
       'TABLE_PREFIX' => 'Base_',
       // Error Code Space

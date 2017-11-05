@@ -24,13 +24,13 @@ class NotActiveTenantException extends RuntimeException implements ServiceExcept
 {
     use ServiceExceptionTrait;
 
-  /**
-   * @param string $message
-   * @param bool $notification send notifcation or not
-   * @param string $details
-   * @param array $additionalData
-   *
-   */
+    /**
+     * @param string $message
+     * @param bool $notification send notifcation or not
+     * @param string $details
+     * @param array $additionalData
+     *
+     */
     public function __construct(string $message = 'Tenant Existed and Is Not In Active Status', bool $notification = false, string $details = null, array $additionalData = null)
     {
         $this->message = $message;
@@ -41,9 +41,9 @@ class NotActiveTenantException extends RuntimeException implements ServiceExcept
         $this->additionalData = $additionalData;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function getReference(string $pathPrefix = ''): string
     {
         return $pathPrefix.'/api/problems/tenants/not-active-tenant';

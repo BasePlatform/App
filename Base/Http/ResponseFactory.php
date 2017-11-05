@@ -26,49 +26,49 @@ use Exception;
  */
 class ResponseFactory implements ResponseFactoryInterface
 {
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function create(string $body = 'php://memory', int $status = 200, array $headers = []): ResponseInterface
     {
         return new \Zend\Diactoros\Response($body, $status, $headers);
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function createEmpty(int $status = 204, array $headers = []): ResponseInterface
     {
         return new \Zend\Diactoros\Response\EmptyResponse($status, $headers);
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function createText(string $text, int $status = 200, array $headers = []): ResponseInterface
     {
         return new \Zend\Diactoros\Response\TextResponse($text, $status, $headers);
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function createHtml(string $html, int $status = 200, array $headers = []): ResponseInterface
     {
         return new \Zend\Diactoros\Response\HtmlResponse($html, $status, $headers);
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function createJson(array $data, int $status = 200, array $headers = [], int $encodingOptions = 79): ResponseInterface
     {
         return new \Zend\Diactoros\Response\JsonResponse($data, $status, $headers, $encodingOptions);
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function createError(Exception $e, ServerRequestInterface $request): ResponseInterface
     {
         $response = [
@@ -87,9 +87,9 @@ class ResponseFactory implements ResponseFactoryInterface
         return static::createJson($response, 500);
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function createRedirect(string $uri, int $status = 302, array $headers = []): ResponseInterface
     {
         return new \Zend\Diactoros\Response\RedirectResponse($uri, $status, $headers);

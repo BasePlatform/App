@@ -20,30 +20,30 @@ namespace Base\Factory;
  */
 class Factory implements FactoryInterface
 {
-  /**
-   * @var string
-   */
+    /**
+     * @var string
+     */
     private $className;
 
-  /**
-   * @param string $className
-   */
+    /**
+     * @param string $className
+     */
     public function __construct(string $className)
     {
         $this->className = $className;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function createNew()
     {
         return new $this->className();
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function getClassName(): string
     {
         return $this->className;

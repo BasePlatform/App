@@ -30,27 +30,27 @@ use Base\Exception\MethodNotAllowedException;
  */
 abstract class RestController implements MiddlewareInterface
 {
-  /**
-   * Name of the ID field of the resource
-   */
+    /**
+     * Name of the ID field of the resource
+     */
     const RESOURCE_ID = 'id';
 
-  /**
-   * @var ResponseFactoryInterface
-   */
+    /**
+     * @var ResponseFactoryInterface
+     */
     public $responseFactory;
 
-  /**
-   * @param ResponseFactoryInterface $response
-   */
+    /**
+     * @param ResponseFactoryInterface $response
+     */
     public function __construct(ResponseFactoryInterface $response)
     {
         $this->responseFactory = $response;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
 
@@ -83,118 +83,118 @@ abstract class RestController implements MiddlewareInterface
         }
     }
 
-  /**
-   * Get by an Id
-   *
-   * @param ServerRequestInterface $request
-   * @param RequestHandlerInterface $next
-   *
-   * @return null|ResponseInterface
-   */
+    /**
+     * Get by an Id
+     *
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $next
+     *
+     * @return null|ResponseInterface
+     */
     public function get(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }
 
-  /**
-   * Get List
-   *
-   * @param ServerRequestInterface $request
-   * @param RequestHandlerInterface $next
-   *
-   * @return null|ResponseInterface
-   */
+    /**
+     * Get List
+     *
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $next
+     *
+     * @return null|ResponseInterface
+     */
     public function getList(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }
 
-  /**
-   * Create
-   *
-   * @param ServerRequestInterface $request
-   * @param RequestHandlerInterface $next
-   *
-   * @return null|ResponseInterface
-   */
+    /**
+     * Create
+     *
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $next
+     *
+     * @return null|ResponseInterface
+     */
     public function create(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }
 
-  /**
-   * Update
-   *
-   * @param ServerRequestInterface $request
-   * @param RequestHandlerInterface $next
-   *
-   * @return null|ResponseInterface
-   */
+    /**
+     * Update
+     *
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $next
+     *
+     * @return null|ResponseInterface
+     */
     public function update(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }
 
-  /**
-   * Delete
-   *
-   * @param ServerRequestInterface $request
-   * @param RequestHandlerInterface $next
-   *
-   * @return null|ResponseInterface
-   */
+    /**
+     * Delete
+     *
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $next
+     *
+     * @return null|ResponseInterface
+     */
     public function delete(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }
 
-  /**
-   * Delete List
-   *
-   * @param ServerRequestInterface $request
-   * @param RequestHandlerInterface $next
-   *
-   * @return null|ResponseInterface
-   */
+    /**
+     * Delete List
+     *
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $next
+     *
+     * @return null|ResponseInterface
+     */
     public function deleteList(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }
 
-  /**
-   * Head Request
-   *
-   * @param ServerRequestInterface $request
-   * @param RequestHandlerInterface $next
-   *
-   * @return null|ResponseInterface
-   */
+    /**
+     * Head Request
+     *
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $next
+     *
+     * @return null|ResponseInterface
+     */
     public function head(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }
 
-  /**
-   * Options Request
-   *
-   * @param ServerRequestInterface $request
-   * @param RequestHandlerInterface $next
-   *
-   * @return null|ResponseInterface
-   */
+    /**
+     * Options Request
+     *
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $next
+     *
+     * @return null|ResponseInterface
+     */
     public function options(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }
 
-  /**
-   * Patch Request
-   *
-   * @param ServerRequestInterface $request
-   * @param RequestHandlerInterface $next
-   *
-   * @return null|ResponseInterface
-   */
+    /**
+     * Patch Request
+     *
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $next
+     *
+     * @return null|ResponseInterface
+     */
     public function patch(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();

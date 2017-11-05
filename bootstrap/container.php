@@ -17,7 +17,7 @@ use Psr\Log\LoggerInterface;
 $config = require __DIR__ . '/../config/config.php';
 
 // Define the SERVICES CONSTANTS
-foreach ($config->get('services') as $key => $value) {
+foreach ($config->get('constants') as $key => $value) {
     define($key, $value);
 }
 
@@ -40,8 +40,13 @@ $container->share($config);
  * Set some aliases based on the characteristics of
  * the app and container
  */
+
+$serviceRequest = new Base\ServiceRequest\ServiceRequest($config->get('endpoints'));
+$container->share($serviceRequest);
+
 $container->alias(Base\Http\ResponseFactoryInterface::class, Base\Http\ResponseFactory::class);
 $container->alias(Psr\Log\LoggerInterface::class, Monolog\Logger::class);
+$container->alias(Base\ServiceRequest\ServiceRequestInterface::class, Base\ServiceRequest\ServiceRequest::class);
 
 $container->alias(Base\PDO\PDOProxyInterface::class, Base\PDO\PDOProxy::class);
 $container->alias(Base\TenantService\Repository\TenantRepositoryInterface::class, Base\TenantService\Repository\TenantRepository::class);
@@ -51,18 +56,22 @@ $container->alias(Base\TenantService\Service\TenantServiceInterface::class, Base
 $container->alias(Base\TenantService\Factory\TenantIdFactoryInterface::class, Base\TenantService\Factory\TenantIdFactory::class);
 $container->alias(Base\TenantService\Factory\TenantFactoryInterface::class, Base\TenantService\Factory\TenantFactory::class);
 
+$container->define(Base\TenantService\Factory\TenantFactory::class, [':factory' => new Base\Factory\Factory(Base\TenantService\Entity\Tenant::class)]);
+
+$container->define(Base\TenantService\Factory\TenantIdFactory::class, [':factory' => new Base\Factory\Factory(Base\TenantService\ValueObject\TenantId::class)]);
+
+
 // Entity
 $container->alias(Base\TenantService\Entity\TenantInterface::class, Base\TenantService\Entity\Tenant::class);
 
 // Value Object
 $container->alias(Base\TenantService\ValueObject\TenantIdInterface::class, Base\TenantService\ValueObject\TenantId::class);
 
-$container->define(Base\TenantService\Factory\TenantFactory::class, [':factory' => new Base\Factory\Factory(Base\TenantService\Entity\Tenant::class)]);
-
-$container->define(Base\TenantService\Factory\TenantIdFactory::class, [':factory' => new Base\Factory\Factory(Base\TenantService\ValueObject\TenantId::class)]);
-
 // Define some params
-$container->define(Base\TenantService\Controller\TenantController::class, [':serviceDomain' => $config->get('serviceDomain'), ':platform' => $config->get('platform')]);
+$container->define(Base\TenantService\Controller\TenantController::class, [':domain' => $config->get('domain'), ':platform' => $config->get('platform')]);
+
+
+
 
 /**
  * Create a logger and register it with the container
@@ -80,9 +89,9 @@ $dbConfig = $config->get('db');
 $mysqlConfig = isset($dbConfig['mysql']) ? $dbConfig['mysql'] : [];
 if (!empty($mysqlConfig)) {
     $pdoOptions = [
-        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES   => false,
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
     ];
     $pdo = new Base\PDO\PDOProxy($pdoOptions);
     $pdo->addMaster($mysqlConfig['master']['m1']);

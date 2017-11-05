@@ -21,7 +21,7 @@ return [
   'debug' => env('APP_DEBUG', false),
   'timezone' => 'UTC',
   'locale' => 'en',
-  'serviceDomain' => env('APP_SERVICE_DOMAIN', '.base.platform'),
+  'domain' => env('APP_DOMAIN', '.base.platform'),
   'platform' => env('APP_PLATFORM', 'default'),
   'db' => [
     'mysql' => [

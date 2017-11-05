@@ -25,13 +25,13 @@ class ServerErrorException extends RuntimeException implements ServiceExceptionI
 
     use ServiceExceptionTrait;
 
-  /**
-   * @param string $message
-   * @param bool $notification send notifcation or not
-   * @param string $details
-   * @param array $additionalData
-   *
-   */
+    /**
+     * @param string $message
+     * @param bool $notification send notifcation or not
+     * @param string $details
+     * @param array $additionalData
+     *
+     */
     public function __construct(string $message = 'Internal Server Error', bool $notification = false, string $details = null, array $additionalData = null)
     {
         $this->message = $message;
@@ -42,9 +42,9 @@ class ServerErrorException extends RuntimeException implements ServiceExceptionI
         $this->additionalData = $additionalData;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function getReference(string $pathPrefix = ''): string
     {
         return $pathPrefix.'/api/problems/server-error';
