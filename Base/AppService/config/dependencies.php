@@ -10,7 +10,6 @@
  */
 
 return [
-  'roles' => [
-    'tenant.tenantOwner' => 'Tenant Owner'
+  'dependencies' => [
   ]
 ];

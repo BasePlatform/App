@@ -11,6 +11,5 @@
 
 return [
   'roles' => [
-    'tenant.tenantOwner' => 'Tenant Owner'
   ]
 ];

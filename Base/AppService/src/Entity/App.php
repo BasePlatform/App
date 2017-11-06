@@ -9,13 +9,29 @@
  * file that was distributed with this source code.
  */
 
-namespace Base\AppService\Domain\App;
+declare(strict_types=1);
+
+namespace Base\AppService\Entity;
+
+use ReflectionClass;
 
 /**
  * App Entity
+ *
+ * @package Base\AppService\Entity
  */
-class AppEntity
+class App
 {
+    /**
+     * Active Status
+     */
+    const STATUS_ACTIVE = 'active';
+
+    /**
+     * Disabled Status
+     */
+    const STATUS_DISABLED = 'disabled';
+
     /**
      * @var string
      */
@@ -106,7 +122,7 @@ class AppEntity
      *
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -114,9 +130,9 @@ class AppEntity
     /**
      * Return the value of field roles
      *
-     * @return array
+     * @return array|null
      */
-    public function getRoles()
+    public function getRoles(): ?array
     {
         return $this->roles;
     }
@@ -124,9 +140,9 @@ class AppEntity
     /**
      * Return the value of field params
      *
-     * @return array
+     * @return array|null
      */
-    public function getParams()
+    public function getParams(): ?array
     {
         return $this->params;
     }
@@ -136,7 +152,7 @@ class AppEntity
      *
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -146,8 +162,29 @@ class AppEntity
      *
      * @return integer
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): int
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStatusOptions(string $status = null)
+    {
+        $reflector = new ReflectionClass(get_class($this));
+        $constants = $reflector->getConstants();
+        $result = [];
+        foreach ($constants as $constant => $value) {
+            if (!empty($status) && $constant == $status) {
+                $result = $value;
+                break;
+            }
+            $prefix = "STATUS_";
+            if (strpos($constant, $prefix) !==false) {
+                $result[] = $value;
+            }
+        }
+        return $result;
     }
 }

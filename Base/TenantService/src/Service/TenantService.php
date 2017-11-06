@@ -60,10 +60,7 @@ class TenantService implements TenantServiceInterface
     }
 
     /**
-     * @param array $data
-     * @param string $domain
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function register(array $data, string $domain, string $platform = null)
     {
@@ -77,10 +74,11 @@ class TenantService implements TenantServiceInterface
         // Create TenantId
         $tenantId = call_user_func_array([$this->tenantIdFactory->getClassName(), 'create'], [$name, $domain]);
 
+        // Get Tenant
         $tenant = $this->tenantRepository->get($tenantId);
+
         if (!$tenant || ($tenant && $tenant->getStatusOptions('STATUS_ACTIVE') == $tenant->getStatus())) {
             // So we could go ahead with current registration info
-
             // No Tenant Record? Add it
             if (!$tenant) {
                 $nowTime = time();
@@ -101,7 +99,8 @@ class TenantService implements TenantServiceInterface
                 'tenantId' => (string) $tenantId,
                 'appId' => 'default',
                 'email' => $email,
-                'password' => $password
+                'password' => $password,
+                'role' => 'tenant.tenantOwner'
               ]
             ];
 
@@ -116,12 +115,7 @@ class TenantService implements TenantServiceInterface
     }
 
     /**
-     * Validate the data for service
-     *
-     * @param array $data
-     * @param string $context The context of validation
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function validate(array $data, string $context = null)
     {

@@ -11,18 +11,18 @@
 
 use Fig\Http\Message\RequestMethodInterface as RequestMethod;
 
-$pathPrefix = 'tenants';
+$pathPrefix = 'apps';
 
 return [
   'routes' => [
     [
-      // Public - Register a tenant to the system
-      'path' => '/'.$pathPrefix.'/register',
-      'name' => \Base\TenantService\Controller\Tenant\TenantController::class.':registerAction',
-      'handler' => \Base\TenantService\Controller\Tenant\TenantController::class.':registerAction',
+      // System - Activate the app
+      'path' => 'system/'.$pathPrefix.'/activate',
+      'name' => \Base\AppService\Controller\Tenant\AppSystemController::class.':activate',
+      'handler' => \Base\AppService\Controller\Tenant\AppSystemController::class.':activate',
       'middlewares' => null,
       'allowedMethods' => [RequestMethod::METHOD_POST],
-      'roles' => '*'
+      'roles' => ['internal_request', 'system_admin']
     ]
   ]
 ];

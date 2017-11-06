@@ -1,19 +1,19 @@
 DROP TABLE IF EXISTS `Base_App`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Base_App` (
   `id` varchar(64) NOT NULL DEFAULT 'default',
   `roles` json DEFAULT NULL,
   `params` json DEFAULT NULL,
   `status` varchar(64) NOT NULL DEFAULT 'active',
-  `updatedAt` int(11) unsigned DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `status` (`status`)
-) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `Base_TenantApp`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Base_TenantApp` (
   `id` BIGINT(20) unsigned NOT NULL AUTO_INCREMENT,
   `tenantId` varchar(255) NOT NULL DEFAULT '',
@@ -25,16 +25,16 @@ CREATE TABLE `Base_TenantApp` (
   `externalInfo` json DEFAULT NULL,
   `chargeInfo` json DEFAULT NULL,
   `exceededPlanUsage` boolean DEFAULT false,
-  `exceededPlanAt` int(11) unsigned DEFAULT NULL,
+  `exceededPlanAt` datetime DEFAULT NULL,
   `planUpgradeRequired` boolean DEFAULT false,
-  `firstInstallAt` int(11) unsigned DEFAULT NULL,
-  `recentInstallAt` int(11) unsigned DEFAULT NULL,
-  `recentUninstallAt` int(11) unsigned DEFAULT NULL,
-  `trialExpiresAt` int(11) unsigned DEFAULT NULL,
+  `firstInstallAt` datetime DEFAULT NULL,
+  `recentInstallAt` datetime DEFAULT NULL,
+  `recentUninstallAt` datetime DEFAULT NULL,
+  `trialExpiresAt` datetime DEFAULT NULL,
   `status` varchar(64) NOT NULL DEFAULT 'disabled',
-  `updatedAt` int(11) unsigned DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `tenantId_appId` (`tenantId`, `appId`),
   UNIQUE KEY `apiKey` (`apiKey`),
-  KEY `install_trial_uninstall_status` (`recentInstalledAt`, `trialExpiresAt`, `recentUninstalledAt`, `status`)
-) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_general_ci;
+  KEY `install_trial_uninstall_status` (`recentInstallAt`, `trialExpiresAt`, `recentUninstallAt`, `status`)
+) ENGINE=InnoDB CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;

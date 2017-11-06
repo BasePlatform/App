@@ -15,7 +15,7 @@ return [
       // Table Prefix
       'TABLE_PREFIX' => 'Base_',
       // Error Code Space
-      'ERROR_CODE_SPACE' => 1000
+      'ERROR_CODE_SPACE' => 2000
     ]
   ]
 ];

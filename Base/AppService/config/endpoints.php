@@ -9,8 +9,9 @@
  * file that was distributed with this source code.
  */
 
+use Fig\Http\Message\RequestMethodInterface as RequestMethod;
+
 return [
-  'roles' => [
-    'tenant.tenantOwner' => 'Tenant Owner'
+  'endpoints' => [
   ]
 ];

@@ -9,8 +9,12 @@
  * file that was distributed with this source code.
  */
 
+use Fig\Http\Message\RequestMethodInterface as RequestMethod;
+
+$pathPrefix = 'auth';
+
 return [
-  'roles' => [
-    'tenant.tenantOwner' => 'Tenant Owner'
+  'routes' => [
+
   ]
 ];

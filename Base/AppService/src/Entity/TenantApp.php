@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Base\AppService\Domain\TenantApp;
+namespace Base\AppService\Entity;
 
 /**
  * Tenant App Entity
  */
-class TenantAppEntity
+class TenantApp
 {
     /**
      * @var integer

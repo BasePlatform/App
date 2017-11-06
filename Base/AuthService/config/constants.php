@@ -10,7 +10,12 @@
  */
 
 return [
-  'roles' => [
-    'tenant.tenantOwner' => 'Tenant Owner'
+  'constants' => [
+    'AUTH_SERVICE_CONSTANTS' => [
+      // Table Prefix
+      'TABLE_PREFIX' => 'Base_',
+      // Error Code Space
+      'ERROR_CODE_SPACE' => 3000
+    ]
   ]
 ];

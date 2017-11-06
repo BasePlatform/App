@@ -19,7 +19,9 @@ use Base\TenantService\Service\TenantServiceInterface;
 use Base\Rest\RestController;
 
 /**
- * This class provides the actions for Tenant in Public zone
+ * This class provides the actions for Tenant in Public Zone
+ *
+ * @package Base\TenantService\Controller
  */
 class TenantController extends RestController
 {
@@ -41,6 +43,7 @@ class TenantController extends RestController
     /**
      * @param TenantServiceInterface $response
      * @param string $domain
+     * @param string $platform
      * @param ResponseFactoryInterface $response
      */
     public function __construct(TenantServiceInterface $tenantService, string $domain, string $platform, ResponseFactoryInterface $responseFactory)
@@ -63,18 +66,9 @@ class TenantController extends RestController
      *
      * @return ResponseInterface
      */
-    public function register(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
+    public function registerAction(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         $data = $request->getParsedBody();
         return $this->responseFactory->createJson($this->tenantService->register($data, $this->domain, $this->platform));
-    }
-
-    /**
-     * Test
-     */
-    public function activate(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
-    {
-        $data = $request->getParsedBody();
-        return $this->responseFactory->createJson($data);
     }
 }

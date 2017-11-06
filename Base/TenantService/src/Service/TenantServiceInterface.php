@@ -20,4 +20,26 @@ namespace Base\TenantService\Service;
  */
 interface TenantServiceInterface
 {
+    /*
+     * 1. Create Tenant Info
+     * 2. Send Request to Auth Service to create the Tenant Owner User Info
+     * 2. Send Request to App Service Activate the default App
+     *
+     * @param array $data
+     * @param string $domain
+     * @param string $platform
+     *
+     * @return mixed
+     */
+    public function register(array $data, string $domain, string $platform = null);
+
+    /**
+     * Validate the data for service
+     *
+     * @param array $data
+     * @param string $context The context of validation
+     *
+     * @return bool
+     */
+    public function validate(array $data, string $context = null);
 }
