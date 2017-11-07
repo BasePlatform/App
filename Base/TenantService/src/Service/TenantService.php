@@ -15,11 +15,11 @@ namespace Base\TenantService\Service;
 
 use Base\TenantService\ValueObject\TenantId;
 use Base\TenantService\Repository\TenantRepositoryInterface;
-use Base\TenantService\Factory\TenantIdFactoryInterface;
 use Base\TenantService\Factory\TenantFactoryInterface;
 use Base\TenantService\Exception\InvalidTenantRegistrationInfoException;
 use Base\TenantService\Exception\NotActiveTenantException;
 use Base\ServiceRequest\ServiceRequestInterface;
+use Base\Formatter\DateTimeFormatter;
 
 /**
  * Tenant Service
@@ -34,11 +34,6 @@ class TenantService implements TenantServiceInterface
     private $tenantRepository;
 
     /**
-     * @var TenantIdFactoryInterface
-     */
-    private $tenantIdFactory;
-
-    /**
      * @var TenantFactoryInterface
      */
     private $tenantFactory;
@@ -51,18 +46,17 @@ class TenantService implements TenantServiceInterface
     /**
      * @param TenantRepositoryInterface $tenantRepository
      */
-    public function __construct(TenantRepositoryInterface $tenantRepository, ServiceRequestInterface $serviceRequest, TenantIdFactoryInterface $tenantIdFactory, TenantFactoryInterface $tenantFactory)
+    public function __construct(TenantRepositoryInterface $tenantRepository, ServiceRequestInterface $serviceRequest, TenantFactoryInterface $tenantFactory)
     {
         $this->tenantRepository = $tenantRepository;
         $this->serviceRequest = $serviceRequest;
-        $this->tenantIdFactory = $tenantIdFactory;
         $this->tenantFactory = $tenantFactory;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function register(array $data, string $domain, string $platform = null)
+    public function register(array $data, string $domain, string $platform = null, string $timeZone = 'UTC')
     {
         // Get Info from $data
         $name = $data['name'] ?? '';
@@ -72,7 +66,7 @@ class TenantService implements TenantServiceInterface
         // Validate the Data here
 
         // Create TenantId
-        $tenantId = call_user_func_array([$this->tenantIdFactory->getClassName(), 'create'], [$name, $domain]);
+        $tenantId = call_user_func_array([$this->tenantFactory->getClassName(), 'createTenantId'], [$name, $domain]);
 
         // Get Tenant
         $tenant = $this->tenantRepository->get($tenantId);
@@ -81,11 +75,12 @@ class TenantService implements TenantServiceInterface
             // So we could go ahead with current registration info
             // No Tenant Record? Add it
             if (!$tenant) {
-                $nowTime = time();
+                $nowTime = DateTimeFormatter::now();
                 $tenant = $this->tenantFactory->createNew();
                 $tenant->setId($tenantId);
-                $tenant->setDomain((string) $tenantId);
+                $tenant->setDomain($tenantId);
                 $tenant->setPlatform($platform);
+                $tenant->setTimeZone($timeZone);
                 $tenant->setStatus($tenant->getStatusOptions('STATUS_ACTIVE'));
                 $tenant->setCreatedAt($nowTime);
                 $tenant->setupdatedAt($nowTime);
@@ -96,19 +91,21 @@ class TenantService implements TenantServiceInterface
             // Prepare data to send to other services
             $options = [
               'json' => [
-                'tenantId' => (string) $tenantId,
+                'tenantId' => $tenantId,
                 'appId' => 'default',
                 'email' => $email,
                 'password' => $password,
-                'role' => 'tenant.tenantOwner'
+                'policy' => ['tenant.tenantOwner']
               ]
             ];
 
-            $result = $this->serviceRequest->send('APP_SERVICE', 'activateAppEndpoint', $options, true);
+            // $result = $this->serviceRequest->send('APP_SERVICE', 'activateAppEndpoint', $options, true);
 
             // $result = $this->serviceRequest->send('AUTH_SERVICE', 'activateAppEndpoint', $options, true);
 
-            return json_decode($result->getBody()->getContents(), true);
+            //return json_decode($result->getBody()->getContents(), true);
+            //
+            return $options;
         } else {
             throw new NotActiveTenantException();
         }

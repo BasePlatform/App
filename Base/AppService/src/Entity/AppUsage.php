@@ -9,16 +9,14 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
-
-namespace Base\AuthService\Entity;
+namespace Base\AppService\Entity;
 
 /**
- * User Identity Entity
+ * App Usage Entity
  *
- * @package Base\AuthService\Entity
+ * @package Base\AppService\Entity
  */
-class UserIdentity implements UserIdentityInterface
+class AppUsage implements AppUsageInterface
 {
     /**
      * Active Status
@@ -31,7 +29,7 @@ class UserIdentity implements UserIdentityInterface
     const STATUS_DISABLED = 'disabled';
 
     /**
-     * @var int
+     * @var integer
      */
     protected $id;
 
@@ -41,79 +39,74 @@ class UserIdentity implements UserIdentityInterface
     protected $tenantId;
 
     /**
-     * @var int
+     * @var string
      */
-    protected $userId;
+    protected $appId;
 
     /**
      * @var string
      */
-    protected $zone = 'default';
-
-    /**
-     * @var string
-     */
-    protected $authProvider = 'app';
-
-    /**
-     * @var string
-     */
-    protected $authProviderUid;
-
-    /**
-     * @var string
-     */
-    protected $passwordHash;
+    protected $selectedPlan;
 
     /**
      * @var array
      */
-    protected $authParams;
+    protected $appParams;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $accountActivateToken = null;
+    protected $externalInfo;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $accountActivateStatus = null;
+    protected $chargeInfo;
 
     /**
-     * @var \DateTime
+     * @var bool
      */
-    protected $accountActivateExpiresAt = null;
-
-    /**
-     * @var string
-     */
-    protected $passwordResetToken = null;
-
-    /**
-     * @var string
-     */
-    protected $passwordResetStatus = null;
+    protected $exceededPlanUsage = false;
 
     /**
      * @var \DateTime
      */
-    protected $passwordResetExpiresAt = null;
+    protected $exceededPlanAt;
+
+    /**
+     * @var bool
+     */
+    protected $planUpgradeRequired = false;
 
     /**
      * @var \DateTime
      */
-    protected $recentPasswordChangeAt;
+    protected $firstInstallAt;
+
+    /**
+     * @var \DateTime
+     */
+    protected $recentInstallAt;
+
+    /**
+     * @var \DateTime
+     */
+    protected $recentUninstallAt;
+
+    /**
+     * @var \DateTime
+     */
+    protected $trialExpiresAt;
 
     /**
      * @var string
      */
-    protected $status;
+    protected $status = 'disabled';
 
     /**
-     * @var bool|null
+     * @var \DateTime
      */
-    protected $_deleted = null;
+    protected $updatedAt;
 
     /**
      * {@inheritdoc}
@@ -136,117 +129,108 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function setUserId(int $userId)
+    public function setAppId(string $appId)
     {
-        $this->userId = $userId;
+        $this->appId = $appId;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setZone(string $zone)
+    public function setSelectedPlan(string $selectedPlan)
     {
-        $this->zone = $zone;
+        $this->selectedPlan = $selectedPlan;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setAuthProvider(string $authProvider)
+    public function setAppParams(array $appParams)
     {
-        $this->authProvider = $authProvider;
+        $this->appParams = $appParams;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setAuthProviderUid(string $authProviderUid)
+    public function setExternalInfo(array $externalInfo)
     {
-        $this->authProviderUid = $authProviderUid;
+        $this->externalInfo = $externalInfo;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setPasswordHash(string $passwordHash)
+    public function setChargeInfo(array $chargeInfo)
     {
-        $this->passwordHash = $passwordHash;
+        $this->chargeInfo = $chargeInfo;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setAuthParams(array $authParams)
+    public function setExceededPlanUsage(bool $exceededPlanUsage)
     {
-        $this->authParams = $authParams;
+        $this->exceededPlanUsage = $exceededPlanUsage;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setAccountActivateToken(string $accountActivateToken)
+    public function setExceededPlanAt(\DateTime $exceededPlanAt)
     {
-        $this->accountActivateToken = $accountActivateToken;
+        $this->exceededPlanAt = $exceededPlanAt;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setAccountActivateStatus(string $accountActivateStatus)
+    public function setPlanUpgradeRequired(bool $planUpgradeRequired)
     {
-        $this->accountActivateStatus = $accountActivateStatus;
+        $this->planUpgradeRequired = $planUpgradeRequired;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setAccountActivateExpiresAt(\DateTime $accountActivateExpiresAt)
+    public function setFirstInstallAt(\DateTime $firstInstallAt)
     {
-        $this->accountActivateExpiresAt = $accountActivateExpiresAt;
+        $this->firstInstallAt = $firstInstallAt;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setPasswordResetToken(string $passwordResetToken)
+    public function setRecentInstallAt(\DateTime $recentInstallAt)
     {
-        $this->passwordResetToken = $passwordResetToken;
+        $this->recentInstallAt = $recentInstallAt;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setPasswordResetStatus(string $passwordResetStatus)
+    public function setRecentUninstallAt(\DateTime $recentUninstallAt)
     {
-        $this->passwordResetStatus = $passwordResetStatus;
+        $this->recentUninstallAt = $recentUninstallAt;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setPasswordResetExpiresAt(\DateTime $passwordResetExpiresAt)
+    public function setTrialExpiresAt(\DateTime $trialExpiresAt)
     {
-        $this->passwordResetExpiresAt = $passwordResetExpiresAt;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setRecentPasswordChangeAt(\DateTime $recentPasswordChangeAt)
-    {
-        $this->recentPasswordChangeAt = $recentPasswordChangeAt;
+        $this->trialExpiresAt = $trialExpiresAt;
         return $this;
     }
 
@@ -262,7 +246,16 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function getId(): int
+    public function setUpdatedAt(\DateTime $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId(): integer
     {
         return $this->id;
     }
@@ -278,97 +271,97 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function getUserId(): int
+    public function getAppId(): string
     {
-        return $this->userId;
+        return $this->appId;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getZone(): string
+    public function getSelectedPlan(): ?string
     {
-        return $this->zone;
+        return $this->selectedPlan;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAuthProvider(): string
+    public function getAppParams(): ?array
     {
-        return $this->authProvider;
+        return $this->appParams;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAuthProviderUid(): string
+    public function getExternalInfo(): ?array
     {
-        return $this->authProviderUid;
+        return $this->externalInfo;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAuthParams(): ?array
+    public function getChargeInfo(): ?array
     {
-        return $this->authParams;
+        return $this->chargeInfo;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAccountActivateToken(): ?string
+    public function getExceededPlanUsage(): bool
     {
-        return $this->accountActivateToken;
+        return $this->exceededPlanUsage;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAccountActivateStatus(): ?string
+    public function getExceededPlanAt(): ?\DateTime
     {
-        return $this->accountActivateStatus;
+        return $this->exceededPlanAt;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAccountActivateExpiresAt(): ?\DateTime
+    public function getPlanUpgradeRequired(): bool
     {
-        return $this->accountActivateExpiresAt;
+        return $this->planUpgradeRequired;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPasswordResetToken(): ?string
+    public function getFirstInstallAt(): \DateTime
     {
-        return $this->passwordResetToken;
+        return $this->firstInstallAt;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPasswordResetStatus(): ?string
+    public function getRecentInstallAt(): \DateTime
     {
-        return $this->passwordResetStatus;
+        return $this->recentInstallAt;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPasswordResetExpiresAt(): ?\DateTime
+    public function getRecentUninstallAt(): ?\DateTime
     {
-        return $this->passwordResetExpiresAt;
+        return $this->recentUninstallAt;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getRecentPasswordChangeAt(): ?\DateTime
+    public function getTrialExpiresAt(): ?\DateTime
     {
-        return $this->recentPasswordChangeAt;
+        return $this->trialExpiresAt;
     }
 
     /**
@@ -377,6 +370,14 @@ class UserIdentity implements UserIdentityInterface
     public function getStatus(): string
     {
         return $this->status;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updatedAt;
     }
 
     /**

@@ -20,7 +20,7 @@ use ReflectionClass;
  *
  * @package Base\AppService\Entity
  */
-class App
+class App implements AppInterface
 {
     /**
      * Active Status
@@ -40,7 +40,12 @@ class App
     /**
      * @var array
      */
-    protected $roles;
+    protected $policies;
+
+    /**
+     * @var array
+     */
+    protected $plans;
 
     /**
      * @var array
@@ -53,15 +58,12 @@ class App
     protected $status = 'disabled';
 
     /**
-     * @var integer
+     * @var \DateTime
      */
     protected $updatedAt;
 
     /**
-     * Set the value of field id
-     *
-     * @param  string $id
-     * @return $this
+     * {@inheritdoc}
      */
     public function setId(string $id)
     {
@@ -70,22 +72,25 @@ class App
     }
 
     /**
-     * Set the value of field roles
-     *
-     * @param  array $roles
-     * @return $this
+     * {@inheritdoc}
      */
-    public function setRoles(array $roles)
+    public function setPolicies(array $policies)
     {
-        $this->roles = $roles;
+        $this->policies = $policies;
         return $this;
     }
 
     /**
-     * Set the value of field params
-     *
-     * @param  array $params
-     * @return $this
+     * {@inheritdoc}
+     */
+    public function setPlans(array $plans)
+    {
+        $this->plans = $plans;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function setParams(array $params)
     {
@@ -94,10 +99,7 @@ class App
     }
 
     /**
-     * Set the value of field status
-     *
-     * @param  string $status
-     * @return $this
+     * {@inheritdoc}
      */
     public function setStatus(string $status)
     {
@@ -106,21 +108,16 @@ class App
     }
 
     /**
-     * Set the value of field updatedAt
-     *
-     * @param  integer $updatedAt
-     * @return $this
+     * {@inheritdoc}
      */
-    public function setUpdatedAt(int $updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
         return $this;
     }
 
     /**
-     * Return the value of field id
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getId(): string
     {
@@ -128,19 +125,23 @@ class App
     }
 
     /**
-     * Return the value of field roles
-     *
-     * @return array|null
+     * {@inheritdoc}
      */
-    public function getRoles(): ?array
+    public function getPolicies(): ?array
     {
-        return $this->roles;
+        return $this->policies;
     }
 
     /**
-     * Return the value of field params
-     *
-     * @return array|null
+     * {@inheritdoc}
+     */
+    public function getPlans(): ?array
+    {
+        return $this->plans;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getParams(): ?array
     {
@@ -148,9 +149,7 @@ class App
     }
 
     /**
-     * Return the value of field status
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getStatus(): string
     {
@@ -158,11 +157,9 @@ class App
     }
 
     /**
-     * Return the value of field updatedAt
-     *
-     * @return integer
+     * {@inheritdoc}
      */
-    public function getUpdatedAt(): int
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }

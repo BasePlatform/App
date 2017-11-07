@@ -19,7 +19,7 @@ return [
   'key' => env('APP_KEY', 'secret'),
   'env' => env('APP_ENV', 'production'),
   'debug' => env('APP_DEBUG', false),
-  'timezone' => 'UTC',
+  'timeZone' => 'UTC',
   'locale' => 'en',
   'domain' => env('APP_DOMAIN', '.base.platform'),
   'platform' => env('APP_PLATFORM', 'default'),

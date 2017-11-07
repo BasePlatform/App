@@ -2,9 +2,10 @@ DROP TABLE IF EXISTS `Base_Tenant`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Base_Tenant` (
-  `id` varchar(255) NOT NULL DEFAULT '',
+  `id` varchar(255) NOT NULL,
   `domain` varchar(255) NOT NULL,
-  `platform` varchar(64) DEFAULT NULL,
+  `platform` varchar(64) NOT NULL DEFAULT 'default',
+  `timeZone` varchar(128) NOT NULL DEFAULT 'UTC',
   `status` varchar(64) NOT NULL DEFAULT 'disabled',
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,

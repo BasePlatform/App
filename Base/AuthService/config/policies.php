@@ -10,6 +10,6 @@
  */
 
 return [
-  'roles' => [
+  'policies' => [
   ]
 ];

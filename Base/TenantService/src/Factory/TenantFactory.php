@@ -38,7 +38,7 @@ class TenantFactory implements TenantFactoryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return TenantInterface
      */
     public function createNew(): TenantInterface
     {

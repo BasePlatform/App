@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Base\TenantService\Repository;
 
-use Base\TenantService\ValueObject\TenantIdInterface;
 use Base\TenantService\Entity\TenantInterface;
 use Base\PDO\PDOProxyInterface;
 use Base\TenantService\Factory\TenantFactory;
-use Base\TenantService\Factory\TenantIdFactory;
 use Base\Exception\ServerErrorException;
+use Base\Formatter\DateTimeFormatter;
 
 /**
  * Tenant Repository
@@ -43,19 +42,13 @@ class TenantRepository implements TenantRepositoryInterface
     private $tenantFactory;
 
     /**
-     * @var TenantIdFactory
-     */
-    private $tenantIdFactory;
-
-    /**
      * @param PDOProxyInterface $pdo
      * @param FactoryInterface $entityFactory
      */
-    public function __construct(PDOProxyInterface $pdo, TenantFactory $tenantFactory, TenantIdFactory $tenantIdFactory)
+    public function __construct(PDOProxyInterface $pdo, TenantFactory $tenantFactory)
     {
         $this->pdo = $pdo;
         $this->tenantFactory = $tenantFactory;
-        $this->tenantIdFactory = $tenantIdFactory;
         if (defined('TENANT_SERVICE_CONSTANTS')
             && isset(TENANT_SERVICE_CONSTANTS['TABLE_PREFIX'])
             && !empty(TENANT_SERVICE_CONSTANTS['TABLE_PREFIX'])) {
@@ -66,7 +59,7 @@ class TenantRepository implements TenantRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function get(TenantIdInterface $tenantId): ?TenantInterface
+    public function get(string $tenantId): ?TenantInterface
     {
         try {
             $sql = 'SELECT * FROM '. $this->tablePrefix . 'Tenant t WHERE t.id = :id limit 0,1';
@@ -88,7 +81,7 @@ class TenantRepository implements TenantRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function add(TenantInterface $tenant): ?TenantIdInterface
+    public function add(TenantInterface $tenant): ?string
     {
         try {
             $this->pdo->beginTransaction();
@@ -113,8 +106,8 @@ class TenantRepository implements TenantRepositoryInterface
               'domain' => (string) $tenant->getDomain(),
               'platform' => (string) $tenant->getPlatform(),
               'status' => (string) $tenant->getStatus(),
-              'createdAt' => (int) $tenant->getCreatedAt(),
-              'updatedAt' => (int) $tenant->getUpdatedAt()
+              'createdAt' => DateTimeFormatter::toDb($tenant->getCreatedAt()),
+              'updatedAt' => DateTimeFormatter::toDb($tenant->getUpdatedAt())
             ]);
             $id = null;
             if ($result) {
@@ -140,16 +133,13 @@ class TenantRepository implements TenantRepositoryInterface
         try {
             if (!empty($data)) {
                 $tenant = $this->tenantFactory->createNew();
-                $tenantId = $this->tenantIdFactory->createNew();
                 foreach ($data as $key => $value) {
-                    if ($key == 'id') {
-                        $tenantId->setId($value);
-                        $tenant->setId($tenantId);
-                    } else {
-                        $setMethod = 'set'.ucfirst($key);
-                        if (method_exists($tenant, $setMethod)) {
-                            $tenant->$setMethod($value);
+                    $setMethod = 'set'.ucfirst($key);
+                    if (method_exists($tenant, $setMethod)) {
+                        if ($key == 'createdAt' || $key == 'updatedAt') {
+                            $value = DateTimeFormatter::createFromDb($value);
                         }
+                        $tenant->$setMethod($value);
                     }
                 }
                 return $tenant;

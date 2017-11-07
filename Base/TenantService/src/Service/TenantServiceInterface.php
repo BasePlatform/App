@@ -20,7 +20,7 @@ namespace Base\TenantService\Service;
  */
 interface TenantServiceInterface
 {
-    /*
+    /**
      * 1. Create Tenant Info
      * 2. Send Request to Auth Service to create the Tenant Owner User Info
      * 2. Send Request to App Service Activate the default App
@@ -28,10 +28,11 @@ interface TenantServiceInterface
      * @param array $data
      * @param string $domain
      * @param string $platform
+     * @param string $timezone
      *
      * @return mixed
      */
-    public function register(array $data, string $domain, string $platform = null);
+    public function register(array $data, string $domain, string $platform = null, string $timeZone = 'UTC');
 
     /**
      * Validate the data for service

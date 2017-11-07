@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Base\TenantService\Entity;
 
-use Base\TenantService\ValueObject\TenantIdInterface;
+use Ramsey\Uuid\Uuid;
 use ReflectionClass;
 
 /**
@@ -34,7 +34,7 @@ class Tenant implements TenantInterface
     const STATUS_DISABLED = 'disabled';
 
     /**
-     * @var TenantIdInterface
+     * @var string
      */
     protected $id;
 
@@ -51,22 +51,27 @@ class Tenant implements TenantInterface
     /**
      * @var string
      */
+    protected $timeZone;
+
+    /**
+     * @var string
+     */
     protected $status = 'disabled';
 
     /**
-     * @var integer
+     * @var \DateTime
      */
     protected $createdAt;
 
     /**
-     * @var integer
+     * @var \DateTime
      */
     protected $updatedAt;
 
     /**
      * {@inheritdoc}
      */
-    public function setId(TenantIdInterface $id)
+    public function setId(string $id)
     {
         $this->id = $id;
         return $this;
@@ -93,6 +98,15 @@ class Tenant implements TenantInterface
     /**
      * {@inheritdoc}
      */
+    public function setTimeZone(string $timeZone = 'UTC')
+    {
+        $this->timeZone = $timeZone;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setStatus(string $status)
     {
         $this->status = $status;
@@ -103,7 +117,7 @@ class Tenant implements TenantInterface
     /**
      * {@inheritdoc}
      */
-    public function setCreatedAt(int $createdAt = null)
+    public function setCreatedAt(\DateTime $createdAt = null)
     {
         $this->createdAt = $createdAt;
         return $this;
@@ -112,7 +126,7 @@ class Tenant implements TenantInterface
     /**
      * {@inheritdoc}
      */
-    public function setUpdatedAt(int $updatedAt = null)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
         return $this;
@@ -121,7 +135,7 @@ class Tenant implements TenantInterface
     /**
      * {@inheritdoc}
      */
-    public function getId(): TenantIdInterface
+    public function getId(): string
     {
         return $this->id;
     }
@@ -137,9 +151,17 @@ class Tenant implements TenantInterface
     /**
      * {@inheritdoc}
      */
-    public function getPlatform(): ?string
+    public function getPlatform(): string
     {
         return $this->platform;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTimeZone(): string
+    {
+        return $this->timeZone;
     }
 
     /**
@@ -153,7 +175,7 @@ class Tenant implements TenantInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreatedAt(): int
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
@@ -161,7 +183,7 @@ class Tenant implements TenantInterface
     /**
      * {@inheritdoc}
      */
-    public function getUpdatedAt(): int
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
@@ -185,5 +207,18 @@ class Tenant implements TenantInterface
             }
         }
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function createTenantId(string $name = '', string $domain = ''): string
+    {
+        if (!empty($name)) {
+            return $name.$domain;
+        } else {
+            $uuid = Uuid::uuid4()->toString();
+            return $uuid.$domain;
+        }
     }
 }

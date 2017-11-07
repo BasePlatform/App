@@ -21,6 +21,13 @@ foreach ($config->get('constants') as $key => $value) {
     define($key, $value);
 }
 
+// Set Default TimeZone
+$timeZone = $config->get('timeZone');
+if (!$timeZone) {
+    $timeZone = 'UTC';
+}
+date_default_timezone_set($timeZone);
+
 /**
  * Create a container
  *
@@ -53,12 +60,9 @@ $container->alias(Base\TenantService\Repository\TenantRepositoryInterface::class
 $container->alias(Base\TenantService\Service\TenantServiceInterface::class, Base\TenantService\Service\TenantService::class);
 
 // Factory
-$container->alias(Base\TenantService\Factory\TenantIdFactoryInterface::class, Base\TenantService\Factory\TenantIdFactory::class);
 $container->alias(Base\TenantService\Factory\TenantFactoryInterface::class, Base\TenantService\Factory\TenantFactory::class);
 
 $container->define(Base\TenantService\Factory\TenantFactory::class, [':factory' => new Base\Factory\Factory(Base\TenantService\Entity\Tenant::class)]);
-
-$container->define(Base\TenantService\Factory\TenantIdFactory::class, [':factory' => new Base\Factory\Factory(Base\TenantService\ValueObject\TenantId::class)]);
 
 
 // Entity
@@ -69,8 +73,6 @@ $container->alias(Base\TenantService\ValueObject\TenantIdInterface::class, Base\
 
 // Define some params
 $container->define(Base\TenantService\Controller\TenantController::class, [':domain' => $config->get('domain'), ':platform' => $config->get('platform')]);
-
-
 
 
 /**

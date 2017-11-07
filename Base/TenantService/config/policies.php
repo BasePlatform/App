@@ -10,6 +10,10 @@
  */
 
 return [
-  'roles' => [
+  'policies' => [
+    'tenant.tenantOwner' => [
+        'type' => 'App Managed',
+        'name' => 'Tenant Owner'
+    ]
   ]
 ];

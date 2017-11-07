@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Base\AuthService\Entity;
 
 /**
- * User Entity
+ * Resource Policy Attachment Entity
  *
  * @package Base\AuthService\Entity
  */
-class User implements UserInterface
+class ResourcePolicyAttachment implements ResourcePolicyAttachmentInterface
 {
     /**
      * @var int
@@ -33,32 +33,27 @@ class User implements UserInterface
     /**
      * @var string
      */
-    protected $username;
+    protected $zone = 'default';
 
     /**
      * @var string
      */
-    protected $email;
+    protected $resourceId;
 
     /**
      * @var string
      */
-    protected $displayName;
+    protected $policy;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $tagline;
+    protected $policyParams;
 
     /**
-     * @var string
+     * @var \DateTime
      */
-    protected $avatar;
-
-    /**
-     * @var bool|null
-     */
-    protected $_deleted = null;
+    protected $attachedAt;
 
     /**
      * {@inheritdoc}
@@ -81,45 +76,45 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setUsername(string $username)
+    public function setZone(string $zone)
     {
-        $this->username = $username;
+        $this->zone = $zone;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setEmail(string $email)
+    public function setResourceId(string $resourceId)
     {
-        $this->email = $email;
+        $this->resourceId = $resourceId;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDisplayName(string $displayName)
+    public function setPolicy(string $policy)
     {
-        $this->displayName = $displayName;
+        $this->policy = $policy;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setTagline(string $tagline)
+    public function setPolicyParams(array $policyParams)
     {
-        $this->tagline = $tagline;
+        $this->policyParams = $policyParams;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setAvatar(string $avatar)
+    public function setAttachedAt(\DateTime $attachedAt)
     {
-        $this->avatar = $avatar;
+        $this->attachedAt = $attachedAt;
         return $this;
     }
 
@@ -150,40 +145,40 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getUsername(): string
+    public function getResourceId(): string
     {
-        return $this->username;
+        return $this->resourceId;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getEmail(): string
+    public function getPolicy(): string
     {
-        return $this->email;
+        return $this->policy;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDisplayName(): ?string
+    public function getPolicyParams(): ?array
     {
-        return $this->displayName;
+        return $this->policyParams;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTagline(): ?string
+    public function getAttachedAt(): \DateTime
     {
-        return $this->tagline;
+        return $this->attachedAt;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAvatar(): ?string
+    public static function createResourceId(string $type, string $id): string
     {
-        return $this->avatar;
+        return $type.':'.$id;
     }
 }

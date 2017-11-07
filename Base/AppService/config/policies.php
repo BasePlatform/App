@@ -9,17 +9,11 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
-
-namespace Base\TenantService\Factory;
-
-use Base\Factory\FactoryInterface;
-
-/**
- * TenantId Factory Interface
- *
- * @package Base\TenantService\Factory
- */
-interface TenantIdFactoryInterface extends FactoryInterface
-{
-}
+return [
+  'policies' => [
+    'app.systemAdmin' => [
+        'type' => 'App Managed',
+        'name' => 'System Admin'
+    ]
+  ]
+];

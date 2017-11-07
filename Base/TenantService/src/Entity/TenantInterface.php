@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Base\TenantService\Entity;
 
-use Base\TenantService\ValueObject\TenantIdInterface;
-
 /**
  * Tenant Entity Interface
  *
@@ -25,11 +23,11 @@ interface TenantInterface
     /**
      * Set the value of field id
      *
-     * @param  TenantIdInterface $id
+     * @param  string $id
      *
      * @return $this
      */
-    public function setId(TenantIdInterface $id);
+    public function setId(string $id);
 
     /**
      * Set the value of field domain
@@ -50,6 +48,15 @@ interface TenantInterface
     public function setPlatform(string $platform);
 
     /**
+     * Set the value of field timeZone
+     *
+     * @param  string $timeZone
+     *
+     * @return $this
+     */
+    public function setTimeZone(string $timeZone);
+
+    /**
      * Set the value of field status
      *
      * @param  string $status
@@ -65,7 +72,7 @@ interface TenantInterface
      *
      * @return $this
      */
-    public function setCreatedAt(int $createdAt);
+    public function setCreatedAt(\DateTime $createdAt);
 
     /**
      * Set the value of field updatedAt
@@ -74,14 +81,14 @@ interface TenantInterface
      *
      * @return $this
      */
-    public function setUpdatedAt(int $updatedAt);
+    public function setUpdatedAt(\DateTime $updatedAt);
 
     /**
      * Return the value of field id
      *
-     * @return TenantInterface
+     * @return string
      */
-    public function getId(): TenantIdInterface;
+    public function getId(): string;
 
     /**
      * Return the value of field domain
@@ -93,9 +100,16 @@ interface TenantInterface
     /**
      * Return the value of field platform
      *
+     * @return string|null
+     */
+    public function getPlatform(): string;
+
+    /**
+     * Return the value of field timeZone
+     *
      * @return string
      */
-    public function getPlatform(): ?string;
+    public function getTimeZone(): string;
 
     /**
      * Return the value of field status
@@ -107,24 +121,36 @@ interface TenantInterface
     /**
      * Return the value of field createdAt
      *
-     * @return integer
+     * @return \DateTime
      */
-    public function getCreatedAt(): int;
+    public function getCreatedAt(): \DateTime;
 
     /**
      * Return the value of field updatedAt
      *
-     * @return integer
+     * @return \DateTime
      */
-    public function getUpdatedAt(): int;
+    public function getUpdatedAt(): \DateTime;
 
     /**
      * Get Status Options from Constants
      * If $status is passed, it will return the value of the status constant
      *
-     * @param  string $domain
+     * @param  string $status
      *
      * @return array|string
      */
     public function getStatusOptions(string $status = null);
+
+    /**
+     * Create a Tenant Id
+     *
+     * Generate a unique id if name is blank
+     *
+     * @param string $name
+     * @param string $domain
+     *
+     * @return string
+     */
+    public static function createTenantId(string $name = '', string $domain = ''): string;
 }

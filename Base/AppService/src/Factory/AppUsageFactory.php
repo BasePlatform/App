@@ -11,17 +11,17 @@
 
 declare(strict_types=1);
 
-namespace Base\TenantService\Factory;
+namespace Base\AppService\Factory;
 
 use Base\Factory\FactoryInterface;
-use Base\TenantService\ValueObject\TenantIdInterface;
+use Base\AppService\Entity\AppUsageInterface;
 
 /**
- * TenantId Factory
+ * App Usage Factory
  *
- * @package Base\TenantService\Factory
+ * @package Base\AppService\Factory
  */
-class TenantIdFactory implements TenantIdFactoryInterface
+class AppUsageFactory implements AppUsageFactoryInterface
 {
     /**
      * @var FactoryInterface
@@ -38,9 +38,9 @@ class TenantIdFactory implements TenantIdFactoryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return AppUsageInterface
      */
-    public function createNew(): TenantIdInterface
+    public function createNew(): AppUsageInterface
     {
         return $this->factory->createNew();
     }

@@ -9,8 +9,17 @@
  * file that was distributed with this source code.
  */
 
-return [
-  'roles' => [
-    'tenant.tenantOwner' => 'Tenant Owner'
-  ]
-];
+declare(strict_types=1);
+
+namespace Base\AppService\Factory;
+
+use Base\Factory\FactoryInterface;
+
+/**
+ * App Usage Factory
+ *
+ * @package Base\AppService\Factory
+ */
+interface AppUsageFactoryInterface extends FactoryInterface
+{
+}
