@@ -51,7 +51,7 @@ class Tenant implements TenantInterface
     /**
      * @var string
      */
-    protected $timeZone;
+    protected $timeZone = 'UTC';
 
     /**
      * @var string
@@ -151,7 +151,7 @@ class Tenant implements TenantInterface
     /**
      * {@inheritdoc}
      */
-    public function getPlatform(): string
+    public function getPlatform(): ?string
     {
         return $this->platform;
     }

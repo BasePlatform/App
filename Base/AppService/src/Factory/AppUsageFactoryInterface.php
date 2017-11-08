@@ -16,7 +16,7 @@ namespace Base\AppService\Factory;
 use Base\Factory\FactoryInterface;
 
 /**
- * App Usage Factory
+ * App Usage Factory Interface
  *
  * @package Base\AppService\Factory
  */

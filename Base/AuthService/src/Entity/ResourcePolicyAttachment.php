@@ -33,22 +33,12 @@ class ResourcePolicyAttachment implements ResourcePolicyAttachmentInterface
     /**
      * @var string
      */
-    protected $zone = 'default';
-
-    /**
-     * @var string
-     */
     protected $resourceId;
 
     /**
      * @var string
      */
-    protected $policy;
-
-    /**
-     * @var array
-     */
-    protected $policyParams;
+    protected $policyId;
 
     /**
      * @var \DateTime
@@ -76,15 +66,6 @@ class ResourcePolicyAttachment implements ResourcePolicyAttachmentInterface
     /**
      * {@inheritdoc}
      */
-    public function setZone(string $zone)
-    {
-        $this->zone = $zone;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setResourceId(string $resourceId)
     {
         $this->resourceId = $resourceId;
@@ -94,18 +75,9 @@ class ResourcePolicyAttachment implements ResourcePolicyAttachmentInterface
     /**
      * {@inheritdoc}
      */
-    public function setPolicy(string $policy)
+    public function setPolicyId(string $policyId)
     {
-        $this->policy = $policy;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPolicyParams(array $policyParams)
-    {
-        $this->policyParams = $policyParams;
+        $this->policyId = $policyId;
         return $this;
     }
 
@@ -137,14 +109,6 @@ class ResourcePolicyAttachment implements ResourcePolicyAttachmentInterface
     /**
      * {@inheritdoc}
      */
-    public function getZone(): string
-    {
-        return $this->zone;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getResourceId(): string
     {
         return $this->resourceId;
@@ -153,17 +117,9 @@ class ResourcePolicyAttachment implements ResourcePolicyAttachmentInterface
     /**
      * {@inheritdoc}
      */
-    public function getPolicy(): string
+    public function getPolicyId(): string
     {
-        return $this->policy;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPolicyParams(): ?array
-    {
-        return $this->policyParams;
+        return $this->policyId;
     }
 
     /**

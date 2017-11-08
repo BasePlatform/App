@@ -9,11 +9,15 @@
  * file that was distributed with this source code.
  */
 
+$service = 'base';
+
 return [
   'policies' => [
     'tenant.tenantOwner' => [
-        'type' => 'App Managed',
-        'name' => 'Tenant Owner'
+        'service' => $service,
+        'type' => 'role',
+        'zone' => 'admin',
+        'description' => 'Tenant Owner'
     ]
   ]
 ];

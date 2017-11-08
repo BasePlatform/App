@@ -21,16 +21,6 @@ namespace Base\AuthService\Entity;
 class UserIdentity implements UserIdentityInterface
 {
     /**
-     * Active Status
-     */
-    const STATUS_ACTIVE = 'active';
-
-    /**
-     * Disabled Status
-     */
-    const STATUS_DISABLED = 'disabled';
-
-    /**
      * @var int
      */
     protected $id;
@@ -44,11 +34,6 @@ class UserIdentity implements UserIdentityInterface
      * @var int
      */
     protected $userId;
-
-    /**
-     * @var string
-     */
-    protected $zone = 'default';
 
     /**
      * @var string
@@ -73,47 +58,32 @@ class UserIdentity implements UserIdentityInterface
     /**
      * @var string
      */
-    protected $accountActivateToken = null;
-
-    /**
-     * @var string
-     */
-    protected $accountActivateStatus = null;
+    protected $accountActivateToken;
 
     /**
      * @var \DateTime
      */
-    protected $accountActivateExpiresAt = null;
+    protected $accountActivateExpiresAt;
 
     /**
      * @var string
      */
-    protected $passwordResetToken = null;
-
-    /**
-     * @var string
-     */
-    protected $passwordResetStatus = null;
+    protected $passwordResetToken;
 
     /**
      * @var \DateTime
      */
-    protected $passwordResetExpiresAt = null;
+    protected $passwordResetExpiresAt;
 
     /**
      * @var \DateTime
      */
-    protected $recentPasswordChangeAt;
+    protected $recentPasswordUpdateAt;
 
     /**
-     * @var string
+     * @var \DateTime
      */
-    protected $status;
-
-    /**
-     * @var bool|null
-     */
-    protected $_deleted = null;
+    protected $updatedAt;
 
     /**
      * {@inheritdoc}
@@ -139,15 +109,6 @@ class UserIdentity implements UserIdentityInterface
     public function setUserId(int $userId)
     {
         $this->userId = $userId;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setZone(string $zone)
-    {
-        $this->zone = $zone;
         return $this;
     }
 
@@ -199,15 +160,6 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function setAccountActivateStatus(string $accountActivateStatus)
-    {
-        $this->accountActivateStatus = $accountActivateStatus;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setAccountActivateExpiresAt(\DateTime $accountActivateExpiresAt)
     {
         $this->accountActivateExpiresAt = $accountActivateExpiresAt;
@@ -226,15 +178,6 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function setPasswordResetStatus(string $passwordResetStatus)
-    {
-        $this->passwordResetStatus = $passwordResetStatus;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setPasswordResetExpiresAt(\DateTime $passwordResetExpiresAt)
     {
         $this->passwordResetExpiresAt = $passwordResetExpiresAt;
@@ -244,18 +187,18 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function setRecentPasswordChangeAt(\DateTime $recentPasswordChangeAt)
+    public function setRecentPasswordUpdateAt(\DateTime $getRecentPasswordUpdateAt)
     {
-        $this->recentPasswordChangeAt = $recentPasswordChangeAt;
+        $this->getRecentPasswordUpdateAt = $getRecentPasswordUpdateAt;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setStatus(string $status)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
-        $this->status = $status;
+        $this->updatedAt = $updatedAt;
         return $this;
     }
 
@@ -286,14 +229,6 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function getZone(): string
-    {
-        return $this->zone;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getAuthProvider(): string
     {
         return $this->authProvider;
@@ -302,7 +237,7 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function getAuthProviderUid(): string
+    public function getAuthProviderUid(): ?string
     {
         return $this->authProviderUid;
     }
@@ -326,14 +261,6 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function getAccountActivateStatus(): ?string
-    {
-        return $this->accountActivateStatus;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getAccountActivateExpiresAt(): ?\DateTime
     {
         return $this->accountActivateExpiresAt;
@@ -350,14 +277,6 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function getPasswordResetStatus(): ?string
-    {
-        return $this->passwordResetStatus;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPasswordResetExpiresAt(): ?\DateTime
     {
         return $this->passwordResetExpiresAt;
@@ -366,37 +285,16 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function getRecentPasswordChangeAt(): ?\DateTime
+    public function getRecentPasswordUpdateAt(): \DateTime
     {
-        return $this->recentPasswordChangeAt;
+        return $this->recentPasswordUpdateAt;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getStatus(): string
+    public function getUpdatedAt(): \DateTime
     {
-        return $this->status;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStatusOptions(string $status = null)
-    {
-        $reflector = new ReflectionClass(get_class($this));
-        $constants = $reflector->getConstants();
-        $result = [];
-        foreach ($constants as $constant => $value) {
-            if (!empty($status) && $constant == $status) {
-                $result = $value;
-                break;
-            }
-            $prefix = "STATUS_";
-            if (strpos($constant, $prefix) !==false) {
-                $result[] = $value;
-            }
-        }
-        return $result;
+        return $this->updatedAt;
     }
 }

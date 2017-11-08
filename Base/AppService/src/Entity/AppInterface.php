@@ -29,14 +29,6 @@ interface AppInterface
     public function setId(string $id);
 
     /**
-     * Set the value of field policies
-     *
-     * @param  array $policies
-     * @return $this
-     */
-    public function setPolicies(array $policies);
-
-    /**
      * Set the value of field plans
      *
      * @param  array $plans
@@ -74,13 +66,6 @@ interface AppInterface
      * @return string
      */
     public function getId(): string;
-
-    /**
-     * Return the value of field policies
-     *
-     * @return array|null
-     */
-    public function getPolicies(): ?array;
 
     /**
      * Return the value of field plans

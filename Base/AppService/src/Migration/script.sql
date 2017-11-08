@@ -3,11 +3,10 @@ DROP TABLE IF EXISTS `Base_App`;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Base_App` (
   `id` varchar(64) NOT NULL DEFAULT 'default',
-  `policies` json DEFAULT NULL,
   `plans` json DEFAULT NULL,
   `params` json DEFAULT NULL,
   `status` varchar(64) NOT NULL DEFAULT 'active',
-  `updatedAt` datetime DEFAULT NULL,
+  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `status` (`status`)
 ) ENGINE=InnoDB CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
@@ -31,7 +30,7 @@ CREATE TABLE `Base_AppUsage` (
   `recentUninstallAt` datetime DEFAULT NULL,
   `trialExpiresAt` datetime DEFAULT NULL,
   `status` varchar(64) NOT NULL DEFAULT 'disabled',
-  `updatedAt` datetime DEFAULT NULL,
+  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `tenantId_appId` (`tenantId`, `appId`),
   KEY `install_trial_uninstall_status` (`recentInstallAt`, `trialExpiresAt`, `recentUninstallAt`, `status`)

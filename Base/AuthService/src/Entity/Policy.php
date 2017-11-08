@@ -11,26 +11,29 @@
 
 declare(strict_types=1);
 
-namespace Base\AppService\Entity;
-
-use ReflectionClass;
+namespace Base\AuthService\Entity;
 
 /**
- * App Entity
+ * Policy Entity
  *
- * @package Base\AppService\Entity
+ * @package Base\AuthService\Entity
  */
-class App implements AppInterface
+class Policy implements PolicyInterface
 {
     /**
-     * Active Status
+     * Public Zone
      */
-    const STATUS_ACTIVE = 'active';
+    const ZONE_PUBLIC = 'public';
 
     /**
-     * Disabled Status
+     * Admin Zone
      */
-    const STATUS_DISABLED = 'disabled';
+    const ZONE_ADMIN = 'admin';
+
+    /**
+     * System Zone
+     */
+    const ZONE_SYSTEM = 'system';
 
     /**
      * @var string
@@ -38,24 +41,29 @@ class App implements AppInterface
     protected $id;
 
     /**
-     * @var array
+     * @var string
      */
-    protected $plans;
+    protected $type;
+
+    /**
+     * @var string
+     */
+    protected $zone = 'admin';
+
+    /**
+     * @var string
+     */
+    protected $service = 'base';
+
+    /**
+     * @var string
+     */
+    protected $description;
 
     /**
      * @var array
      */
     protected $params;
-
-    /**
-     * @var string
-     */
-    protected $status = 'disabled';
-
-    /**
-     * @var \DateTime
-     */
-    protected $updatedAt;
 
     /**
      * {@inheritdoc}
@@ -69,9 +77,36 @@ class App implements AppInterface
     /**
      * {@inheritdoc}
      */
-    public function setPlans(array $plans)
+    public function setType(string $type)
     {
-        $this->plans = $plans;
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setZone(string $zone)
+    {
+        $this->zone = $zone;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setService(string $service)
+    {
+        $this->service = $service;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
         return $this;
     }
 
@@ -87,24 +122,6 @@ class App implements AppInterface
     /**
      * {@inheritdoc}
      */
-    public function setStatus(string $status)
-    {
-        $this->status = $status;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUpdatedAt(\DateTime $updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getId(): string
     {
         return $this->id;
@@ -113,9 +130,33 @@ class App implements AppInterface
     /**
      * {@inheritdoc}
      */
-    public function getPlans(): ?array
+    public function getType(): string
     {
-        return $this->plans;
+        return $this->type;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getZone(): string
+    {
+        return $this->zone;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getService(): string
+    {
+        return $this->service;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
     }
 
     /**
@@ -129,33 +170,17 @@ class App implements AppInterface
     /**
      * {@inheritdoc}
      */
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUpdatedAt(): \DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStatusOptions(string $status = null)
+    public function getZoneOptions(string $zone = null)
     {
         $reflector = new ReflectionClass(get_class($this));
         $constants = $reflector->getConstants();
         $result = [];
         foreach ($constants as $constant => $value) {
-            if (!empty($status) && $constant == $status) {
+            if (!empty($zone) && $constant == $zone) {
                 $result = $value;
                 break;
             }
-            $prefix = "STATUS_";
+            $prefix = "ZONE_";
             if (strpos($constant, $prefix) !==false) {
                 $result[] = $value;
             }

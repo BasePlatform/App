@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Base\AuthService\Entity;
 
+use ReflectionClass;
+
 /**
  * User Entity
  *
@@ -20,6 +22,36 @@ namespace Base\AuthService\Entity;
  */
 class User implements UserInterface
 {
+    /**
+     * Active Status
+     */
+    const STATUS_ACTIVE = 'active';
+
+    /**
+     * Verify Pending Status
+     */
+    const STATUS_VERIFY_PENDING = 'verify_pending';
+
+    /**
+     * Disabled Status
+     */
+    const STATUS_DISABLED = 'disabled';
+
+    /**
+     * Public Zone
+     */
+    const ZONE_PUBLIC = 'public';
+
+    /**
+     * Admin Zone
+     */
+    const ZONE_ADMIN = 'admin';
+
+    /**
+     * System Zone
+     */
+    const ZONE_SYSTEM = 'system';
+
     /**
      * @var int
      */
@@ -33,7 +65,7 @@ class User implements UserInterface
     /**
      * @var string
      */
-    protected $username;
+    protected $zone = 'public';
 
     /**
      * @var string
@@ -43,12 +75,17 @@ class User implements UserInterface
     /**
      * @var string
      */
+    protected $userName;
+
+    /**
+     * @var string
+     */
     protected $displayName;
 
     /**
      * @var string
      */
-    protected $tagline;
+    protected $tagLine;
 
     /**
      * @var string
@@ -56,7 +93,22 @@ class User implements UserInterface
     protected $avatar;
 
     /**
-     * @var bool|null
+     * @var string
+     */
+    protected $status = 'disabled';
+
+    /**
+     * @var \DateTime
+     */
+    protected $createdAt;
+
+    /**
+     * @var \DateTime
+     */
+    protected $updatedAt;
+
+    /**
+     * @var null|int
      */
     protected $_deleted = null;
 
@@ -81,18 +133,27 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setUsername(string $username)
+    public function setEmail(string $email)
     {
-        $this->username = $username;
+        $this->email = $email;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setEmail(string $email)
+    public function setZone(string $zone)
     {
-        $this->email = $email;
+        $this->zone = $zone;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUserName(string $userName)
+    {
+        $this->userName = $userName;
         return $this;
     }
 
@@ -108,9 +169,9 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setTagline(string $tagline)
+    public function setTagLine(string $tagLine)
     {
-        $this->tagline = $tagline;
+        $this->tagLine = $tagLine;
         return $this;
     }
 
@@ -120,6 +181,33 @@ class User implements UserInterface
     public function setAvatar(string $avatar)
     {
         $this->avatar = $avatar;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStatus(string $status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCreatedAt(\DateTime $createdAt = null)
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUpdatedAt(\DateTime $updatedAt = null)
+    {
+        $this->updatedAt = $updatedAt;
         return $this;
     }
 
@@ -150,17 +238,17 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getUsername(): string
+    public function getEmail(): string
     {
-        return $this->username;
+        return $this->email;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getEmail(): string
+    public function getUserName(): string
     {
-        return $this->email;
+        return $this->userName;
     }
 
     /**
@@ -174,9 +262,9 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getTagline(): ?string
+    public function getTagLine(): ?string
     {
-        return $this->tagline;
+        return $this->tagLine;
     }
 
     /**
@@ -185,5 +273,71 @@ class User implements UserInterface
     public function getAvatar(): ?string
     {
         return $this->avatar;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStatusOptions(string $status = null)
+    {
+        $reflector = new ReflectionClass(get_class($this));
+        $constants = $reflector->getConstants();
+        $result = [];
+        foreach ($constants as $constant => $value) {
+            if (!empty($status) && $constant == $status) {
+                $result = $value;
+                break;
+            }
+            $prefix = "STATUS_";
+            if (strpos($constant, $prefix) !==false) {
+                $result[] = $value;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getZoneOptions(string $zone = null)
+    {
+        $reflector = new ReflectionClass(get_class($this));
+        $constants = $reflector->getConstants();
+        $result = [];
+        foreach ($constants as $constant => $value) {
+            if (!empty($zone) && $constant == $zone) {
+                $result = $value;
+                break;
+            }
+            $prefix = "ZONE_";
+            if (strpos($constant, $prefix) !==false) {
+                $result[] = $value;
+            }
+        }
+        return $result;
     }
 }

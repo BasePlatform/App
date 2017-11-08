@@ -18,11 +18,14 @@ return [
     [
       // System - Activate the app
       'path' => 'system/'.$pathPrefix.'/activate',
-      'name' => \Base\AppService\Controller\Tenant\AppSystemController::class.':activate',
-      'handler' => \Base\AppService\Controller\Tenant\AppSystemController::class.':activate',
+      'name' => \Base\AppService\Controller\Tenant\AppSystemController::class.':activateAction',
+      'handler' => \Base\AppService\Controller\Tenant\AppSystemController::class.':activateAction',
       'middlewares' => null,
       'allowedMethods' => [RequestMethod::METHOD_POST],
-      'roles' => ['internal_request', 'system_admin']
+      'allowedPolicies' => [
+        'app.internalServiceRequest',
+        'app.systemAdmin'
+      ]
     ]
   ]
 ];

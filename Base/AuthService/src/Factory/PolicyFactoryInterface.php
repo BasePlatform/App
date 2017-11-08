@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Base\AppService\Factory;
+namespace Base\AuthService\Factory;
 
 use Base\Factory\FactoryInterface;
 
 /**
- * App Factory Interface
+ * Policy Factory Interface
  *
- * @package Base\AppService\Factory
+ * @package Base\AuthService\Factory
  */
-interface AppFactoryInterface extends FactoryInterface
+interface PolicyFactoryInterface extends FactoryInterface
 {
 }

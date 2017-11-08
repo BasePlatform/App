@@ -37,14 +37,6 @@ interface ResourcePolicyAttachmentInterface
     public function setTenantId(string $tenantId);
 
     /**
-     * Set the value of field zone
-     *
-     * @param  string $zone
-     * @return $this
-     */
-    public function setZone(string $zone);
-
-    /**
      * Set the value of field resourceId
      *
      * @param  string $resourceId
@@ -53,20 +45,12 @@ interface ResourcePolicyAttachmentInterface
     public function setResourceId(string $resourceId);
 
     /**
-     * Set the value of field policy
+     * Set the value of field policyId
      *
-     * @param  string $policy
+     * @param  string $policyId
      * @return $this
      */
-    public function setPolicy(string $policy);
-
-    /**
-     * Set the value of field policyParams
-     *
-     * @param  array $policyParams
-     * @return $this
-     */
-    public function setPolicyParams(array $policyParams);
+    public function setPolicyId(string $policyId);
 
     /**
      * Set the value of field attachedAt
@@ -91,13 +75,6 @@ interface ResourcePolicyAttachmentInterface
     public function getTenantId(): string;
 
     /**
-     * Return the value of field zone
-     *
-     * @return string
-     */
-    public function getZone(): string;
-
-    /**
      * Return the value of field resourceId
      *
      * @return string
@@ -105,18 +82,11 @@ interface ResourcePolicyAttachmentInterface
     public function getResourceId(): string;
 
     /**
-     * Return the value of field policy
+     * Return the value of field policyId
      *
      * @return string
      */
-    public function getPolicy(): string;
-
-    /**
-     * Return the value of field policyParams
-     *
-     * @return array|null
-     */
-    public function getPolicyParams(): ?array;
+    public function getPolicyId(): string;
 
     /**
      * Return the value of field attachedAt

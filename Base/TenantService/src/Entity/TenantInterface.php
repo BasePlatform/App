@@ -68,7 +68,7 @@ interface TenantInterface
     /**
      * Set the value of field createdAt
      *
-     * @param  integer $createdAt
+     * @param  \DateTime $createdAt
      *
      * @return $this
      */
@@ -77,7 +77,7 @@ interface TenantInterface
     /**
      * Set the value of field updatedAt
      *
-     * @param  integer $updatedAt
+     * @param  \DateTime $updatedAt
      *
      * @return $this
      */
@@ -102,7 +102,7 @@ interface TenantInterface
      *
      * @return string|null
      */
-    public function getPlatform(): string;
+    public function getPlatform(): ?string;
 
     /**
      * Return the value of field timeZone
