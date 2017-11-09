@@ -73,11 +73,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
             // Convert to the desired return type
             return $this->convertToEntity($result);
         } catch (\PDOException $e) {
-            throw new ServerErrorException(
-                'Failed Getting App Usage',
-                false,
-                $e->getMessage()
-            );
+            throw new ServerErrorException('Failed Getting App Usage', false, $e->getMessage());
         }
     }
 
@@ -147,11 +143,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
             return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException(
-                'Failed Adding App Usage to Storage',
-                false,
-                $e->getMessage()
-            );
+            throw new ServerErrorException('Failed Adding App Usage to Storage', false, $e->getMessage());
         }
     }
 
@@ -203,11 +195,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
             return $result;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException(
-                'Failed Updating App Usage to Storage',
-                false,
-                $e->getMessage()
-            );
+            throw new ServerErrorException('Failed Updating App Usage to Storage', false, $e->getMessage());
         }
     }
 
@@ -241,11 +229,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
                 return null;
             }
         } catch (\Exception $e) {
-            throw new ServerErrorException(
-                'Failed Converting Data To App Usage Entity',
-                false,
-                $e->getMessage()
-            );
+            throw new ServerErrorException('Failed Converting Data To App Usage Entity', false, $e->getMessage());
         }
     }
 }

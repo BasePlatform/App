@@ -69,11 +69,7 @@ class AppRepository implements AppRepositoryInterface
             // Convert to the desired return type
             return $this->convertToEntity($result);
         } catch (\PDOException $e) {
-            throw new ServerErrorException(
-                'Failed Getting App',
-                false,
-                $e->getMessage()
-            );
+            throw new ServerErrorException('Failed Getting App', false, $e->getMessage());
         }
     }
 
@@ -113,11 +109,7 @@ class AppRepository implements AppRepositoryInterface
             return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException(
-                'Failed Adding App to Storage',
-                false,
-                $e->getMessage()
-            );
+            throw new ServerErrorException('Failed Adding App to Storage', false, $e->getMessage());
         }
     }
 

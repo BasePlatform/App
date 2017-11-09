@@ -69,11 +69,7 @@ class TenantRepository implements TenantRepositoryInterface
             // Convert to the desired return type
             return $this->convertToEntity($result);
         } catch (\PDOException $e) {
-            throw new ServerErrorException(
-                'Failed Getting Tenant',
-                false,
-                $e->getMessage()
-            );
+            throw new ServerErrorException('Failed Getting Tenant', false, $e->getMessage());
         }
     }
 
@@ -116,11 +112,7 @@ class TenantRepository implements TenantRepositoryInterface
             return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException(
-                'Failed Adding Tenant to Storage',
-                false,
-                $e->getMessage()
-            );
+            throw new ServerErrorException('Failed Adding Tenant to Storage', false, $e->getMessage());
         }
     }
 
@@ -150,11 +142,7 @@ class TenantRepository implements TenantRepositoryInterface
                 return null;
             }
         } catch (\Exception $e) {
-            throw new ServerErrorException(
-                'Failed Converting Data To Tenant Entity',
-                false,
-                $e->getMessage()
-            );
+            throw new ServerErrorException('Failed Converting Data To Tenant Entity', false, $e->getMessage());
         }
     }
 }
