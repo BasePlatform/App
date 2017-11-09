@@ -39,6 +39,7 @@ $dotenv->load();
 $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, 5)) == 'https' ? 'https' : 'http';
 
 define('SERVICE_DEFAULT_URI', env('SERVICE_DEFAULT_URI', $protocol.$_SERVER['HTTP_HOST']));
+
 /*
  * Uncomment and edit if you want to define custom uri per service
  */

@@ -84,7 +84,7 @@ class TenantService implements TenantServiceInterface
                 $tenant->setStatus($tenant->getStatusOptions('STATUS_ACTIVE'));
                 $tenant->setCreatedAt($nowTime);
                 $tenant->setupdatedAt($nowTime);
-                $this->tenantRepository->add($tenant);
+                // $this->tenantRepository->add($tenant);
             }
 
             // Call to other services to finish the registration process
@@ -95,11 +95,11 @@ class TenantService implements TenantServiceInterface
                 'appId' => 'default',
                 'email' => $email,
                 'password' => $password,
-                'policy' => ['tenant.tenantOwner']
+                'attachedPolicies' => ['tenant.tenantOwner']
               ]
             ];
 
-            // $result = $this->serviceRequest->send('APP_SERVICE', 'activateAppEndpoint', $options, true);
+            $activateAppresult = $this->serviceRequest->send('APP_SERVICE', 'activateAppEndpoint', $options, true);
 
             // $result = $this->serviceRequest->send('AUTH_SERVICE', 'activateAppEndpoint', $options, true);
 

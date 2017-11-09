@@ -9,37 +9,31 @@
  * file that was distributed with this source code.
  */
 
-namespace Base\TenantService\Controller;
+namespace Base\AppService\Controller;
 
 use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Base\Http\ResponseFactoryInterface;
-use Base\TenantService\Service\TenantServiceInterface;
-use Base\Rest\RestController;
 
 /**
- * This class provides the actions for Tenant in Public Zone
+ * This class provides the actions for App in System Zone
  *
- * @package Base\TenantService\Controller
+ * @package Base\AppService\Controller
  */
-class TenantController extends RestController
+class AppSystemController
 {
     /**
-     * @var TenantServiceInterface
+     * @var ResponseFactoryInterface
      */
-    private $tenantService;
-
+    public $responseFactory;
 
     /**
-     * @param TenantServiceInterface $response
-     * @param string $domain
-     * @param ResponseFactoryInterface $response
+     * @param ResponseFactoryInterface $responseFactory
      */
-    public function __construct(TenantServiceInterface $tenantService, ResponseFactoryInterface $responseFactory)
+    public function __construct(ResponseFactoryInterface $responseFactory)
     {
-        $this->tenantService = $tenantService;
-        parent::__construct($responseFactory);
+        $this->responseFactory = $responseFactory;
     }
 
     /**

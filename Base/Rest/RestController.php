@@ -41,11 +41,11 @@ abstract class RestController implements MiddlewareInterface
     public $responseFactory;
 
     /**
-     * @param ResponseFactoryInterface $response
+     * @param ResponseFactoryInterface $responseFactory
      */
-    public function __construct(ResponseFactoryInterface $response)
+    public function __construct(ResponseFactoryInterface $responseFactory)
     {
-        $this->responseFactory = $response;
+        $this->responseFactory = $responseFactory;
     }
 
     /**

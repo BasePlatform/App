@@ -43,7 +43,7 @@ class TenantRepository implements TenantRepositoryInterface
 
     /**
      * @param PDOProxyInterface $pdo
-     * @param FactoryInterface $entityFactory
+     * @param FactoryInterface $tenantFactory
      */
     public function __construct(PDOProxyInterface $pdo, TenantFactory $tenantFactory)
     {

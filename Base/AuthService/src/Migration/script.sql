@@ -73,11 +73,11 @@ CREATE TABLE `Base_Policy` (
   `id` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
   `zone` varchar(64) NOT NULL DEFAULT 'admin',
-  `service` varchar(64) NOT NULL DEFAULT 'base',
+  `appId` varchar(64) NOT NULL DEFAULT 'default',
   `description` varchar(255) DEFAULT NULL,
   `params` json DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `type_zone` (`type`, `zone`)
+  KEY `type_zone_appId` (`type`, `zone`,`appId`)
 ) ENGINE=InnoDB CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `Base_ResourcePolicyAttachment`;

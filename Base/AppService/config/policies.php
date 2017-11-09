@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-$service = 'base';
+$appId = 'default';
 
 return [
   'policies' => [
     'app.internalServiceRequest' => [
-        'service' => $service,
+        'appId' => $appId,
         'type' => 'permission',
         'zone' => 'system',
         'description' => 'Policy for Internal Service Request'
     ],
     'app.systemAdmin' => [
-        'service' => $service,
+        'appId' => $appId,
         'type' => 'role',
         'zone' => 'system',
         'description' => 'System Admin'

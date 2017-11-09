@@ -48,13 +48,13 @@ interface PolicyInterface
     public function setZone(string $zone);
 
     /**
-     * Set the value of field service
+     * Set the value of field appId
      *
-     * @param  array $service
+     * @param  array $appId
      *
      * @return $this
      */
-    public function setService(string $service);
+    public function setAppId(string $appId);
 
     /**
      * Set the value of field description
@@ -96,11 +96,11 @@ interface PolicyInterface
     public function getZone(): string;
 
     /**
-     * Return the value of field service
+     * Return the value of field appId
      *
      * @return string
      */
-    public function getService(): string;
+    public function getAppId(): string;
 
     /**
      * Return the value of field description

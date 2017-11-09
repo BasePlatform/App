@@ -15,6 +15,7 @@ namespace Base\ServiceRequest;
 
 use GuzzleHttp\RequestOptions;
 use GuzzleHttp\ClientInterface;
+use Base\Exception\ServiceRequestErrorException;
 use InvalidArgumentException;
 
 /**
@@ -96,18 +97,16 @@ class ServiceRequest implements ServiceRequestInterface
                     $options = $options['json'];
                 }
             }
-
-            $result = $client->{$method}(
-                $endpointMethod,
-                $serviceURI.$endpointURI,
-                $options
-            );
-
-            return $sendAsync ? $result->wait() : $result;
-
-            // try {
-            // } catch (\Exception $e) {
-            // }
+            try {
+                $result = $client->{$method}(
+                    $endpointMethod,
+                    $serviceURI.$endpointURI,
+                    $options
+                );
+                return $sendAsync ? $result->wait() : $result;
+            } catch (\Exception $e) {
+                throw new ServiceRequestErrorException('Service Communication Error', true, $e->getMessage());
+            }
         } else {
             throw new InvalidArgumentException('Invalid Endpoint `'.$endpoint.'` In Service `'.$service.'` Request');
         }

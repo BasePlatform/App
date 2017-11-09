@@ -16,14 +16,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Base\Http\ResponseFactoryInterface;
 use Base\TenantService\Service\TenantServiceInterface;
-use Base\Rest\RestController;
 
 /**
  * This class provides the actions for Tenant in Public Zone
  *
  * @package Base\TenantService\Controller
  */
-class TenantController extends RestController
+class TenantController
 {
     /**
      * @var TenantServiceInterface
@@ -33,7 +32,7 @@ class TenantController extends RestController
     /**
      * @var string
      */
-    private $serviceDomain;
+    private $domain;
 
     /**
      * @var string
@@ -41,17 +40,22 @@ class TenantController extends RestController
     private $platform;
 
     /**
+     * @var ResponseFactoryInterface
+     */
+    public $responseFactory;
+
+    /**
      * @param TenantServiceInterface $response
      * @param string $domain
      * @param string $platform
-     * @param ResponseFactoryInterface $response
+     * @param ResponseFactoryInterface $responseFactory
      */
     public function __construct(TenantServiceInterface $tenantService, string $domain, string $platform, ResponseFactoryInterface $responseFactory)
     {
         $this->tenantService = $tenantService;
         $this->domain = $domain;
         $this->platform = $platform;
-        parent::__construct($responseFactory);
+        $this->responseFactory = $responseFactory;
     }
 
     /**

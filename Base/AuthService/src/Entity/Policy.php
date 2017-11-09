@@ -53,7 +53,7 @@ class Policy implements PolicyInterface
     /**
      * @var string
      */
-    protected $service = 'base';
+    protected $appId = 'default';
 
     /**
      * @var string
@@ -95,9 +95,9 @@ class Policy implements PolicyInterface
     /**
      * {@inheritdoc}
      */
-    public function setService(string $service)
+    public function setAppId(string $appId)
     {
-        $this->service = $service;
+        $this->appId = $appId;
         return $this;
     }
 
@@ -146,9 +146,9 @@ class Policy implements PolicyInterface
     /**
      * {@inheritdoc}
      */
-    public function getService(): string
+    public function getAppId(): string
     {
-        return $this->service;
+        return $this->appId;
     }
 
     /**

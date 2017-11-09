@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-$service = 'base';
+$appId = 'default';
 
 return [
   'policies' => [
     'tenant.tenantOwner' => [
-        'service' => $service,
+        'appId' => $appId,
         'type' => 'role',
         'zone' => 'admin',
         'description' => 'Tenant Owner'
