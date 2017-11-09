@@ -45,12 +45,12 @@ class TenantController
     public $responseFactory;
 
     /**
+     * @param ResponseFactoryInterface $responseFactory
      * @param TenantServiceInterface $response
      * @param string $domain
      * @param string $platform
-     * @param ResponseFactoryInterface $responseFactory
      */
-    public function __construct(TenantServiceInterface $tenantService, string $domain, string $platform, ResponseFactoryInterface $responseFactory)
+    public function __construct(ResponseFactoryInterface $responseFactory, TenantServiceInterface $tenantService, string $domain, string $platform)
     {
         $this->tenantService = $tenantService;
         $this->domain = $domain;

@@ -30,7 +30,6 @@ class AppUsageFactory implements AppUsageFactoryInterface
 
     /**
      * @param FactoryInterface $factory
-     * @param FactoryInterface $variantFactory
      */
     public function __construct(FactoryInterface $factory)
     {
