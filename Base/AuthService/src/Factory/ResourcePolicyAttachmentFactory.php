@@ -30,7 +30,6 @@ class ResourcePolicyAttachmentFactory implements ResourcePolicyAttachmentFactory
 
     /**
      * @param FactoryInterface $factory
-     * @param FactoryInterface $variantFactory
      */
     public function __construct(FactoryInterface $factory)
     {
@@ -40,9 +39,9 @@ class ResourcePolicyAttachmentFactory implements ResourcePolicyAttachmentFactory
     /**
      * @return ResourcePolicyAttachmentInterface
      */
-    public function createNew(): ResourcePolicyAttachmentInterface
+    public function create(): ResourcePolicyAttachmentInterface
     {
-        return $this->factory->createNew();
+        return $this->factory->create();
     }
 
     /**

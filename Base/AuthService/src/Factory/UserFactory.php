@@ -30,7 +30,6 @@ class UserFactory implements UserFactoryInterface
 
     /**
      * @param FactoryInterface $factory
-     * @param FactoryInterface $variantFactory
      */
     public function __construct(FactoryInterface $factory)
     {
@@ -40,9 +39,9 @@ class UserFactory implements UserFactoryInterface
     /**
      * @return UserInterface
      */
-    public function createNew(): UserInterface
+    public function create(): UserInterface
     {
-        return $this->factory->createNew();
+        return $this->factory->create();
     }
 
     /**

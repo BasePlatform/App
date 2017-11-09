@@ -13,12 +13,12 @@ CREATE TABLE `Base_User` (
   `status` varchar(64) NOT NULL DEFAULT 'disabled',
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `_deleted` int(11) unsigned DEFAULT NULL,
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `tenantId_email_zone` (`tenantId`,`email`, `zone`),
-  UNIQUE KEY `tenantId_userName_zone` (`tenantId`,`userName`, `zone`),
+  UNIQUE KEY `tenantId_email_zone` (`tenantId`,`email`, `zone`, `deletedAt`),
+  UNIQUE KEY `tenantId_userName_zone` (`tenantId`,`userName`, `zone`, `deletedAt`),
   KEY `email_status` (`email`, `status`),
-  KEY `_deleted` (`_deleted`)
+  KEY `deletedAt` (`deletedAt`)
 ) ENGINE=InnoDB CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 ALTER TABLE `Base_User` AUTO_INCREMENT=1010;
@@ -51,7 +51,7 @@ CREATE TABLE `Base_UserIdentity` (
   `userId` bigint(20) unsigned NOT NULL,
   `authProvider` varchar(255) DEFAULT 'app',
   `authProviderUid` varchar(255) DEFAULT NULL,
-  `passwordHash` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
+  `passwordHash` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `authParams` json DEFAULT NULL,
   `accountActivateToken` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
   `accountActivateExpiresAt` datetime DEFAULT NULL,

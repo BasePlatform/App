@@ -11,21 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Base\TenantService\Factory;
+namespace Base\AuthService\Factory;
 
 use Base\Factory\FactoryInterface;
 
 /**
- * Tenant Factory Interface
+ * Password Factory Interface
  *
- * @package Base\TenantService\Factory
+ * @package Base\AuthService\Factory
  */
-interface TenantFactoryInterface extends FactoryInterface
+interface PasswordFactoryInterface extends FactoryInterface
 {
-    /**
-     * Return the class name of TenantId Factory
-     *
-     * @return string
-     */
-    public function getTenantIdClassName(): string;
 }

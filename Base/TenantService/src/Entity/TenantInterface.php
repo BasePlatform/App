@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Base\TenantService\Entity;
 
+use Base\TenantService\ValueObject\TenantIdInterface;
+
 /**
  * Tenant Entity Interface
  *
@@ -23,11 +25,11 @@ interface TenantInterface
     /**
      * Set the value of field id
      *
-     * @param  string $id
+     * @param  TenantIdInterface $id
      *
      * @return $this
      */
-    public function setId(string $id);
+    public function setId(TenantIdInterface $id);
 
     /**
      * Set the value of field domain
@@ -86,9 +88,9 @@ interface TenantInterface
     /**
      * Return the value of field id
      *
-     * @return string
+     * @return TenantIdInterface
      */
-    public function getId(): string;
+    public function getId(): TenantIdInterface;
 
     /**
      * Return the value of field domain
@@ -141,16 +143,4 @@ interface TenantInterface
      * @return array|string
      */
     public function getStatusOptions(string $status = null);
-
-    /**
-     * Create a Tenant Id
-     *
-     * Generate a unique id if name is blank
-     *
-     * @param string $name
-     * @param string $domain
-     *
-     * @return string
-     */
-    public static function createTenantId(string $name = '', string $domain = ''): string;
 }

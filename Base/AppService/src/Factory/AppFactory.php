@@ -40,9 +40,9 @@ class AppFactory implements AppFactoryInterface
     /**
      * @return AppInterface
      */
-    public function createNew(): AppInterface
+    public function create(): AppInterface
     {
-        return $this->factory->createNew();
+        return $this->factory->create();
     }
 
     /**

@@ -154,7 +154,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
     {
         try {
             $this->pdo->beginTransaction();
-            $sql = 'UPDATE ' . $this->tablePrefix . 'AppUsage SET
+            $sql = 'UPDATE ' . $this->tablePrefix . 'AppUsage au SET
                 tenantId = :tenantId,
                 appId = :appId,
                 selectedPlan = :selectedPlan,
@@ -170,7 +170,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
                 trialExpiresAt = :trialExpiresAt,
                 status = :status,
                 updatedAt = :updatedAt
-              WHERE id = :id LIMIT 1
+              WHERE au.id = :id LIMIT 1
               )';
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
@@ -206,7 +206,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
     {
         try {
             if (!empty($data)) {
-                $app = $this->appFactory->createNew();
+                $app = $this->appFactory->create();
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
                     if (method_exists($app, $setMethod)) {

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Base\AuthService\Entity;
 
+use Base\AuthService\ValueObject\PasswordInterface;
+
 /**
  * User Identity Entity
  *
@@ -46,7 +48,7 @@ class UserIdentity implements UserIdentityInterface
     protected $authProviderUid;
 
     /**
-     * @var string
+     * @var PasswordInterface
      */
     protected $passwordHash;
 
@@ -138,7 +140,7 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function setPasswordHash(string $passwordHash)
+    public function setPasswordHash(PasswordInterface $passwordHash)
     {
         $this->passwordHash = $passwordHash;
         return $this;
@@ -254,6 +256,14 @@ class UserIdentity implements UserIdentityInterface
     public function getAuthProviderUid(): ?string
     {
         return $this->authProviderUid;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPasswordHash(): ?PasswordInterface
+    {
+        return $this->passwordHash;
     }
 
     /**

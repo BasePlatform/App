@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Base\AuthService\Entity;
 
+use Base\AuthService\ValueObject\ZoneInterface;
+
 /**
  * User Entity Interface
  *
@@ -39,10 +41,10 @@ interface UserInterface
     /**
      * Set the value of field zone
      *
-     * @param  string $zone
+     * @param  ZoneInterface $zone
      * @return $this
      */
-    public function setZone(string $zone);
+    public function setZone(ZoneInterface $zone);
 
     /**
      * Set the value of field email
@@ -111,6 +113,15 @@ interface UserInterface
     public function setUpdatedAt(\DateTime $updatedAt);
 
     /**
+     * Set the value of field deletedAt
+     *
+     * @param  \DateTime $deletedAt
+     *
+     * @return $this
+     */
+    public function setDeletedAt(\DateTime $deletedAt);
+
+    /**
      * Return the value of field zone
      *
      * @return int
@@ -127,9 +138,9 @@ interface UserInterface
     /**
      * Return the value of field zone
      *
-     * @return string
+     * @return ZoneInterface
      */
-    public function getZone(): string;
+    public function getZone(): ZoneInterface;
 
     /**
      * Return the value of field email
@@ -188,6 +199,13 @@ interface UserInterface
     public function getUpdatedAt(): \DateTime;
 
     /**
+     * Return the value of field deletedAt
+     *
+     * @return \DateTime
+     */
+    public function getDeletedAt(): ?\DateTime;
+
+    /**
      * Get Status Options from Constants
      * If $status is passed, it will return the value of the status constant
      *
@@ -196,14 +214,4 @@ interface UserInterface
      * @return array|string
      */
     public function getStatusOptions(string $status = null);
-
-    /**
-     * Get Zone Options from Constants
-     * If $zone is passed, it will return the value of the status constant
-     *
-     * @param  string $zone
-     *
-     * @return array|string
-     */
-    public function getZoneOptions(string $zone = null);
 }

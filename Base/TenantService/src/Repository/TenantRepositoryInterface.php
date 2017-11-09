@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Base\TenantService\Repository;
 
 use Base\TenantService\Entity\TenantInterface;
+use Base\TenantService\ValueObject\TenantIdInterface;
 
 /**
  * Tenant Repository Interface
@@ -25,20 +26,20 @@ interface TenantRepositoryInterface
     /**
      * Get Tenant by TenantId
      *
-     * @param string $tenantId
+     * @param TenantIdInterface $tenantId
      *
      * @return TenantInterface|null
      */
-    public function get(string $tenantId): ?TenantInterface;
+    public function get(TenantIdInterface $tenantId): ?TenantInterface;
 
     /**
      * Add a Tenant
      *
      * @param TenantInterface $tenant
      *
-     * @return string|null The inserted tenantId
+     * @return TenantIdInterface|null The inserted tenantId
      */
-    public function add(TenantInterface $tenant): ?string;
+    public function add(TenantInterface $tenant): ?TenantIdInterface;
 
     /**
      * Convert an array data from fetch assoc to Entity

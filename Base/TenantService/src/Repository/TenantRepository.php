@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Base\TenantService\Repository;
 
 use Base\TenantService\Entity\TenantInterface;
+use Base\TenantService\ValueObject\TenantIdInterface;
 use Base\TenantService\Factory\TenantFactoryInterface;
 use Base\PDO\PDOProxyInterface;
 use Base\Exception\ServerErrorException;
@@ -59,7 +60,7 @@ class TenantRepository implements TenantRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function get(string $tenantId): ?TenantInterface
+    public function get(TenantIdInterface $tenantId): ?TenantInterface
     {
         try {
             $sql = 'SELECT * FROM '. $this->tablePrefix . 'Tenant t WHERE t.id = :id LIMIT 0,1';
@@ -76,7 +77,7 @@ class TenantRepository implements TenantRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function add(TenantInterface $tenant): ?string
+    public function add(TenantInterface $tenant): ?TenantIdInterface
     {
         try {
             $this->pdo->beginTransaction();
@@ -123,10 +124,15 @@ class TenantRepository implements TenantRepositoryInterface
     {
         try {
             if (!empty($data)) {
-                $tenant = $this->tenantFactory->createNew();
+                $tenant = $this->tenantFactory->create();
+                $tenantId = $this->tenantFactory->createTenantId();
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
                     if (method_exists($tenant, $setMethod)) {
+                        if ($key == 'id') {
+                            $tenantId->setId($value);
+                            $value = $tenantId;
+                        }
                         $dateTimeProperties = [
                           'createdAt',
                           'updatedAt'
@@ -134,7 +140,7 @@ class TenantRepository implements TenantRepositoryInterface
                         if (in_array($key, $dateTimeProperties)) {
                             $value = DateTimeFormatter::createFromDb($value);
                         }
-                        $app->$setMethod($value);
+                        $tenant->$setMethod($value);
                     }
                 }
                 return $tenant;

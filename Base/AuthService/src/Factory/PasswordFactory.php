@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Base\AuthService\Factory;
 
 use Base\Factory\FactoryInterface;
-use Base\AuthService\Entity\PolicyInterface;
+use Base\AuthService\ValueObject\PasswordInterface;
 
 /**
- * Policy Factory
+ * Password Factory
  *
  * @package Base\AuthService\Factory
  */
-class PolicyFactory implements PolicyFactoryInterface
+class PasswordFactory implements PasswordFactoryInterface
 {
     /**
      * @var FactoryInterface
@@ -37,9 +37,9 @@ class PolicyFactory implements PolicyFactoryInterface
     }
 
     /**
-     * @return PolicyInterface
+     * @return PasswordInterface
      */
-    public function create(): PolicyInterface
+    public function create(): PasswordInterface
     {
         return $this->factory->create();
     }

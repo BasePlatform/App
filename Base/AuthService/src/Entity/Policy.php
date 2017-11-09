@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Base\AuthService\Entity;
 
+use Base\AuthService\ValueObject\ZoneInterface;
+
 /**
  * Policy Entity
  *
@@ -20,21 +22,6 @@ namespace Base\AuthService\Entity;
  */
 class Policy implements PolicyInterface
 {
-    /**
-     * Public Zone
-     */
-    const ZONE_PUBLIC = 'public';
-
-    /**
-     * Admin Zone
-     */
-    const ZONE_ADMIN = 'admin';
-
-    /**
-     * System Zone
-     */
-    const ZONE_SYSTEM = 'system';
-
     /**
      * @var string
      */
@@ -46,9 +33,9 @@ class Policy implements PolicyInterface
     protected $type;
 
     /**
-     * @var string
+     * @var ZoneInterface
      */
-    protected $zone = 'admin';
+    protected $zone;
 
     /**
      * @var string
@@ -86,7 +73,7 @@ class Policy implements PolicyInterface
     /**
      * {@inheritdoc}
      */
-    public function setZone(string $zone)
+    public function setZone(ZoneInterface $zone)
     {
         $this->zone = $zone;
         return $this;
@@ -138,7 +125,7 @@ class Policy implements PolicyInterface
     /**
      * {@inheritdoc}
      */
-    public function getZone(): string
+    public function getZone(): ZoneInterface
     {
         return $this->zone;
     }
@@ -165,26 +152,5 @@ class Policy implements PolicyInterface
     public function getParams(): ?array
     {
         return $this->params;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getZoneOptions(string $zone = null)
-    {
-        $reflector = new ReflectionClass(get_class($this));
-        $constants = $reflector->getConstants();
-        $result = [];
-        foreach ($constants as $constant => $value) {
-            if (!empty($zone) && $constant == $zone) {
-                $result = $value;
-                break;
-            }
-            $prefix = "ZONE_";
-            if (strpos($constant, $prefix) !==false) {
-                $result[] = $value;
-            }
-        }
-        return $result;
     }
 }

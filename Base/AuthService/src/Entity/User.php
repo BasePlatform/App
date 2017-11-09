@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Base\AuthService\Entity;
 
+use Base\AuthService\ValueObject\ZoneInterface;
 use ReflectionClass;
 
 /**
@@ -38,21 +39,6 @@ class User implements UserInterface
     const STATUS_DISABLED = 'disabled';
 
     /**
-     * Public Zone
-     */
-    const ZONE_PUBLIC = 'public';
-
-    /**
-     * Admin Zone
-     */
-    const ZONE_ADMIN = 'admin';
-
-    /**
-     * System Zone
-     */
-    const ZONE_SYSTEM = 'system';
-
-    /**
      * @var int
      */
     protected $id;
@@ -63,9 +49,9 @@ class User implements UserInterface
     protected $tenantId;
 
     /**
-     * @var string
+     * @var ZoneInterface
      */
-    protected $zone = 'public';
+    protected $zone;
 
     /**
      * @var string
@@ -108,9 +94,9 @@ class User implements UserInterface
     protected $updatedAt;
 
     /**
-     * @var null|int
+     * @var \DateTime\null
      */
-    protected $_deleted = null;
+    protected $deletedAt = null;
 
     /**
      * {@inheritdoc}
@@ -142,7 +128,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setZone(string $zone)
+    public function setZone(ZoneInterface $zone)
     {
         $this->zone = $zone;
         return $this;
@@ -214,6 +200,15 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
+    public function setDeletedAt(\DateTime $deletedAt)
+    {
+        $this->deletedAt = $deletedAt;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getId(): int
     {
         return $this->id;
@@ -230,7 +225,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getZone(): string
+    public function getZone(): ZoneInterface
     {
         return $this->zone;
     }
@@ -302,6 +297,14 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
+    public function getDeletedAt(): ?\DateTime
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getStatusOptions(string $status = null)
     {
         $reflector = new ReflectionClass(get_class($this));
@@ -313,27 +316,6 @@ class User implements UserInterface
                 break;
             }
             $prefix = "STATUS_";
-            if (strpos($constant, $prefix) !==false) {
-                $result[] = $value;
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getZoneOptions(string $zone = null)
-    {
-        $reflector = new ReflectionClass(get_class($this));
-        $constants = $reflector->getConstants();
-        $result = [];
-        foreach ($constants as $constant => $value) {
-            if (!empty($zone) && $constant == $zone) {
-                $result = $value;
-                break;
-            }
-            $prefix = "ZONE_";
             if (strpos($constant, $prefix) !==false) {
                 $result[] = $value;
             }

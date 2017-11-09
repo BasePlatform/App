@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Base\AuthService\Entity;
 
+use Base\AuthService\ValueObject\ZoneInterface;
+
 /**
  * Policy Entity Interface
  *
@@ -23,7 +25,7 @@ interface PolicyInterface
     /**
      * Set the value of field id
      *
-     * @param  array $id
+     * @param  string $id
      *
      * @return $this
      */
@@ -32,7 +34,7 @@ interface PolicyInterface
     /**
      * Set the value of field type
      *
-     * @param  array $type
+     * @param  string $type
      *
      * @return $this
      */
@@ -41,16 +43,16 @@ interface PolicyInterface
     /**
      * Set the value of field zone
      *
-     * @param  array $zone
+     * @param  ZoneInterface $zone
      *
      * @return $this
      */
-    public function setZone(string $zone);
+    public function setZone(ZoneInterface $zone);
 
     /**
      * Set the value of field appId
      *
-     * @param  array $appId
+     * @param  string $appId
      *
      * @return $this
      */
@@ -59,7 +61,7 @@ interface PolicyInterface
     /**
      * Set the value of field description
      *
-     * @param  array $description
+     * @param  string $description
      *
      * @return $this
      */
@@ -91,9 +93,9 @@ interface PolicyInterface
     /**
      * Return the value of field zone
      *
-     * @return string
+     * @return ZoneInterface
      */
-    public function getZone(): string;
+    public function getZone(): ZoneInterface;
 
     /**
      * Return the value of field appId
@@ -115,14 +117,4 @@ interface PolicyInterface
      * @return array|null
      */
     public function getParams(): ?array;
-
-    /**
-     * Get Zone Options from Constants
-     * If $zone is passed, it will return the value of the status constant
-     *
-     * @param  string $zone
-     *
-     * @return array|string
-     */
-    public function getZoneOptions(string $zone = null);
 }

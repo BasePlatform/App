@@ -40,9 +40,9 @@ class AppUsageFactory implements AppUsageFactoryInterface
     /**
      * @return AppUsageInterface
      */
-    public function createNew(): AppUsageInterface
+    public function create(): AppUsageInterface
     {
-        return $this->factory->createNew();
+        return $this->factory->create();
     }
 
     /**

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Base\TenantService\Entity;
 
-use Ramsey\Uuid\Uuid;
+use Base\TenantService\ValueObject\TenantIdInterface;
 use ReflectionClass;
 
 /**
@@ -34,7 +34,7 @@ class Tenant implements TenantInterface
     const STATUS_DISABLED = 'disabled';
 
     /**
-     * @var string
+     * @var TenantId
      */
     protected $id;
 
@@ -71,7 +71,7 @@ class Tenant implements TenantInterface
     /**
      * {@inheritdoc}
      */
-    public function setId(string $id)
+    public function setId(TenantIdInterface $id)
     {
         $this->id = $id;
         return $this;
@@ -135,7 +135,7 @@ class Tenant implements TenantInterface
     /**
      * {@inheritdoc}
      */
-    public function getId(): string
+    public function getId(): TenantIdInterface
     {
         return $this->id;
     }
@@ -207,18 +207,5 @@ class Tenant implements TenantInterface
             }
         }
         return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function createTenantId(string $name = '', string $domain = ''): string
-    {
-        if (!empty($name)) {
-            return $name.$domain;
-        } else {
-            $uuid = Uuid::uuid4()->toString();
-            return $uuid.$domain;
-        }
     }
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Base\AuthService\Entity;
 
+use Base\AuthService\ValueObject\PasswordInterface;
+
 /**
  * User Identity Entity Interface
  *
@@ -63,10 +65,10 @@ interface UserIdentityInterface
     /**
      * Set the value of field passwordHash
      *
-     * @param  string $passwordHash
+     * @param  PasswordInterface $passwordHash
      * @return $this
      */
-    public function setPasswordHash(string $passwordHash);
+    public function setPasswordHash(PasswordInterface $passwordHash);
 
     /**
      * Set the value of field authParams
@@ -168,6 +170,13 @@ interface UserIdentityInterface
      * @return string|null
      */
     public function getAuthProviderUid(): ?string;
+
+    /**
+     * Return the value of field passwordHash
+     *
+     * @return PasswordInterface|null
+     */
+    public function getPasswordHash(): ?PasswordInterface;
 
     /**
      * Return the value of field authParams

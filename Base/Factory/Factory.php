@@ -36,7 +36,7 @@ class Factory implements FactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createNew()
+    public function create()
     {
         return new $this->className();
     }

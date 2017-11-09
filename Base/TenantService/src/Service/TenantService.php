@@ -17,7 +17,7 @@ use Base\TenantService\ValueObject\TenantId;
 use Base\TenantService\Repository\TenantRepositoryInterface;
 use Base\TenantService\Factory\TenantFactoryInterface;
 use Base\TenantService\Exception\InvalidTenantRegistrationInfoException;
-use Base\TenantService\Exception\NotActiveTenantException;
+use Base\TenantService\Exception\ExistedTenantException;
 use Base\ServiceRequest\ServiceRequestInterface;
 use Base\Formatter\DateTimeFormatter;
 
@@ -66,32 +66,40 @@ class TenantService implements TenantServiceInterface
         // Validate the Data here
 
         // Create TenantId
-        $tenantId = call_user_func_array([$this->tenantFactory->getClassName(), 'createTenantId'], [$name, $domain]);
+        $tenantId = call_user_func_array([$this->tenantFactory->getTenantIdClassName(), 'createTenantId'], [$name, $domain]);
 
         // Get Tenant
         $tenant = $this->tenantRepository->get($tenantId);
 
-        if (!$tenant || ($tenant && $tenant->getStatusOptions('STATUS_ACTIVE') == $tenant->getStatus())) {
-            // So we could go ahead with current registration info
-            // No Tenant Record? Add it
-            if (!$tenant) {
-                $nowTime = DateTimeFormatter::now();
-                $tenant = $this->tenantFactory->createNew();
-                $tenant->setId($tenantId);
-                $tenant->setDomain($tenantId);
-                $tenant->setPlatform($platform);
-                $tenant->setTimeZone($timeZone);
-                $tenant->setStatus($tenant->getStatusOptions('STATUS_ACTIVE'));
-                $tenant->setCreatedAt($nowTime);
-                $tenant->setupdatedAt($nowTime);
-                // $this->tenantRepository->add($tenant);
-            }
+        if ($tenant) {
+            // throw new ExistedTenantException();
+            $options = [
+              'json' => [
+                'tenantId' => (string) $tenantId,
+                'appId' => 'default',
+                'email' => $email,
+                'password' => $password,
+                'attachedPolicies' => ['tenant.tenantOwner']
+              ]
+            ];
+            return $options;
+        } else {
+            $nowTime = DateTimeFormatter::now();
+            $tenant = $this->tenantFactory->create();
+            $tenant->setId($tenantId);
+            $tenant->setDomain((string) $tenantId);
+            $tenant->setPlatform($platform);
+            $tenant->setTimeZone($timeZone);
+            $tenant->setStatus($tenant->getStatusOptions('STATUS_ACTIVE'));
+            $tenant->setCreatedAt($nowTime);
+            $tenant->setupdatedAt($nowTime);
+            $this->tenantRepository->add($tenant);
 
             // Call to other services to finish the registration process
             // Prepare data to send to other services
             $options = [
               'json' => [
-                'tenantId' => $tenantId,
+                'tenantId' => (string) $tenantId,
                 'appId' => 'default',
                 'email' => $email,
                 'password' => $password,
@@ -99,15 +107,13 @@ class TenantService implements TenantServiceInterface
               ]
             ];
 
-            $activateAppresult = $this->serviceRequest->send('APP_SERVICE', 'activateAppEndpoint', $options, true);
+            // $activateAppresult = $this->serviceRequest->send('APP_SERVICE', 'activateAppEndpoint', $options, true);
 
             // $result = $this->serviceRequest->send('AUTH_SERVICE', 'activateAppEndpoint', $options, true);
 
             //return json_decode($result->getBody()->getContents(), true);
             //
             return $options;
-        } else {
-            throw new NotActiveTenantException();
         }
     }
 

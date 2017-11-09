@@ -120,7 +120,7 @@ class AppRepository implements AppRepositoryInterface
     {
         try {
             if (!empty($data)) {
-                $app = $this->appFactory->createNew();
+                $app = $this->appFactory->create();
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
                     if (method_exists($app, $setMethod)) {
@@ -138,11 +138,7 @@ class AppRepository implements AppRepositoryInterface
                 return null;
             }
         } catch (\Exception $e) {
-            throw new ServerErrorException(
-                'Failed Converting Data To App Entity',
-                false,
-                $e->getMessage()
-            );
+            throw new ServerErrorException('Failed Converting Data To App Entity', false, $e->getMessage());
         }
     }
 }

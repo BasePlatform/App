@@ -62,7 +62,9 @@ $container->alias(Base\TenantService\Service\TenantServiceInterface::class, Base
 // Factory
 $container->alias(Base\TenantService\Factory\TenantFactoryInterface::class, Base\TenantService\Factory\TenantFactory::class);
 
-$container->define(Base\TenantService\Factory\TenantFactory::class, [':factory' => new Base\Factory\Factory(Base\TenantService\Entity\Tenant::class)]);
+$container->define(Base\TenantService\Factory\TenantFactory::class, [':factory' => new Base\Factory\Factory(Base\TenantService\Entity\Tenant::class),
+  ':tenantIdFactory' => new Base\Factory\Factory(Base\TenantService\ValueObject\TenantId::class)
+]);
 
 
 // Entity

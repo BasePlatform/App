@@ -16,11 +16,11 @@ use Base\Exception\ServiceExceptionInterface;
 use Base\Exception\ServiceExceptionTrait;
 
 /**
- * Represents a Not Active Tenant Status Exception
+ * Represents an Existed Tenant Exception
  *
  * @package Base\TenantService\Exception
  */
-class NotActiveTenantException extends RuntimeException implements ServiceExceptionInterface
+class ExistedTenantException extends RuntimeException implements ServiceExceptionInterface
 {
     use ServiceExceptionTrait;
 
@@ -31,7 +31,7 @@ class NotActiveTenantException extends RuntimeException implements ServiceExcept
      * @param array $additionalData
      *
      */
-    public function __construct(string $message = 'Tenant Existed and Is Not In Active Status', bool $notification = false, string $details = null, array $additionalData = null)
+    public function __construct(string $message = 'Tenant Is Already Existed', bool $notification = false, string $details = null, array $additionalData = null)
     {
         $this->message = $message;
         $this->statusCode = 403;
@@ -46,6 +46,6 @@ class NotActiveTenantException extends RuntimeException implements ServiceExcept
      */
     public function getReference(string $pathPrefix = ''): string
     {
-        return $pathPrefix.'/api/problems/tenants/not-active-tenant';
+        return $pathPrefix.'/api/problems/tenants/existed-tenant';
     }
 }
