@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Base\TenantService\Repository;
 
 use Base\TenantService\Entity\TenantInterface;
+use Base\TenantService\Factory\TenantFactoryInterface;
 use Base\PDO\PDOProxyInterface;
-use Base\TenantService\Factory\TenantFactory;
 use Base\Exception\ServerErrorException;
 use Base\Formatter\DateTimeFormatter;
 
@@ -37,21 +37,21 @@ class TenantRepository implements TenantRepositoryInterface
     private $pdo;
 
     /**
-     * @var TenantFactory
+     * @var TenantFactoryInterface
      */
     private $tenantFactory;
 
     /**
      * @param PDOProxyInterface $pdo
-     * @param FactoryInterface $tenantFactory
+     * @param TenantFactoryInterface $tenantFactory
      */
-    public function __construct(PDOProxyInterface $pdo, TenantFactory $tenantFactory)
+    public function __construct(PDOProxyInterface $pdo, TenantFactoryInterface $tenantFactory)
     {
         $this->pdo = $pdo;
         $this->tenantFactory = $tenantFactory;
         if (defined('TENANT_SERVICE_CONSTANTS')
-            && isset(TENANT_SERVICE_CONSTANTS['TABLE_PREFIX'])
-            && !empty(TENANT_SERVICE_CONSTANTS['TABLE_PREFIX'])) {
+        && isset(TENANT_SERVICE_CONSTANTS['TABLE_PREFIX'])
+        && !empty(TENANT_SERVICE_CONSTANTS['TABLE_PREFIX'])) {
             $this->tablePrefix = TENANT_SERVICE_CONSTANTS['TABLE_PREFIX'];
         }
     }
@@ -62,12 +62,11 @@ class TenantRepository implements TenantRepositoryInterface
     public function get(string $tenantId): ?TenantInterface
     {
         try {
-            $sql = 'SELECT * FROM '. $this->tablePrefix . 'Tenant t WHERE t.id = :id limit 0,1';
+            $sql = 'SELECT * FROM '. $this->tablePrefix . 'Tenant t WHERE t.id = :id LIMIT 0,1';
             $stmt = $this->pdo->prepare($sql);
-            $stmt->execute(['id' => (string) $tenantId]);
-          // Return which type
+            $stmt->execute(['id' => $tenantId]);
             $result = $stmt->fetch();
-          // Convert to the desired return type
+            // Convert to the desired return type
             return $this->convertToEntity($result);
         } catch (\PDOException $e) {
             throw new ServerErrorException(
@@ -136,10 +135,14 @@ class TenantRepository implements TenantRepositoryInterface
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
                     if (method_exists($tenant, $setMethod)) {
-                        if ($key == 'createdAt' || $key == 'updatedAt') {
+                        $dateTimeProperties = [
+                          'createdAt',
+                          'updatedAt'
+                        ];
+                        if (in_array($key, $dateTimeProperties)) {
                             $value = DateTimeFormatter::createFromDb($value);
                         }
-                        $tenant->$setMethod($value);
+                        $app->$setMethod($value);
                     }
                 }
                 return $tenant;

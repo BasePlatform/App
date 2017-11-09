@@ -117,6 +117,15 @@ interface UserIdentityInterface
     public function setRecentPasswordUpdateAt(\DateTime $recentPasswordUpdateAt);
 
     /**
+     * Set the value of field recentLoginAt
+     *
+     * @param  \DateTime $recentLoginAt
+     *
+     * @return $this
+     */
+    public function setRecentLoginAt(\DateTime $recentLoginAt);
+
+    /**
      * Set the value of field updatedAt
      *
      * @param  \DateTime $updatedAt
@@ -201,6 +210,13 @@ interface UserIdentityInterface
      * @return \DateTime
      */
     public function getRecentPasswordUpdateAt(): \DateTime;
+
+    /**
+     * Return the value of field recentLoginAt
+     *
+     * @return \DateTime|null
+     */
+    public function recentLoginAt(): ?\DateTime;
 
     /**
      * Return the value of field updatedAt

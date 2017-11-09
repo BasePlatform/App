@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Base\AppService\Repository;
 
 use Base\AppService\Entity\AppInterface;
+use Base\AppService\Factory\AppFactoryInterface;
 use Base\PDO\PDOProxyInterface;
-use Base\AppService\Factory\appFactory;
 use Base\Exception\ServerErrorException;
 use Base\Formatter\DateTimeFormatter;
 
@@ -37,22 +37,22 @@ class AppRepository implements AppRepositoryInterface
     private $pdo;
 
     /**
-     * @var appFactory
+     * @var AppFactoryInterface
      */
     private $appFactory;
 
     /**
      * @param PDOProxyInterface $pdo
-     * @param FactoryInterface $appFactory
+     * @param AppFactoryInterface $appFactory
      */
-    public function __construct(PDOProxyInterface $pdo, appFactory $appFactory)
+    public function __construct(PDOProxyInterface $pdo, AppFactoryInterface $appFactory)
     {
         $this->pdo = $pdo;
         $this->appFactory = $appFactory;
-        if (defined('App_SERVICE_CONSTANTS')
-            && isset(App_SERVICE_CONSTANTS['TABLE_PREFIX'])
-            && !empty(App_SERVICE_CONSTANTS['TABLE_PREFIX'])) {
-            $this->tablePrefix = App_SERVICE_CONSTANTS['TABLE_PREFIX'];
+        if (defined('APP_SERVICE_CONSTANTS')
+            && isset(APP_SERVICE_CONSTANTS['TABLE_PREFIX'])
+            && !empty(APP_SERVICE_CONSTANTS['TABLE_PREFIX'])) {
+            $this->tablePrefix = APP_SERVICE_CONSTANTS['TABLE_PREFIX'];
         }
     }
 
@@ -62,12 +62,11 @@ class AppRepository implements AppRepositoryInterface
     public function get(string $appId): ?AppInterface
     {
         try {
-            $sql = 'SELECT * FROM '. $this->tablePrefix . 'App a WHERE a.id = :id limit 0,1';
+            $sql = 'SELECT * FROM '. $this->tablePrefix . 'App a WHERE a.id = :id LIMIT 0,1';
             $stmt = $this->pdo->prepare($sql);
-            $stmt->execute(['id' => (string) $appId]);
-          // Return which type
+            $stmt->execute(['id' => $appId]);
             $result = $stmt->fetch();
-          // Convert to the desired return type
+            // Convert to the desired return type
             return $this->convertToEntity($result);
         } catch (\PDOException $e) {
             throw new ServerErrorException(
@@ -101,8 +100,8 @@ class AppRepository implements AppRepositoryInterface
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
               'id' => (string) $app->getId(),
-              'plans' => $app->getPlans(),
-              'params' => $app->getParams(),
+              'plans' => ($app->getPlans() != null) ? json_encode($app->getPlans()) : null,
+              'params' => ($app->getParams() != null) ? json_encode($app->getParams()) : null,
               'status' => (string) $app->getStatus(),
               'updatedAt' => DateTimeFormatter::toDb($app->getUpdatedAt())
             ]);
@@ -133,7 +132,10 @@ class AppRepository implements AppRepositoryInterface
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
                     if (method_exists($app, $setMethod)) {
-                        if ($key == 'updatedAt') {
+                        $dateTimeProperties = [
+                          'updatedAt'
+                        ];
+                        if (in_array($key, $dateTimeProperties)) {
                             $value = DateTimeFormatter::createFromDb($value);
                         }
                         $app->$setMethod($value);

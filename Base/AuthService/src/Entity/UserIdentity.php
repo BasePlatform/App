@@ -83,6 +83,11 @@ class UserIdentity implements UserIdentityInterface
     /**
      * @var \DateTime
      */
+    protected $recentLoginAt;
+
+    /**
+     * @var \DateTime
+     */
     protected $updatedAt;
 
     /**
@@ -196,7 +201,16 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
+    public function setRecentLoginAt(\DateTime $recentLoginAt)
+    {
+        $this->recentLoginAt = $recentLoginAt;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUpdatedAt(\DateTime $updatedA)
     {
         $this->updatedAt = $updatedAt;
         return $this;
@@ -288,6 +302,14 @@ class UserIdentity implements UserIdentityInterface
     public function getRecentPasswordUpdateAt(): \DateTime
     {
         return $this->recentPasswordUpdateAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRecentLoginAt(): ?\DateTime
+    {
+        return $this->recentLoginAt;
     }
 
     /**

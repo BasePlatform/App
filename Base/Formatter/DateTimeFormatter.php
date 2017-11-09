@@ -82,12 +82,15 @@ class DateTimeFormatter
      * @param   string|\DateTime $value
      * @param   string $inputFormat
      * @param   string $inputTimeZone
-     * @return  string
+     * @return  string|null
      */
     public static function toDb($value, string $inputFormat = DATE_ATOM, string $inputTimeZone = 'UTC')
     {
         try {
             $result = null;
+            if (empty($value)) {
+                return $result;
+            }
             if ($value instanceof \DateTime) {
                 $result = $value;
             } elseif (is_string($value) && !empty($value)) {
@@ -115,12 +118,15 @@ class DateTimeFormatter
      * @param   string $outputTimeZone
      * @param   string $inputFormat
      * @param   string $inputTimeZone
-     * @return  string
+     * @return  string|null
      */
     public static function toISO8601($value, string $outputTimeZone = 'UTC', string $inputFormat = null, string $inputTimeZone = 'UTC')
     {
         try {
             $result = null;
+            if (empty($value)) {
+                return $result;
+            }
             if ($value instanceof \DateTime) {
                 $result = $value;
             } elseif (is_string($value) && !empty($value)) {

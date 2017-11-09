@@ -36,7 +36,7 @@ interface TenantRepositoryInterface
      *
      * @param TenantInterface $tenant
      *
-     * @return string
+     * @return string|null The inserted tenantId
      */
     public function add(TenantInterface $tenant): ?string;
 

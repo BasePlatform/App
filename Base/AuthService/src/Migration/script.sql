@@ -58,6 +58,7 @@ CREATE TABLE `Base_UserIdentity` (
   `passwordResetToken` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
   `passwordResetExpiresAt` datetime DEFAULT NULL,
   `recentPasswordUpdateAt` datetime NOT NULL,
+  `recentLoginAt` datetime DEFAULT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `tenantId_userId` (`tenantId`,`userId`),
