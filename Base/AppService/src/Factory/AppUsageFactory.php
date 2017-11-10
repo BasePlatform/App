@@ -37,7 +37,7 @@ class AppUsageFactory implements AppUsageFactoryInterface
     }
 
     /**
-     * @return AppUsageInterface
+     * {@inheritdoc}
      */
     public function create(): AppUsageInterface
     {

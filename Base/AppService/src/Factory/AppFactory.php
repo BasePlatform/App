@@ -37,7 +37,7 @@ class AppFactory implements AppFactoryInterface
     }
 
     /**
-     * @return AppInterface
+     * {@inheritdoc}
      */
     public function create(): AppInterface
     {

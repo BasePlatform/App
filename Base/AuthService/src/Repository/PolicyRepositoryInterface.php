@@ -1,0 +1,72 @@
+<?php
+/*
+ * This file is part of the BasePlatform project.
+ *
+ * @link https://github.com/BasePlatform
+ * @license https://github.com/BasePlatform/Base/blob/master/LICENSE.txt
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace Base\AuthServivce\Repository;
+
+use Base\AuthServivce\Entity\PolicyInterface;
+use Base\AuthService\ValueObject\ZoneInterface;
+
+/**
+ * Policy Repository Interface
+ *
+ * @package Base\AuthServivce\Repository
+ */
+interface PolicyRepositoryInterface
+{
+    /**
+     * Get Policy by Policy Id
+     *
+     * @param string $policyId
+     *
+     * @return PolicyInterface|null
+     */
+    public function get(string $policyId): ?PolicyInterface;
+
+    /**
+     * Find All Policies by App Id, Type, Zone
+     *
+     * @param string $appId
+     * @param string $type
+     * @param ZoneInterface $zone
+     *
+     * @return PolicyInterface[]|null
+     */
+    public function findAllByAppTypeZone(string $appId, string $type, ZoneInterface $zone): ?array;
+
+    /**
+     * Add a Policy
+     *
+     * @param PolicyInterface $item
+     *
+     * @return string|null The inserted Policy Id
+     */
+    public function add(PolicyInterface $item): ?string;
+
+    /**
+     * Delete a Policy by Policy Id
+     *
+     * @param string $policyId
+     *
+     * @return boolean
+     */
+    public function delete(string $policyId): bool;
+
+    /**
+     * Convert an array data from fetch assoc to Entity
+     *
+     * @param array|boolean $data
+     *
+     * @return PolicyInterface|null
+     */
+    public function convertToEntity($data): ?PolicyInterface;
+}

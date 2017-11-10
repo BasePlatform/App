@@ -24,7 +24,7 @@ use Base\TenantService\ValueObject\TenantIdInterface;
 interface TenantRepositoryInterface
 {
     /**
-     * Get Tenant by TenantId
+     * Get Tenant by Tenant Id
      *
      * @param TenantIdInterface $tenantId
      *
@@ -35,11 +35,11 @@ interface TenantRepositoryInterface
     /**
      * Add a Tenant
      *
-     * @param TenantInterface $tenant
+     * @param TenantInterface $item
      *
-     * @return TenantIdInterface|null The inserted tenantId
+     * @return TenantIdInterface|null The inserted Tenant Id
      */
-    public function add(TenantInterface $tenant): ?TenantIdInterface;
+    public function add(TenantInterface $item): ?TenantIdInterface;
 
     /**
      * Convert an array data from fetch assoc to Entity

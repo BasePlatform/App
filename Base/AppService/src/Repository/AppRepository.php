@@ -39,16 +39,16 @@ class AppRepository implements AppRepositoryInterface
     /**
      * @var AppFactoryInterface
      */
-    private $appFactory;
+    private $factory;
 
     /**
      * @param PDOProxyInterface $pdo
-     * @param AppFactoryInterface $appFactory
+     * @param AppFactoryInterface $factory
      */
-    public function __construct(PDOProxyInterface $pdo, AppFactoryInterface $appFactory)
+    public function __construct(PDOProxyInterface $pdo, AppFactoryInterface $factory)
     {
         $this->pdo = $pdo;
-        $this->appFactory = $appFactory;
+        $this->factory = $factory;
         if (defined('APP_SERVICE_CONSTANTS')
             && isset(APP_SERVICE_CONSTANTS['TABLE_PREFIX'])
             && !empty(APP_SERVICE_CONSTANTS['TABLE_PREFIX'])) {
@@ -76,7 +76,7 @@ class AppRepository implements AppRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function add(AppInterface $app): ?string
+    public function add(AppInterface $item): ?string
     {
         try {
             $this->pdo->beginTransaction();
@@ -95,21 +95,21 @@ class AppRepository implements AppRepositoryInterface
               )';
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
-              'id' => (string) $app->getId(),
-              'plans' => ($app->getPlans() != null) ? json_encode($app->getPlans()) : null,
-              'params' => ($app->getParams() != null) ? json_encode($app->getParams()) : null,
-              'status' => (string) $app->getStatus(),
-              'updatedAt' => DateTimeFormatter::toDb($app->getUpdatedAt())
+              'id' => (string) $item->getId(),
+              'plans' => ($item->getPlans() != null) ? json_encode($item->getPlans()) : null,
+              'params' => ($item->getParams() != null) ? json_encode($item->getParams()) : null,
+              'status' => (string) $item->getStatus(),
+              'updatedAt' => DateTimeFormatter::toDb($item->getUpdatedAt())
             ]);
             $id = null;
             if ($result) {
-                $id = $app->getId();
+                $id = $item->getId();
             }
             $this->pdo->commit();
             return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Adding App to Storage', false, $e->getMessage());
+            throw new ServerErrorException('Failed Adding App', false, $e->getMessage());
         }
     }
 
@@ -120,20 +120,20 @@ class AppRepository implements AppRepositoryInterface
     {
         try {
             if (!empty($data)) {
-                $app = $this->appFactory->create();
+                $entity = $this->factory->create();
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
-                    if (method_exists($app, $setMethod)) {
+                    if (method_exists($entity, $setMethod)) {
                         $dateTimeProperties = [
                           'updatedAt'
                         ];
                         if (in_array($key, $dateTimeProperties)) {
                             $value = DateTimeFormatter::createFromDb($value);
                         }
-                        $app->$setMethod($value);
+                        $entity->$setMethod($value);
                     }
                 }
-                return $app;
+                return $entity;
             } else {
                 return null;
             }

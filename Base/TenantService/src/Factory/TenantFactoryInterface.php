@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Base\TenantService\Factory;
 
 use Base\Factory\FactoryInterface;
+use Base\TenantService\ValueObject\TenantIdInterface;
 
 /**
  * Tenant Factory Interface
@@ -22,6 +23,13 @@ use Base\Factory\FactoryInterface;
  */
 interface TenantFactoryInterface extends FactoryInterface
 {
+    /**
+     * Create an instance of TenantIdInterface
+     *
+     * @return TenantIdInterface
+     */
+    public function createTenantId(): TenantIdInterface;
+
     /**
      * Return the class name of TenantId Factory
      *

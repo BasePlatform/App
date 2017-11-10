@@ -45,7 +45,7 @@ class TenantFactory implements TenantFactoryInterface
     }
 
     /**
-     * @return TenantInterface
+     * {@inheritdoc}
      */
     public function create(): TenantInterface
     {
@@ -53,7 +53,7 @@ class TenantFactory implements TenantFactoryInterface
     }
 
     /**
-     * @return TenantIdInterface
+     * {@inheritdoc}
      */
     public function createTenantId(): TenantIdInterface
     {

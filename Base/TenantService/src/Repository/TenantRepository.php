@@ -40,16 +40,16 @@ class TenantRepository implements TenantRepositoryInterface
     /**
      * @var TenantFactoryInterface
      */
-    private $tenantFactory;
+    private $factory;
 
     /**
      * @param PDOProxyInterface $pdo
-     * @param TenantFactoryInterface $tenantFactory
+     * @param TenantFactoryInterface $factory
      */
-    public function __construct(PDOProxyInterface $pdo, TenantFactoryInterface $tenantFactory)
+    public function __construct(PDOProxyInterface $pdo, TenantFactoryInterface $factory)
     {
         $this->pdo = $pdo;
-        $this->tenantFactory = $tenantFactory;
+        $this->factory = $factory;
         if (defined('TENANT_SERVICE_CONSTANTS')
         && isset(TENANT_SERVICE_CONSTANTS['TABLE_PREFIX'])
         && !empty(TENANT_SERVICE_CONSTANTS['TABLE_PREFIX'])) {
@@ -77,7 +77,7 @@ class TenantRepository implements TenantRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function add(TenantInterface $tenant): ?TenantIdInterface
+    public function add(TenantInterface $item): ?TenantIdInterface
     {
         try {
             $this->pdo->beginTransaction();
@@ -98,22 +98,22 @@ class TenantRepository implements TenantRepositoryInterface
               )';
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
-              'id' => (string) $tenant->getId(),
-              'domain' => (string) $tenant->getDomain(),
-              'platform' => (string) $tenant->getPlatform(),
-              'status' => (string) $tenant->getStatus(),
-              'createdAt' => DateTimeFormatter::toDb($tenant->getCreatedAt()),
-              'updatedAt' => DateTimeFormatter::toDb($tenant->getUpdatedAt())
+              'id' => (string) $item->getId(),
+              'domain' => (string) $item->getDomain(),
+              'platform' => (string) $item->getPlatform(),
+              'status' => (string) $item->getStatus(),
+              'createdAt' => DateTimeFormatter::toDb($item->getCreatedAt()),
+              'updatedAt' => DateTimeFormatter::toDb($item->getUpdatedAt())
             ]);
             $id = null;
             if ($result) {
-                $id = $tenant->getId();
+                $id = $item->getId();
             }
             $this->pdo->commit();
             return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Adding Tenant to Storage', false, $e->getMessage());
+            throw new ServerErrorException('Failed Adding Tenant', false, $e->getMessage());
         }
     }
 
@@ -124,12 +124,12 @@ class TenantRepository implements TenantRepositoryInterface
     {
         try {
             if (!empty($data)) {
-                $tenant = $this->tenantFactory->create();
-                $tenantId = $this->tenantFactory->createTenantId();
+                $entity = $this->factory->create();
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
-                    if (method_exists($tenant, $setMethod)) {
+                    if (method_exists($entity, $setMethod)) {
                         if ($key == 'id') {
+                            $tenantId = $this->factory->createTenantId();
                             $tenantId->setId($value);
                             $value = $tenantId;
                         }
@@ -140,10 +140,10 @@ class TenantRepository implements TenantRepositoryInterface
                         if (in_array($key, $dateTimeProperties)) {
                             $value = DateTimeFormatter::createFromDb($value);
                         }
-                        $tenant->$setMethod($value);
+                        $entity->$setMethod($value);
                     }
                 }
-                return $tenant;
+                return $entity;
             } else {
                 return null;
             }

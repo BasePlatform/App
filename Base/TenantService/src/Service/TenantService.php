@@ -36,7 +36,7 @@ class TenantService implements TenantServiceInterface
     /**
      * @var TenantFactoryInterface
      */
-    private $tenantFactory;
+    private $factory;
 
     /**
      * @var ServiceRequestInterface
@@ -46,11 +46,11 @@ class TenantService implements TenantServiceInterface
     /**
      * @param TenantRepositoryInterface $tenantRepository
      */
-    public function __construct(TenantRepositoryInterface $tenantRepository, ServiceRequestInterface $serviceRequest, TenantFactoryInterface $tenantFactory)
+    public function __construct(TenantRepositoryInterface $tenantRepository, ServiceRequestInterface $serviceRequest, TenantFactoryInterface $factory)
     {
         $this->tenantRepository = $tenantRepository;
         $this->serviceRequest = $serviceRequest;
-        $this->tenantFactory = $tenantFactory;
+        $this->factory = $factory;
     }
 
     /**
@@ -66,7 +66,7 @@ class TenantService implements TenantServiceInterface
         // Validate the Data here
 
         // Create TenantId
-        $tenantId = call_user_func_array([$this->tenantFactory->getTenantIdClassName(), 'createTenantId'], [$name, $domain]);
+        $tenantId = call_user_func_array([$this->factory->getTenantIdClassName(), 'createTenantId'], [$name, $domain]);
 
         // Get Tenant
         $tenant = $this->tenantRepository->get($tenantId);
@@ -85,7 +85,7 @@ class TenantService implements TenantServiceInterface
             return $options;
         } else {
             $nowTime = DateTimeFormatter::now();
-            $tenant = $this->tenantFactory->create();
+            $tenant = $this->factory->create();
             $tenant->setId($tenantId);
             $tenant->setDomain((string) $tenantId);
             $tenant->setPlatform($platform);

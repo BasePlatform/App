@@ -15,6 +15,7 @@ namespace Base\AuthService\Factory;
 
 use Base\Factory\FactoryInterface;
 use Base\AuthService\Entity\PolicyInterface;
+use Base\AuthService\ValueObject\ZoneInterface;
 
 /**
  * Policy Factory
@@ -29,15 +30,22 @@ class PolicyFactory implements PolicyFactoryInterface
     private $factory;
 
     /**
-     * @param FactoryInterface $factory
+     * @var FactoryInterface
      */
-    public function __construct(FactoryInterface $factory)
+    private $zoneFactory;
+
+    /**
+     * @param FactoryInterface $factory
+     * @param FactoryInterface $zoneFactory
+     */
+    public function __construct(FactoryInterface $factory, FactoryInterface $zoneFactory)
     {
         $this->factory = $factory;
+        $this->zoneFactory = $zoneFactory;
     }
 
     /**
-     * @return PolicyInterface
+     * {@inheritdoc}
      */
     public function create(): PolicyInterface
     {

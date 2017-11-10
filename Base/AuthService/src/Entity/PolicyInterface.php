@@ -32,6 +32,15 @@ interface PolicyInterface
     public function setId(string $id);
 
     /**
+     * Set the value of field appId
+     *
+     * @param  string $appId
+     *
+     * @return $this
+     */
+    public function setAppId(string $appId);
+
+    /**
      * Set the value of field type
      *
      * @param  string $type
@@ -48,15 +57,6 @@ interface PolicyInterface
      * @return $this
      */
     public function setZone(ZoneInterface $zone);
-
-    /**
-     * Set the value of field appId
-     *
-     * @param  string $appId
-     *
-     * @return $this
-     */
-    public function setAppId(string $appId);
 
     /**
      * Set the value of field description
@@ -84,6 +84,13 @@ interface PolicyInterface
     public function getId(): string;
 
     /**
+     * Return the value of field appId
+     *
+     * @return string
+     */
+    public function getAppId(): string;
+
+    /**
      * Return the value of field type
      *
      * @return string
@@ -96,13 +103,6 @@ interface PolicyInterface
      * @return ZoneInterface
      */
     public function getZone(): ZoneInterface;
-
-    /**
-     * Return the value of field appId
-     *
-     * @return string
-     */
-    public function getAppId(): string;
 
     /**
      * Return the value of field description

@@ -23,7 +23,7 @@ use Base\AppServivce\Entity\AppInterface;
 interface AppRepositoryInterface
 {
     /**
-     * Get App by AppId
+     * Get App by App Id
      *
      * @param string $apId
      *
@@ -34,11 +34,11 @@ interface AppRepositoryInterface
     /**
      * Add an App
      *
-     * @param AppInterface $app
+     * @param AppInterface $item
      *
-     * @return string|null The inserted appId
+     * @return string|null The inserted App Id
      */
-    public function add(AppInterface $app): ?string;
+    public function add(AppInterface $item): ?string;
 
     /**
      * Convert an array data from fetch assoc to Entity

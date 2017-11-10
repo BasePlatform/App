@@ -30,17 +30,17 @@ class Policy implements PolicyInterface
     /**
      * @var string
      */
+    protected $appId = 'default';
+
+    /**
+     * @var string
+     */
     protected $type;
 
     /**
      * @var ZoneInterface
      */
     protected $zone;
-
-    /**
-     * @var string
-     */
-    protected $appId = 'default';
 
     /**
      * @var string
@@ -64,6 +64,15 @@ class Policy implements PolicyInterface
     /**
      * {@inheritdoc}
      */
+    public function setAppId(string $appId)
+    {
+        $this->appId = $appId;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setType(string $type)
     {
         $this->type = $type;
@@ -76,15 +85,6 @@ class Policy implements PolicyInterface
     public function setZone(ZoneInterface $zone)
     {
         $this->zone = $zone;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAppId(string $appId)
-    {
-        $this->appId = $appId;
         return $this;
     }
 
@@ -117,6 +117,14 @@ class Policy implements PolicyInterface
     /**
      * {@inheritdoc}
      */
+    public function getAppId(): string
+    {
+        return $this->appId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getType(): string
     {
         return $this->type;
@@ -128,14 +136,6 @@ class Policy implements PolicyInterface
     public function getZone(): ZoneInterface
     {
         return $this->zone;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAppId(): string
-    {
-        return $this->appId;
     }
 
     /**
