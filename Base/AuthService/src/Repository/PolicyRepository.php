@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Base\AuthService\Repository;
 
 use Base\AuthService\Entity\PolicyInterface;
-use Base\AuthService\Entity\ZoneInterface;
+use Base\AuthService\ValueObject\ZoneInterface;
 use Base\AuthService\Factory\PolicyFactoryInterface;
 use Base\AuthService\Factory\ZoneFactoryInterface;
 use Base\PDO\PDOProxyInterface;
@@ -84,22 +84,29 @@ class PolicyRepository implements PolicyRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findAllByAppTypeZone(string $appId, string $type, ZoneInterface $zone)
+    public function findAllByAppTypeZone(string $appId, string $type, ZoneInterface $zone): ?array
     {
         try {
-            $sql = 'SELECT * FROM '. $this->tablePrefix . 'Policy p
-            WHERE p.appId = :appId AND
-                    p.type = :type AND
-                    p.zone = :zone';
+            $sql = 'SELECT * FROM '. $this->tablePrefix . 'Policy p WHERE
+                p.appId = :appId AND
+                p.type = :type AND
+                p.zone = :zone';
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([
               'appId' => $appId,
               'type' => $type,
               'zone' => (string) $zone,
             ]);
-            $result = $stmt->fetch();
-            // Convert to the desired return type
-            return $this->convertToEntity($result);
+            $results = $stmt->fetchAll();
+            if ($results && !empty($results)) {
+                $entities = [];
+                foreach ($results as $result) {
+                    $entities[] = $this->convertToEntity($result);
+                }
+                return $entities;
+            } else {
+                return null;
+            }
         } catch (\PDOException $e) {
             throw new ServerErrorException('Failed Finding Policies', false, $e->getMessage());
         }
@@ -129,11 +136,11 @@ class PolicyRepository implements PolicyRepositoryInterface
               )';
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
-              'id' => (string) $item->getId(),
-              'appId' => (string) $item->getAppId(),
-              'type' => (string) $item->getType(),
+              'id' => $item->getId(),
+              'appId' => $item->getAppId(),
+              'type' => $item->getType(),
               'zone' => (string) $item->getZone(),
-              'description' => (string) $item->getDescription(),
+              'description' => $item->getDescription(),
               'params' => ($item->getParams() != null) ? json_encode($item->getParams()) : null
             ]);
             $id = null;
@@ -155,8 +162,7 @@ class PolicyRepository implements PolicyRepositoryInterface
     {
         try {
             $this->pdo->beginTransaction();
-            $sql = 'DELETE FROM ' . $this->tablePrefix . 'Policy p
-            WHERE p.id = :id';
+            $sql = 'DELETE FROM ' . $this->tablePrefix . 'Policy p WHERE p.id = :id';
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
               'id' => $policyId,
@@ -179,7 +185,7 @@ class PolicyRepository implements PolicyRepositoryInterface
                 $entity = $this->factory->create();
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
-                    if ($key == 'zone') {
+                    if ($key == 'zone' && $value) {
                         $zone = $this->zoneFactory->create();
                         $zone->setZoneId($value);
                         $value = $zone;
@@ -188,7 +194,7 @@ class PolicyRepository implements PolicyRepositoryInterface
                         $jsonProperties = [
                           'params'
                         ];
-                        if (in_array($key, $dateTimeProperties)) {
+                        if (in_array($key, $jsonProperties) && $value) {
                             $value = json_decode($value);
                         }
                         $entity->$setMethod($value);

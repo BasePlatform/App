@@ -23,14 +23,14 @@ use Base\AuthServivce\Entity\UserProfileInterface;
 interface UserProfileRepositoryInterface
 {
     /**
-     * Get User Profile of by a User Id of a Tenant
+     * Find User Profile of by a User Id of a Tenant
      *
      * @param string $tenantId
      * @param integer $userId
      *
      * @return UserProfileInterface|null
      */
-    public function get(string $tenantId, int $userId): ?UserProfileInterface;
+    public function find(string $tenantId, int $userId): ?UserProfileInterface;
 
     /**
      * Add a User Profile

@@ -99,9 +99,9 @@ class TenantRepository implements TenantRepositoryInterface
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
               'id' => (string) $item->getId(),
-              'domain' => (string) $item->getDomain(),
-              'platform' => (string) $item->getPlatform(),
-              'status' => (string) $item->getStatus(),
+              'domain' => $item->getDomain(),
+              'platform' => $item->getPlatform(),
+              'status' => $item->getStatus(),
               'createdAt' => DateTimeFormatter::toDb($item->getCreatedAt()),
               'updatedAt' => DateTimeFormatter::toDb($item->getUpdatedAt())
             ]);
@@ -128,7 +128,7 @@ class TenantRepository implements TenantRepositoryInterface
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
                     if (method_exists($entity, $setMethod)) {
-                        if ($key == 'id') {
+                        if ($key == 'id' && $value) {
                             $tenantId = $this->factory->createTenantId();
                             $tenantId->setId($value);
                             $value = $tenantId;
@@ -137,7 +137,7 @@ class TenantRepository implements TenantRepositoryInterface
                           'createdAt',
                           'updatedAt'
                         ];
-                        if (in_array($key, $dateTimeProperties)) {
+                        if (in_array($key, $dateTimeProperties) && $value) {
                             $value = DateTimeFormatter::createFromDb($value);
                         }
                         $entity->$setMethod($value);

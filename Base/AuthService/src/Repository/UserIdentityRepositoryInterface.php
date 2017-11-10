@@ -23,14 +23,14 @@ use Base\AuthServivce\Entity\UserIdentityInterface;
 interface UserIdentityRepositoryInterface
 {
     /**
-     * Get User Identity of by a User Id of a Tenant
+     * Find User Identity of by a User Id of a Tenant
      *
      * @param string $tenantId
      * @param integer $userId
      *
      * @return UserIdentityInterface|null
      */
-    public function get(string $tenantId, int $userId): ?UserIdentityInterface;
+    public function find(string $tenantId, int $userId): ?UserIdentityInterface;
 
     /**
      * Add a User Identity

@@ -59,22 +59,22 @@ abstract class RestController implements MiddlewareInterface
         switch ($requestMethod) {
             case 'GET':
                 return isset($id)
-            ? $this->get($request, $next)
-            : $this->getList($request, $next);
+            ? $this->getAction($request, $next)
+            : $this->getListAction($request, $next);
             case 'POST':
-                return $this->create($request, $next);
+                return $this->createAction($request, $next);
             case 'PUT':
-                return $this->update($request, $next);
+                return $this->updateAction($request, $next);
             case 'DELETE':
                 return isset($id)
-            ? $this->delete($request, $next)
-            : $this->deleteList($request, $next);
+            ? $this->deleteAction($request, $next)
+            : $this->deleteListAction($request, $next);
             case 'HEAD':
-                return $this->head($request, $next);
+                return $this->headAction($request, $next);
             case 'OPTIONS':
-                return $this->options($request, $next);
+                return $this->optionsAction($request, $next);
             case 'PATCH':
-                return $this->patch($request, $next);
+                return $this->patchAction($request, $next);
             default:
                 if ($next !== null) {
                     return $next->handle($request);
@@ -91,7 +91,7 @@ abstract class RestController implements MiddlewareInterface
      *
      * @return null|ResponseInterface
      */
-    public function get(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
+    public function getAction(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }
@@ -104,7 +104,7 @@ abstract class RestController implements MiddlewareInterface
      *
      * @return null|ResponseInterface
      */
-    public function getList(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
+    public function getListAction(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }
@@ -117,7 +117,7 @@ abstract class RestController implements MiddlewareInterface
      *
      * @return null|ResponseInterface
      */
-    public function create(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
+    public function createAction(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }
@@ -130,7 +130,7 @@ abstract class RestController implements MiddlewareInterface
      *
      * @return null|ResponseInterface
      */
-    public function update(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
+    public function updateAction(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }
@@ -143,7 +143,7 @@ abstract class RestController implements MiddlewareInterface
      *
      * @return null|ResponseInterface
      */
-    public function delete(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
+    public function deleteAction(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }
@@ -156,7 +156,7 @@ abstract class RestController implements MiddlewareInterface
      *
      * @return null|ResponseInterface
      */
-    public function deleteList(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
+    public function deleteListAction(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }
@@ -169,7 +169,7 @@ abstract class RestController implements MiddlewareInterface
      *
      * @return null|ResponseInterface
      */
-    public function head(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
+    public function headAction(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }
@@ -182,7 +182,7 @@ abstract class RestController implements MiddlewareInterface
      *
      * @return null|ResponseInterface
      */
-    public function options(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
+    public function optionsAction(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }
@@ -195,7 +195,7 @@ abstract class RestController implements MiddlewareInterface
      *
      * @return null|ResponseInterface
      */
-    public function patch(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
+    public function patchAction(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         throw new MethodNotAllowedException();
     }

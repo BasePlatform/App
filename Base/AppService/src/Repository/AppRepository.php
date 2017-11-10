@@ -95,10 +95,10 @@ class AppRepository implements AppRepositoryInterface
               )';
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
-              'id' => (string) $item->getId(),
+              'id' => $item->getId(),
               'plans' => ($item->getPlans() != null) ? json_encode($item->getPlans()) : null,
               'params' => ($item->getParams() != null) ? json_encode($item->getParams()) : null,
-              'status' => (string) $item->getStatus(),
+              'status' => $item->getStatus(),
               'updatedAt' => DateTimeFormatter::toDb($item->getUpdatedAt())
             ]);
             $id = null;
@@ -127,7 +127,7 @@ class AppRepository implements AppRepositoryInterface
                         $dateTimeProperties = [
                           'updatedAt'
                         ];
-                        if (in_array($key, $dateTimeProperties)) {
+                        if (in_array($key, $dateTimeProperties) && $value) {
                             $value = DateTimeFormatter::createFromDb($value);
                         }
                         $entity->$setMethod($value);

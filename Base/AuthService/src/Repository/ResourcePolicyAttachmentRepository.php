@@ -59,35 +59,122 @@ class ResourcePolicyAttachmentRepository implements ResourcePolicyAttachmentRepo
     /**
      * {@inheritdoc}
      */
-    public function findAll(string $tenantId, string $resourceId)
+    public function findAll(string $tenantId, string $resourceId): ?array
     {
+        try {
+            $sql = 'SELECT * FROM '. $this->tablePrefix . 'ResourcePolicyAttachment rpa WHERE
+                rpa.tenantId = :tenantId AND
+                rpa.resourceId = :resourceId';
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([
+              'tenantId' => $tenantId,
+              'resourceId' => $resourceId
+            ]);
+            $results = $stmt->fetchAll();
+            if ($results && !empty($results)) {
+                $entities = [];
+                foreach ($results as $result) {
+                    $entities[] = $this->convertToEntity($result);
+                }
+                return $entities;
+            } else {
+                return null;
+            }
+        } catch (\PDOException $e) {
+            throw new ServerErrorException('Failed Finding Resource Policy Attachments', false, $e->getMessage());
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function add(ResourcePolicyAttachmentInterface $item)
+    public function add(ResourcePolicyAttachmentInterface $item): ?integer
     {
+        try {
+            $this->pdo->beginTransaction();
+            $sql = 'INSERT INTO ' . $this->tablePrefix . 'ResourcePolicyAttachment (
+                tenantId,
+                resourceId,
+                policyId,
+                attachedAt
+              ) VALUES (
+                :tenantId,
+                :resourceId,
+                :policyId,
+                :attachedAt
+              )';
+            $stmt = $this->pdo->prepare($sql);
+            $result = $stmt->execute([
+              'tenantId' => $item->getTenantId(),
+              'resourceId' => $item->getResourceId(),
+              'policyId' => $item->getPolicyId(),
+              'attachedAt' => DateTimeFormatter::toDb($item->getAttachedAt())
+            ]);
+            $id = null;
+            if ($result) {
+                $id = $this->pdo->lastInsertId();
+            }
+            $this->pdo->commit();
+            return $id;
+        } catch (\PDOException $e) {
+            $this->pdo->rollBack();
+            throw new ServerErrorException('Failed Attaching Resource Policy', false, $e->getMessage());
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function delete(string $tenantId, string $resourceId, string $policyId)
+    public function delete(string $tenantId, string $resourceId, string $policyId): bool
     {
+        try {
+            $this->pdo->beginTransaction();
+            $sql = 'DELETE FROM ' . $this->tablePrefix . 'ResourcePolicyAttachment rpa WHERE
+                rpa.tenantId = :tenantId AND
+                rpa.resourceId = :resourceId AND
+                rpa.policyId = :policyId
+              LIMIT 1';
+            $stmt = $this->pdo->prepare($sql);
+            $result = $stmt->execute([
+              'tenantId' => $tenantId,
+              'resourceId' => $resourceId,
+              'policyId' => $policyId
+            ]);
+            $this->pdo->commit();
+            return $result;
+        } catch (\PDOException $e) {
+            $this->pdo->rollBack();
+            throw new ServerErrorException('Failed Deleting Policy Attachment Of Resource', false, $e->getMessage());
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteAll(string $tenantId, string $resourceId)
+    public function deleteAll(string $tenantId, string $resourceId): bool
     {
+        try {
+            $this->pdo->beginTransaction();
+            $sql = 'DELETE FROM ' . $this->tablePrefix . 'ResourcePolicyAttachment rpa WHERE
+                rpa.tenantId = :tenantId AND
+                rpa.resourceId = :resourceId';
+            $stmt = $this->pdo->prepare($sql);
+            $result = $stmt->execute([
+              'tenantId' => $tenantId,
+              'resourceId' => $resourceId
+            ]);
+            $this->pdo->commit();
+            return $result;
+        } catch (\PDOException $e) {
+            $this->pdo->rollBack();
+            throw new ServerErrorException('Failed Deleting All Policy Attachments Of Resource', false, $e->getMessage());
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function convertToEntity($data)
+    public function convertToEntity($data): ?ResourcePolicyAttachmentInterface
     {
         try {
             if (!empty($data)) {
@@ -98,7 +185,7 @@ class ResourcePolicyAttachmentRepository implements ResourcePolicyAttachmentRepo
                         $dateTimeProperties = [
                           'attachedAt'
                         ];
-                        if (in_array($key, $dateTimeProperties)) {
+                        if (in_array($key, $dateTimeProperties) && $value) {
                             $value = DateTimeFormatter::createFromDb($value);
                         }
                         $entity->$setMethod($value);
