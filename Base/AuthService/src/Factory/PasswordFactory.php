@@ -37,7 +37,7 @@ class PasswordFactory implements PasswordFactoryInterface
     }
 
     /**
-     * @return PasswordInterface
+     * {@inheritdoc}
      */
     public function create(): PasswordInterface
     {

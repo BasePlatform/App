@@ -37,7 +37,7 @@ class UserIdentityFactory implements UserIdentityFactoryInterface
     }
 
     /**
-     * @return UserIdentityInterface
+     * {@inheritdoc}
      */
     public function create(): UserIdentityInterface
     {

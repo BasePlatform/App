@@ -37,7 +37,7 @@ class UserProfileFactory implements UserProfileFactoryInterface
     }
 
     /**
-     * @return UserProfileInterface
+     * {@inheritdoc}
      */
     public function create(): UserProfileInterface
     {

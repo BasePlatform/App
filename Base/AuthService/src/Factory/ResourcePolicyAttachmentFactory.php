@@ -37,7 +37,7 @@ class ResourcePolicyAttachmentFactory implements ResourcePolicyAttachmentFactory
     }
 
     /**
-     * @return ResourcePolicyAttachmentInterface
+     * {@inheritdoc}
      */
     public function create(): ResourcePolicyAttachmentInterface
     {

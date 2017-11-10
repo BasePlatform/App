@@ -37,7 +37,7 @@ class ZoneFactory implements ZoneFactoryInterface
     }
 
     /**
-     * @return ZoneInterface
+     * {@inheritdoc}
      */
     public function create(): ZoneInterface
     {
