@@ -79,7 +79,7 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
             if ((error_reporting() & $errno)) {
                 // Error is not in mask
                 // Throw ErrorException with special error_code
-                throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+                throw new ErrorException($errstr, 1, $errno, $errfile, $errline);
             }
             throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
         });

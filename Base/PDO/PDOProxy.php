@@ -296,10 +296,7 @@ class PDOProxy implements PDOProxyInterface
     }
 
     /**
-     * Initiates a transaction
-     *
-     * @link http://php.net/manual/pdo.begintransaction.php
-     * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
+     * {@inheritdoc}
      */
     public function beginTransaction()
     {
@@ -312,10 +309,7 @@ class PDOProxy implements PDOProxyInterface
     }
 
     /**
-     * Commits a transaction
-     *
-     * @link http://php.net/manual/pdo.commit.php
-     * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
+     * {@inheritdoc}
      */
     public function commit()
     {
@@ -328,10 +322,7 @@ class PDOProxy implements PDOProxyInterface
     }
 
     /**
-     * Rolls back a transaction
-     *
-     * @link http://php.net/manual/pdo.rollback.php
-     * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
+     * {@inheritdoc}
      */
     public function rollBack()
     {
