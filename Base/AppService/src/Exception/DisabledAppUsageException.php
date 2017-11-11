@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Base\TenantService\Exception;
+namespace Base\AppService\Exception;
 
 use RuntimeException;
 use Base\Exception\ServiceExceptionInterface;
 use Base\Exception\ServiceExceptionTrait;
 
 /**
- * Represents an Invalid Tenant Registration Info Exception
+ * Represents a Disabled App Usage Exception
  *
- * @package Base\TenantService\Exception
+ * @package Base\AppService\Exception
  */
-class InvalidTenantRegistrationInfoException extends RuntimeException implements ServiceExceptionInterface
+class DisabledAppUsageException extends RuntimeException implements ServiceExceptionInterface
 {
     use ServiceExceptionTrait;
 
@@ -31,11 +31,11 @@ class InvalidTenantRegistrationInfoException extends RuntimeException implements
      * @param array $additionalData
      *
      */
-    public function __construct(string $message = 'Invalid Tenant Registration Info', bool $notification = false, string $details = null, array $additionalData = null)
+    public function __construct(string $message = 'This App Is Disabled For The Tenant', bool $notification = false, string $details = null, array $additionalData = null)
     {
         $this->message = $message;
-        $this->statusCode = 400;
-        $this->code = TENANT_SERVICE_CONSTANTS['ERROR_CODE_SPACE']+1;
+        $this->statusCode = 403;
+        $this->code = APP_SERVICE_CONSTANTS['ERROR_CODE_SPACE']+2;
         $this->notification = $notification;
         $this->details = $details;
         $this->additionalData = $additionalData;
@@ -46,6 +46,6 @@ class InvalidTenantRegistrationInfoException extends RuntimeException implements
      */
     public function getReference(string $pathPrefix = ''): string
     {
-        return $pathPrefix.'/api/problems/tenants/invalid-tenant-registration-info';
+        return $pathPrefix.'/api/problems/apps/disabled-app-usage';
     }
 }

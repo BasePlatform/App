@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Base\AuthServivce\Repository;
+namespace Base\AuthService\Repository;
 
-use Base\AuthServivce\Entity\ResourcePolicyAttachmentInterface;
+use Base\AuthService\Entity\ResourcePolicyAttachmentInterface;
 
 /**
  * Resource Policy Attachment Repository Interface
  *
- * @package Base\AuthServivce\Repository
+ * @package Base\AuthService\Repository
  */
 interface ResourcePolicyAttachmentRepositoryInterface
 {

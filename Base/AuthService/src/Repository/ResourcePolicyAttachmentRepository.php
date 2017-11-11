@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Base\AuthServivce\Repository;
+namespace Base\AuthService\Repository;
 
-use Base\AuthServivce\Entity\ResourcePolicyAttachmentInterface;
+use Base\AuthService\Entity\ResourcePolicyAttachmentInterface;
 use Base\AuthService\Factory\ResourcePolicyAttachmentFactoryInterface;
 use Base\PDO\PDOProxyInterface;
 use Base\Exception\ServerErrorException;
@@ -22,7 +22,7 @@ use Base\Formatter\DateTimeFormatter;
 /**
  * Resource Policy Attachment Repository
  *
- * @package Base\AuthServivce\Repository
+ * @package Base\AuthService\Repository
  */
 class ResourcePolicyAttachmentRepository implements ResourcePolicyAttachmentRepository
 {
@@ -81,7 +81,7 @@ class ResourcePolicyAttachmentRepository implements ResourcePolicyAttachmentRepo
                 return null;
             }
         } catch (\PDOException $e) {
-            throw new ServerErrorException('Failed Finding Resource Policy Attachments', false, $e->getMessage());
+            throw new ServerErrorException(sprintf('Failed Finding Policies of Resource `%s` Of Tenant `%s`', $resourceId, $tenantId), false, $e->getMessage());
         }
     }
 
@@ -144,7 +144,7 @@ class ResourcePolicyAttachmentRepository implements ResourcePolicyAttachmentRepo
             return $result;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Deleting Policy Attachment Of Resource', false, $e->getMessage());
+            throw new ServerErrorException(sprintf('Failed Deleting Policy `%s` Attachment Of Resource `%s` Of Tenant `%s`', $resourceId, $tenantId), false, $e->getMessage());
         }
     }
 
@@ -167,7 +167,7 @@ class ResourcePolicyAttachmentRepository implements ResourcePolicyAttachmentRepo
             return $result;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Deleting All Policy Attachments Of Resource', false, $e->getMessage());
+            throw new ServerErrorException(sprintf('Failed Deleting All Policy Attachments Of Resource `%s` Of Tenant `%s`', $resourceId, $tenantId), false, $e->getMessage());
         }
     }
 

@@ -26,13 +26,11 @@ interface TenantServiceInterface
      * 2. Send Request to App Service Activate the default App
      *
      * @param array $data
-     * @param string $domain
-     * @param string $platform
-     * @param string $timezone
+     * @param array $appConfig
      *
      * @return mixed
      */
-    public function register(array $data, string $domain, string $platform = null, string $timeZone = 'UTC');
+    public function register(array $data, array $appConfig);
 
     /**
      * Validate the data for service

@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Base\AuthServivce\Repository;
+namespace Base\AuthService\Repository;
 
-use Base\AuthServivce\Entity\UserProfileInterface;
-use Base\AuthServivce\Factory\UserProfileFactoryInterface;
+use Base\AuthService\Entity\UserProfileInterface;
+use Base\AuthService\Factory\UserProfileFactoryInterface;
 use Base\PDO\PDOProxyInterface;
 use Base\Exception\ServerErrorException;
 use Base\Formatter\DateTimeFormatter;
@@ -22,7 +22,7 @@ use Base\Formatter\DateTimeFormatter;
 /**
  * User Profile Repository
  *
- * @package Base\AuthServivce\Repository
+ * @package Base\AuthService\Repository
  */
 class UserProfileRepository implements UserProfileRepositoryInterface
 {
@@ -75,7 +75,7 @@ class UserProfileRepository implements UserProfileRepositoryInterface
             // Convert to the desired return type
             return $this->convertToEntity($result);
         } catch (\PDOException $e) {
-            throw new ServerErrorException('Failed Finding User Profile', false, $e->getMessage());
+            throw new ServerErrorException(sprintf('Failed Finding User Profile `%s` Of Tenant `%s`', (string) $userId, $tenantId), false, $e->getMessage());
         }
     }
 
@@ -130,7 +130,7 @@ class UserProfileRepository implements UserProfileRepositoryInterface
             return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Adding User Identity', false, $e->getMessage());
+            throw new ServerErrorException('Failed Adding User Profile Information', false, $e->getMessage());
         }
     }
 
@@ -172,7 +172,7 @@ class UserProfileRepository implements UserProfileRepositoryInterface
             return $result;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Updating User Profile', false, $e->getMessage());
+            throw new ServerErrorException('Failed Updating User Profile Information', false, $e->getMessage());
         }
     }
 

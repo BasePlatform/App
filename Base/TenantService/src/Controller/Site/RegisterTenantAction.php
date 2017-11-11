@@ -9,20 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Base\TenantService\Controller;
+namespace Base\TenantService\Controller\Site;
 
 use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Base\Http\ResponseFactoryInterface;
 use Base\TenantService\Service\TenantServiceInterface;
+use Base\Rest\RestAction;
 
 /**
- * This class provides the actions for Tenant in Public Zone
+ * Register a Tenant to the App
  *
- * @package Base\TenantService\Controller
+ * @package Base\TenantService\Controller\Site
  */
-class TenantController
+class RegisterTenantAction extends RestAction
 {
     /**
      * @var TenantServiceInterface
@@ -30,14 +31,9 @@ class TenantController
     private $tenantService;
 
     /**
-     * @var string
+     * @var array
      */
-    private $domain;
-
-    /**
-     * @var string
-     */
-    private $platform;
+    private $appConfig;
 
     /**
      * @var ResponseFactoryInterface
@@ -47,15 +43,13 @@ class TenantController
     /**
      * @param ResponseFactoryInterface $responseFactory
      * @param TenantServiceInterface $response
-     * @param string $domain
-     * @param string $platform
+     * @param array $appConfig
      */
-    public function __construct(ResponseFactoryInterface $responseFactory, TenantServiceInterface $tenantService, string $domain, string $platform)
+    public function __construct(ResponseFactoryInterface $responseFactory, TenantServiceInterface $tenantService, array$appConfig)
     {
-        $this->tenantService = $tenantService;
-        $this->domain = $domain;
-        $this->platform = $platform;
         $this->responseFactory = $responseFactory;
+        $this->tenantService = $tenantService;
+        $this->appConfig = $appConfig;
     }
 
     /**
@@ -70,9 +64,9 @@ class TenantController
      *
      * @return ResponseInterface
      */
-    public function registerAction(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         $data = $request->getParsedBody();
-        return $this->responseFactory->createJson($this->tenantService->register($data, $this->domain, $this->platform));
+        return $this->responseFactory->createJson($this->tenantService->register($data, $this->appConfig));
     }
 }

@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Base\AuthServivce\Repository;
+namespace Base\AuthService\Repository;
 
-use Base\AuthServivce\Entity\UserIdentityInterface;
-use Base\AuthServivce\Factory\UserIdentityFactoryInterface;
+use Base\AuthService\Entity\UserIdentityInterface;
+use Base\AuthService\Factory\UserIdentityFactoryInterface;
 use Base\PDO\PDOProxyInterface;
 use Base\Exception\ServerErrorException;
 use Base\Formatter\DateTimeFormatter;
@@ -22,7 +22,7 @@ use Base\Formatter\DateTimeFormatter;
 /**
  * User Identity Repository
  *
- * @package Base\AuthServivce\Repository
+ * @package Base\AuthService\Repository
  */
 class UserIdentityRepository implements UserIdentityRepositoryInterface
 {
@@ -75,7 +75,7 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
             // Convert to the desired return type
             return $this->convertToEntity($result);
         } catch (\PDOException $e) {
-            throw new ServerErrorException('Failed Finding User Identity', false, $e->getMessage());
+            throw new ServerErrorException(sprintf('Failed Finding User Identity `%s` Of Tenant `%s`', (string) $userId, $tenantId), false, $e->getMessage());
         }
     }
 
@@ -139,7 +139,7 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
             return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Adding User Identity', false, $e->getMessage());
+            throw new ServerErrorException('Failed Adding User Identity Information', false, $e->getMessage());
         }
     }
 
@@ -187,7 +187,7 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
             return $result;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Updating User Identity', false, $e->getMessage());
+            throw new ServerErrorException('Failed Updating User Identity Information', false, $e->getMessage());
         }
     }
 

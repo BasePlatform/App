@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Base\AuthServivce\Repository;
+namespace Base\AuthService\Repository;
 
-use Base\AuthServivce\Entity\UserProfileInterface;
+use Base\AuthService\Entity\UserProfileInterface;
 
 /**
  * User Profile Repository Interface
  *
- * @package Base\AuthServivce\Repository
+ * @package Base\AuthService\Repository
  */
 interface UserProfileRepositoryInterface
 {

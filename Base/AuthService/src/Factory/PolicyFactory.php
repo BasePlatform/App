@@ -30,18 +30,11 @@ class PolicyFactory implements PolicyFactoryInterface
     private $factory;
 
     /**
-     * @var FactoryInterface
-     */
-    private $zoneFactory;
-
-    /**
      * @param FactoryInterface $factory
-     * @param FactoryInterface $zoneFactory
      */
-    public function __construct(FactoryInterface $factory, FactoryInterface $zoneFactory)
+    public function __construct(FactoryInterface $factory)
     {
         $this->factory = $factory;
-        $this->zoneFactory = $zoneFactory;
     }
 
     /**

@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Base\AuthServivce\Repository;
+namespace Base\AuthService\Repository;
 
-use Base\AuthServivce\Entity\PolicyInterface;
+use Base\AuthService\Entity\PolicyInterface;
 use Base\AuthService\ValueObject\ZoneInterface;
 
 /**
  * Policy Repository Interface
  *
- * @package Base\AuthServivce\Repository
+ * @package Base\AuthService\Repository
  */
 interface PolicyRepositoryInterface
 {

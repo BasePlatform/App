@@ -31,7 +31,7 @@ class TenantService implements TenantServiceInterface
     /**
      * @var TenantRepositoryInterface
      */
-    private $tenantRepository;
+    private $repository;
 
     /**
      * @var TenantFactoryInterface
@@ -44,63 +44,56 @@ class TenantService implements TenantServiceInterface
     private $serviceRequest;
 
     /**
-     * @param TenantRepositoryInterface $tenantRepository
+     * @param TenantRepositoryInterface $repository
+     * @param TenantFactoryInterface $factory
+     * @param ServiceRequestInterface $serviceRequest
      */
-    public function __construct(TenantRepositoryInterface $tenantRepository, ServiceRequestInterface $serviceRequest, TenantFactoryInterface $factory)
+    public function __construct(TenantRepositoryInterface $repository, TenantFactoryInterface $factory, ServiceRequestInterface $serviceRequest)
     {
-        $this->tenantRepository = $tenantRepository;
-        $this->serviceRequest = $serviceRequest;
+        $this->repository = $repository;
         $this->factory = $factory;
+        $this->serviceRequest = $serviceRequest;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function register(array $data, string $domain, string $platform = null, string $timeZone = 'UTC')
+    public function register(array $data, array $appConfig)
     {
         // Get Info from $data
-        $name = $data['name'] ?? '';
-        $email = $data['email'] ?? '';
-        $password = $data['password'] ?? '';
+        $name = $data['name'] ?? null;
+        $email = $data['email'] ?? null;
+        $password = $data['password'] ?? null;
+        $timeZone = $data['timeZone'] ?? 'UTC';
 
         // Validate the Data here
 
         // Create TenantId
-        $tenantId = call_user_func_array([$this->factory->getTenantIdClassName(), 'createTenantId'], [$name, $domain]);
+        $tenantId = call_user_func_array([$this->factory->getTenantIdClassName(), 'createTenantId'], [$name, $appConfig['domain']]);
 
         // Get Tenant
-        $tenant = $this->tenantRepository->get($tenantId);
+        $tenant = $this->repository->get($tenantId);
 
         if ($tenant) {
-            // throw new ExistedTenantException();
-            $options = [
-              'json' => [
-                'tenantId' => (string) $tenantId,
-                'appId' => 'default',
-                'email' => $email,
-                'password' => $password,
-                'attachedPolicies' => ['tenant.tenantOwner']
-              ]
-            ];
-            return $options;
+            throw new ExistedTenantException();
         } else {
             $nowTime = DateTimeFormatter::now();
             $tenant = $this->factory->create();
             $tenant->setId($tenantId);
             $tenant->setDomain((string) $tenantId);
-            $tenant->setPlatform($platform);
+            $tenant->setPlatform($appConfig['platform']);
             $tenant->setTimeZone($timeZone);
             $tenant->setStatus($tenant->getStatusOptions('STATUS_ACTIVE'));
             $tenant->setCreatedAt($nowTime);
             $tenant->setupdatedAt($nowTime);
-            $this->tenantRepository->add($tenant);
+            $this->repository->add($tenant);
 
             // Call to other services to finish the registration process
             // Prepare data to send to other services
             $options = [
               'json' => [
                 'tenantId' => (string) $tenantId,
-                'appId' => 'default',
+                'appId' => $appConfig['defaultAppId'],
                 'email' => $email,
                 'password' => $password,
                 'attachedPolicies' => ['tenant.tenantOwner']

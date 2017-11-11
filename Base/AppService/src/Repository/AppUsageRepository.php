@@ -75,7 +75,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
             // Convert to the desired return type
             return $this->convertToEntity($result);
         } catch (\PDOException $e) {
-            throw new ServerErrorException('Failed Getting App Usage', false, $e->getMessage());
+            throw new ServerErrorException(sprintf('Failed Getting App `%s` Usage Info Of Tenant `%s`', $appId, $tenantId), false, $e->getMessage());
         }
     }
 
@@ -145,7 +145,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
             return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Adding App Usage', false, $e->getMessage());
+            throw new ServerErrorException('Failed Adding App Usage Information', false, $e->getMessage());
         }
     }
 
@@ -197,7 +197,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
             return $result;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Updating App Usage', false, $e->getMessage());
+            throw new ServerErrorException('Failed Updating App Usage Information', false, $e->getMessage());
         }
     }
 

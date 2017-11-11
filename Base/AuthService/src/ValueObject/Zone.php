@@ -23,9 +23,9 @@ use ReflectionClass;
 class Zone implements ZoneInterface
 {
     /**
-     * Public Zone
+     * Public Site Zone
      */
-    const ZONE_PUBLIC = 'public';
+    const ZONE_SITE = 'site';
 
     /**
      * Admin Zone

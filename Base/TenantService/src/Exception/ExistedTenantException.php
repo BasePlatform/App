@@ -35,7 +35,7 @@ class ExistedTenantException extends RuntimeException implements ServiceExceptio
     {
         $this->message = $message;
         $this->statusCode = 403;
-        $this->code = TENANT_SERVICE['ERROR_CODE_SPACE']+2;
+        $this->code = TENANT_SERVICE_CONSTANTS['ERROR_CODE_SPACE']+2;
         $this->notification = $notification;
         $this->details = $details;
         $this->additionalData = $additionalData;

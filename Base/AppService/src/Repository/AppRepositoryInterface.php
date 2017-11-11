@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Base\AppServivce\Repository;
+namespace Base\AppService\Repository;
 
-use Base\AppServivce\Entity\AppInterface;
+use Base\AppService\Entity\AppInterface;
 
 /**
  * App Repository Interface
  *
- * @package Base\AppServivce\Repository
+ * @package Base\AppService\Repository
  */
 interface AppRepositoryInterface
 {

@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Base\AuthServivce\Repository;
+namespace Base\AuthService\Repository;
 
-use Base\AuthServivce\Entity\UserInterface;
+use Base\AuthService\Entity\UserInterface;
 use Base\AuthService\ValueObject\ZoneInterface;
 use Base\AuthService\Factory\UserFactoryInterface;
 use Base\AuthService\Factory\ZoneFactoryInterface;
@@ -23,7 +23,7 @@ use Base\Exception\ServerErrorException;
 /**
  * User Repository
  *
- * @package Base\AuthServivce\Repository
+ * @package Base\AuthService\Repository
  */
 class UserRepository implements UserRepositoryInterface
 {
@@ -86,7 +86,7 @@ class UserRepository implements UserRepositoryInterface
             // Convert to the desired return type
             return $this->convertToEntity($result);
         } catch (\PDOException $e) {
-            throw new ServerErrorException('Failed Finding User', false, $e->getMessage());
+            throw new ServerErrorException(sprintf('Failed Finding User `%s` Of Tenant `%s`', (string) $userId, $tenantId), false, $e->getMessage());
         }
     }
 
@@ -114,7 +114,7 @@ class UserRepository implements UserRepositoryInterface
             // Convert to the desired return type
             return $this->convertToEntity($result);
         } catch (\PDOException $e) {
-            throw new ServerErrorException('Failed Finding User By Zone And Email', false, $e->getMessage());
+            throw new ServerErrorException(sprintf('Failed Finding User By Email `%s` In Zone `%s` Of Tenant `%s`', (string) $email, (string) $zone, $tenantId), false, $e->getMessage());
         }
     }
 
@@ -142,7 +142,7 @@ class UserRepository implements UserRepositoryInterface
             // Convert to the desired return type
             return $this->convertToEntity($result);
         } catch (\PDOException $e) {
-            throw new ServerErrorException('Failed Finding User By Zone And UserName', false, $e->getMessage());
+            throw new ServerErrorException(sprintf('Failed Finding User By UserName `%s` In Zone `%s` Of Tenant `%s`', (string) $userName, (string) $zone, $tenantId), false, $e->getMessage());
         }
     }
 
@@ -197,7 +197,7 @@ class UserRepository implements UserRepositoryInterface
             return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Adding Policy', false, $e->getMessage());
+            throw new ServerErrorException('Failed Adding User Information', false, $e->getMessage());
         }
     }
 
@@ -239,7 +239,7 @@ class UserRepository implements UserRepositoryInterface
             return $result;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Updating User', false, $e->getMessage());
+            throw new ServerErrorException('Failed Updating User Information', false, $e->getMessage());
         }
     }
 
@@ -266,7 +266,7 @@ class UserRepository implements UserRepositoryInterface
               return $result;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Soft Deleting User', false, $e->getMessage());
+            throw new ServerErrorException(sprintf('Failed Soft Deleting User `%s` Of Tenant `%s`', (string) $userId, $tenantId), false, $e->getMessage());
         }
     }
 
@@ -292,7 +292,7 @@ class UserRepository implements UserRepositoryInterface
               return $result;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Recovering User', false, $e->getMessage());
+            throw new ServerErrorException(sprintf('Failed Recovering User `%s` Of Tenant `%s`', (string) $userId, $tenantId), false, $e->getMessage());
         }
     }
 

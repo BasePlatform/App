@@ -15,6 +15,7 @@ namespace Base\AppService\Factory;
 
 use Base\Factory\FactoryInterface;
 use Base\AppService\Entity\AppInterface;
+use Base\AppService\Entity\AppUsageInterface;
 
 /**
  * App Factory
@@ -29,11 +30,18 @@ class AppFactory implements AppFactoryInterface
     private $factory;
 
     /**
-     * @param FactoryInterface $factory
+     * @var FactoryInterface
      */
-    public function __construct(FactoryInterface $factory)
+    private $appUsagefactory;
+
+    /**
+     * @param FactoryInterface $factory
+     * @param FactoryInterface $appUsagefactory
+     */
+    public function __construct(FactoryInterface $factory, FactoryInterface $appUsagefactory)
     {
         $this->factory = $factory;
+        $this->appUsagefactory = $appUsagefactory;
     }
 
     /**

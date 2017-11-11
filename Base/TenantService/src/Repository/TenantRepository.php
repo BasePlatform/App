@@ -70,7 +70,7 @@ class TenantRepository implements TenantRepositoryInterface
             // Convert to the desired return type
             return $this->convertToEntity($result);
         } catch (\PDOException $e) {
-            throw new ServerErrorException('Failed Getting Tenant', false, $e->getMessage());
+            throw new ServerErrorException(sprintf('Failed Getting Tenant `%s`', (string) $tenantId), false, $e->getMessage());
         }
     }
 
@@ -113,7 +113,7 @@ class TenantRepository implements TenantRepositoryInterface
             return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Adding Tenant', false, $e->getMessage());
+            throw new ServerErrorException('Failed Adding Tenant Information', false, $e->getMessage());
         }
     }
 

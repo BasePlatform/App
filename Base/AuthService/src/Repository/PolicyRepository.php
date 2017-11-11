@@ -77,7 +77,7 @@ class PolicyRepository implements PolicyRepositoryInterface
             // Convert to the desired return type
             return $this->convertToEntity($result);
         } catch (\PDOException $e) {
-            throw new ServerErrorException('Failed Getting Policy', false, $e->getMessage());
+            throw new ServerErrorException(sprintf('Failed Getting Policy `%s`', $policyId), false, $e->getMessage());
         }
     }
 
@@ -108,7 +108,7 @@ class PolicyRepository implements PolicyRepositoryInterface
                 return null;
             }
         } catch (\PDOException $e) {
-            throw new ServerErrorException('Failed Finding Policies', false, $e->getMessage());
+            throw new ServerErrorException(sprintf('Failed Finding Policies Of App `%s` With Type `%s` In Zone `%s`', $appId, $type, (string) $zone), false, $e->getMessage());
         }
     }
 
@@ -151,7 +151,7 @@ class PolicyRepository implements PolicyRepositoryInterface
             return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Adding Policy', false, $e->getMessage());
+            throw new ServerErrorException('Failed Adding Policy Information', false, $e->getMessage());
         }
     }
 
@@ -171,7 +171,7 @@ class PolicyRepository implements PolicyRepositoryInterface
             return $result;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            throw new ServerErrorException('Failed Deleting Policy', false, $e->getMessage());
+            throw new ServerErrorException(sprintf('Failed Deleting Policy `%s`', $policyId), false, $e->getMessage());
         }
     }
 
