@@ -48,7 +48,7 @@ class ConfigAggregator implements ConfigInterface
             ;
         } else {
             foreach ($providers as $provider) {
-                $this->config = array_merge($this->config, $provider);
+                $this->config = array_replace_recursive($this->config, $provider);
             }
             if (!$enableCache) {
                 $this->saveCache();

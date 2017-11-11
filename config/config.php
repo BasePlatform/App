@@ -19,6 +19,7 @@ declare(strict_types=1);
 return new \Base\Config\ConfigAggregator([
   \Base\TenantService\Service::getConfig(),
   // Add other config that you want to override the config of above services here
+  require __DIR__.'/common-dependencies.php',
   require __DIR__.'/params.php',
   require __DIR__.'/params-local.php',
 ], __DIR__.'/../runtime/cache/config.php', env('APP_DEBUG', false));

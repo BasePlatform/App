@@ -33,7 +33,6 @@ date_default_timezone_set($timeZone);
  *
  * You can use other containers such as:
  * + Aura.DI
- * + Pimple
  * + PHP-DI
  */
 $container = new Auryn\Injector;
@@ -51,30 +50,28 @@ $container->share($config);
 $serviceRequest = new Base\ServiceRequest\ServiceRequest($config->get('endpoints'));
 $container->share($serviceRequest);
 
-$container->alias(Base\Http\ResponseFactoryInterface::class, Base\Http\ResponseFactory::class);
-$container->alias(Psr\Log\LoggerInterface::class, Monolog\Logger::class);
-$container->alias(Base\ServiceRequest\ServiceRequestInterface::class, Base\ServiceRequest\ServiceRequest::class);
+$dependencies = $config->get('dependencies');
 
-$container->alias(Base\PDO\PDOProxyInterface::class, Base\PDO\PDOProxy::class);
-$container->alias(Base\TenantService\Repository\TenantRepositoryInterface::class, Base\TenantService\Repository\TenantRepository::class);
-$container->alias(Base\TenantService\Service\TenantServiceInterface::class, Base\TenantService\Service\TenantService::class);
+// Loop through aliases and set
+if (isset($dependencies['aliases']) && !empty($dependencies['aliases'])) {
+    foreach ($dependencies['aliases'] as $key => $value) {
+        $container->alias($key, $value);
+    }
+}
 
-// Factory
-$container->alias(Base\TenantService\Factory\TenantFactoryInterface::class, Base\TenantService\Factory\TenantFactory::class);
-
-$container->define(Base\TenantService\Factory\TenantFactory::class, [':factory' => new Base\Factory\Factory(Base\TenantService\Entity\Tenant::class),
-  ':tenantIdFactory' => new Base\Factory\Factory(Base\TenantService\ValueObject\TenantId::class)
-]);
-
-
-// Entity
-$container->alias(Base\TenantService\Entity\TenantInterface::class, Base\TenantService\Entity\Tenant::class);
-
-// Value Object
-$container->alias(Base\TenantService\ValueObject\TenantIdInterface::class, Base\TenantService\ValueObject\TenantId::class);
+// Loop through params and set
+if (isset($dependencies['params']) && !empty($dependencies['params'])) {
+    foreach ($dependencies['params'] as $key => $value) {
+        if (is_callable($value)) {
+            $container->define($key, call_user_func($value));
+        } else {
+            $container->define($key, $value);
+        }
+    }
+}
 
 // Define some params
-$container->define(Base\TenantService\Controller\TenantController::class, [':domain' => $config->get('domain'), ':platform' => $config->get('platform')]);
+// $container->define(Base\TenantService\Controller\Site\RegisterTenantAction::class, [':appConfig' => $config->get('app')]);
 
 
 /**
@@ -93,9 +90,9 @@ $dbConfig = $config->get('db');
 $mysqlConfig = isset($dbConfig['mysql']) ? $dbConfig['mysql'] : [];
 if (!empty($mysqlConfig)) {
     $pdoOptions = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
+      PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+      PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+      PDO::ATTR_EMULATE_PREPARES   => false,
     ];
     $pdo = new Base\PDO\PDOProxy($pdoOptions);
     $pdo->addMaster($mysqlConfig['master']['m1']);
