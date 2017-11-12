@@ -22,7 +22,7 @@ return [
       'handler' => \Base\TenantService\Controller\Tenant\TenantController::class.':registerAction',
       'middlewares' => null,
       'allowedMethods' => [RequestMethod::METHOD_POST],
-      'roles' => '*'
+      'allowedPolicies' => '*'
     ]
   ]
 ];

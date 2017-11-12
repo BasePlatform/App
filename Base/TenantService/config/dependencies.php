@@ -11,7 +11,7 @@
 
 return [
   'dependencies' => [
-    'aliases' => [
+    'definitions' => [
       /**
        * Entities and Value Objects
        */
@@ -33,21 +33,21 @@ return [
        * Services
        */
       \Base\TenantService\Service\TenantServiceInterface::class => \Base\TenantService\Service\TenantService::class
+
     ],
     'params' => [
       /**
        * Factories
        */
       \Base\TenantService\Factory\TenantFactory::class => [
-        ':factory' => new \Base\Factory\Factory(Base\TenantService\Entity\Tenant::class),
-        ':tenantIdFactory' => new \Base\Factory\Factory(Base\TenantService\ValueObject\TenantId::class)
+          'className' => \Base\TenantService\Entity\Tenant::class,
+          'tenantIdClassName' => \Base\TenantService\ValueObject\TenantId::class
       ],
-      /**
-       * Controllers and Actions
-       */
-      \Base\TenantService\Controller\Site\RegisterTenantAction::class => function () use ($config) {
-          return [':appConfig' => $config->get('app')];
-      }
+
+      \Base\TenantService\Factory\TenantIdFactory::class => [
+          'className' => \Base\TenantService\ValueObject\TenantId::class
+      ]
+
     ]
   ]
 ];

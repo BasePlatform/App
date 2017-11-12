@@ -24,31 +24,21 @@ use Base\AuthService\ValueObject\PasswordInterface;
  */
 class UserIdentityFactory implements UserIdentityFactoryInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
+    use \Base\Factory\FactoryTrait;
 
     /**
-     * @var FactoryInterface
+     * @var string
      */
-    private $passwordFactory;
+    private $passwordClassName;
 
     /**
-     * @param FactoryInterface $factory
+     * @param string $className
+     * @param string $passwordClassName
      */
-    public function __construct(FactoryInterface $factory, FactoryInterface $passwordFactory)
+    public function __construct(string $className, string $passwordClassName)
     {
-        $this->factory = $factory;
-        $this->passwordFactory = $passwordFactory;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function create(): UserIdentityInterface
-    {
-        return $this->factory->create();
+        $this->className = $className;
+        $this->passwordClassName = $passwordClassName;
     }
 
     /**
@@ -56,15 +46,7 @@ class UserIdentityFactory implements UserIdentityFactoryInterface
      */
     public function createPassword(): PasswordInterface
     {
-        return $this->passwordFactory->create();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName(): string
-    {
-        return $this->factory->getClassName();
+        return new $this->passwordClassName();
     }
 
     /**
@@ -72,6 +54,6 @@ class UserIdentityFactory implements UserIdentityFactoryInterface
      */
     public function getPasswordClassName(): string
     {
-        return $this->passwordFactory->getClassName();
+        return new $this->passwordClassName;
     }
 }

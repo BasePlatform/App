@@ -21,7 +21,11 @@ namespace Base\AppService\Service;
 interface AppUsageServiceInterface
 {
     /**
-     * {@inheritdoc}
+     * Activate the app
+     *
+     * @param  array  $data
+     * @param  int    $trialDays
+     * @return array
      */
-    public function activate(array $data, array $appConfig);
+    public function activate(array $data, int $trialDays): array;
 }

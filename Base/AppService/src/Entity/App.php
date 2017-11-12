@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Base\AppService\Entity;
 
-use ReflectionClass;
-
 /**
  * App Entity
  *
@@ -69,7 +67,7 @@ class App implements AppInterface
     /**
      * {@inheritdoc}
      */
-    public function setPlans(array $plans)
+    public function setPlans(array $plans = null)
     {
         $this->plans = $plans;
         return $this;
@@ -78,7 +76,7 @@ class App implements AppInterface
     /**
      * {@inheritdoc}
      */
-    public function setParams(array $params)
+    public function setParams(array $params = null)
     {
         $this->params = $params;
         return $this;
@@ -147,7 +145,7 @@ class App implements AppInterface
      */
     public function getStatusOptions(string $status = null)
     {
-        $reflector = new ReflectionClass(get_class($this));
+        $reflector = new \ReflectionClass(get_class($this));
         $constants = $reflector->getConstants();
         $result = [];
         foreach ($constants as $constant => $value) {

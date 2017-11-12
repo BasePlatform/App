@@ -39,7 +39,7 @@ interface UserProfileRepositoryInterface
      *
      * @return integer|null The inserted User Profile Id
      */
-    public function add(UserProfileInterface $item): ?integer;
+    public function add(UserProfileInterface $item): ?int;
 
     /**
      * Update a User Profile

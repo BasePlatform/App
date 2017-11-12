@@ -149,7 +149,7 @@ class UserRepository implements UserRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function add(UserInterface $item): ?integer
+    public function add(UserInterface $item): ?int
     {
         try {
             $this->pdo->beginTransaction();
@@ -191,7 +191,7 @@ class UserRepository implements UserRepositoryInterface
             ]);
             $id = null;
             if ($result) {
-                $id = $this->pdo->lastInsertId();
+                $id = (int) $this->pdo->lastInsertId();
             }
             $this->pdo->commit();
             return $id;
@@ -219,8 +219,7 @@ class UserRepository implements UserRepositoryInterface
                 status = :status,
                 createdAt = :createdAt,
                 updatedAt = :updatedAt
-              WHERE u.id = :id LIMIT 1
-              )';
+              WHERE u.id = :id LIMIT 1';
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
               'id' => (int) $item->getId(),
@@ -254,8 +253,7 @@ class UserRepository implements UserRepositoryInterface
                 deletedAt = :time WHERE
                   u.tenantId = :tenantId AND
                   u.id = :id
-                LIMIT 1
-              )';
+                LIMIT 1';
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
               'time' => DateTimeFormatter::now(DateTimeFormatter::DB_DATETIME_FORMAT),
@@ -281,8 +279,7 @@ class UserRepository implements UserRepositoryInterface
                 deletedAt = null WHERE
                   u.tenantId = :tenantId AND
                   u.id = :id
-                LIMIT 1
-              )';
+                LIMIT 1';
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
               'tenantId' => $tenantId,
@@ -306,8 +303,8 @@ class UserRepository implements UserRepositoryInterface
                 $entity = $this->factory->create();
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
-                    if (method_exists($entity, $setMethod)) {
-                        if ($key == 'zone' && $value) {
+                    if (method_exists($entity, $setMethod) && $value != null) {
+                        if ($key == 'zone') {
                             $zone = $this->zoneFactory->create();
                             $zone->setZoneId($value);
                             $value = $zone;
@@ -317,7 +314,7 @@ class UserRepository implements UserRepositoryInterface
                           'updatedAt',
                           'deletedAt'
                         ];
-                        if (in_array($key, $dateTimeProperties) && $value) {
+                        if (in_array($key, $dateTimeProperties)) {
                             $value = DateTimeFormatter::createFromDb($value);
                         }
                         $entity->$setMethod($value);

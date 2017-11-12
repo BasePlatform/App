@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Base\AuthService\Factory;
-
-use Base\Factory\FactoryInterface;
-use Base\AuthService\Entity\UserInterface;
+namespace Base\Factory;
 
 /**
- * User Factory
+ * Factory Trait for creating resource based on FQCN
  *
- * @package Base\AuthService\Factory
+ * @package Base\Factory
  */
-class UserFactory implements UserFactoryInterface
+trait FactoryTrait
 {
-    use \Base\Factory\FactoryTrait;
+    /**
+     * @var string
+     */
+    private $className;
 
     /**
      * @param string $className
@@ -31,5 +31,23 @@ class UserFactory implements UserFactoryInterface
     public function __construct(string $className)
     {
         $this->className = $className;
+    }
+
+    /**
+     * Create an object from the class
+     *
+     * @return object
+     */
+    public function create()
+    {
+        return new $this->className();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClassName(): string
+    {
+        return $this->className;
     }
 }

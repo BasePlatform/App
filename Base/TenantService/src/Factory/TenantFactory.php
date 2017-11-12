@@ -24,32 +24,21 @@ use Base\TenantService\ValueObject\TenantIdInterface;
  */
 class TenantFactory implements TenantFactoryInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
+    use \Base\Factory\FactoryTrait;
 
     /**
-     * @var FactoryInterface
+     * @var string
      */
-    private $tenantIdFactory;
+    private $tenantIdClassName;
 
     /**
-     * @param FactoryInterface $factory
-     * @param FactoryInterface $tenantIdFactory
+     * @param string $className
+     * @param string $tenantIdClassName
      */
-    public function __construct(FactoryInterface $factory, FactoryInterface $tenantIdFactory)
+    public function __construct(string $className, string $tenantIdClassName)
     {
-        $this->factory = $factory;
-        $this->tenantIdFactory = $tenantIdFactory;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function create(): TenantInterface
-    {
-        return $this->factory->create();
+        $this->className = $className;
+        $this->tenantIdClassName = $tenantIdClassName;
     }
 
     /**
@@ -57,22 +46,13 @@ class TenantFactory implements TenantFactoryInterface
      */
     public function createTenantId(): TenantIdInterface
     {
-        return $this->tenantIdFactory->create();
+        return new $this->tenantIdClassName();
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName(): string
-    {
-        return $this->factory->getClassName();
-    }
-
     /**
      * {@inheritdoc}
      */
     public function getTenantIdClassName(): string
     {
-        return $this->tenantIdFactory->getClassName();
+        return $this->tenantIdClassName;
     }
 }

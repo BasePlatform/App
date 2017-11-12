@@ -31,6 +31,28 @@ $dotenv = new Dotenv\Dotenv(__DIR__ . '/..');
 $dotenv->load();
 
 /**
+ * Get Config object
+ */
+$config = require __DIR__ . '/../config/config.php';
+
+/**
+ * Set to Base\Base::$config as config registry for future access
+ */
+\Base\Base::$config = $config;
+
+// Define the SERVICE CONSTANTS
+foreach ($config->get('constants') as $key => $value) {
+    define($key, $value);
+}
+
+// Set Default TimeZone
+$timeZone = $config->get('timeZone');
+if (!$timeZone) {
+    $timeZone = 'UTC';
+}
+date_default_timezone_set($timeZone);
+
+/**
  * Define services uri
  *
  * If a service uri is not defined when needed, the system will use

@@ -82,7 +82,7 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function add(UserIdentityInterface $item): ?integer
+    public function add(UserIdentityInterface $item): ?int
     {
         try {
             $this->pdo->beginTransaction();
@@ -133,7 +133,7 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
             ]);
             $id = null;
             if ($result) {
-                $id = $this->pdo->lastInsertId();
+                $id = (int) $this->pdo->lastInsertId();
             }
             $this->pdo->commit();
             return $id;
@@ -164,8 +164,7 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
                 recentPasswordUpdateAt = :recentPasswordUpdateAt,
                 recentLoginAt = :recentLoginAt,
                 updatedAt = :updatedAt
-              WHERE ui.id = :id LIMIT 1
-              )';
+              WHERE ui.id = :id LIMIT 1';
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
               'id' => (int) $item->getId(),
@@ -201,12 +200,12 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
                 $entity = $this->factory->create();
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
-                    if ($key == 'passwordHash') {
-                        $password = $this->factory->createPassword();
-                        $password->setPasswordHash($value);
-                        $value = $password;
-                    }
-                    if (method_exists($entity, $setMethod)) {
+                    if (method_exists($entity, $setMethod) && $value != null) {
+                        if ($key == 'passwordHash') {
+                            $password = $this->factory->createPassword();
+                            $password->setPasswordHash($value);
+                            $value = $password;
+                        }
                         $jsonProperties = [
                           'authParams'
                         ];
@@ -217,10 +216,10 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
                           'recentLoginAt',
                           'updatedAt'
                         ];
-                        if (in_array($key, $jsonProperties) && $value) {
+                        if (in_array($key, $jsonProperties)) {
                             $value = json_decode($value);
                         }
-                        if (in_array($key, $dateTimeProperties) && $value) {
+                        if (in_array($key, $dateTimeProperties)) {
                             $value = DateTimeFormatter::createFromDb($value);
                         }
                         $entity->$setMethod($value);

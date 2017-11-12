@@ -31,18 +31,18 @@ interface AppInterface
     /**
      * Set the value of field plans
      *
-     * @param  array $plans
+     * @param  array|null $plans
      * @return $this
      */
-    public function setPlans(array $plans);
+    public function setPlans(array $plans = null);
 
     /**
      * Set the value of field params
      *
-     * @param  array $params
+     * @param  array|null $params
      * @return $this
      */
-    public function setParams(array $params);
+    public function setParams(array $params = null);
 
     /**
      * Set the value of field status

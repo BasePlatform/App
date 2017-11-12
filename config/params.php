@@ -13,21 +13,21 @@
  * Main application params
  */
 return [
+  'basePath' => dirname(__DIR__),
   'app' => [
     'id' => 'base-app',
     'domain' => env('APP_DOMAIN', '.base.platform'),
     'platform' => env('APP_PLATFORM', null),
-    'defaultAppId' => env('APP_DEFAULT_ID', 'default'),
-    'trialDays' => -1 // -1: No Trial, >= 0: Actual Trial Days
+    'defaultInstallAppId' => env('APP_INSTALL_DEFAULT_ID', 'default'),
+    'trialDays' => -1, // -1: No Trial, >= 0: Actual Trial Days
+    // Secret 32 Characters Key
+    'key' => env('APP_KEY', 'secret'),
+    'env' => env('APP_ENV', 'production'),
+    'debug' => env('APP_DEBUG', false),
+    'timeZone' => 'UTC',
+    'locale' => 'en',
   ],
-  'basePath' => dirname(__DIR__),
-  // Secret 32 Characters Key
-  'key' => env('APP_KEY', 'secret'),
-  'env' => env('APP_ENV', 'production'),
-  'debug' => env('APP_DEBUG', false),
-  'timeZone' => 'UTC',
-  'locale' => 'en',
-  'db' => [
+  'database' => [
     'mysql' => [
       'master' => [
         'm1' => [

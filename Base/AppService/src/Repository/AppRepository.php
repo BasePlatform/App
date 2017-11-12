@@ -123,11 +123,11 @@ class AppRepository implements AppRepositoryInterface
                 $entity = $this->factory->create();
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
-                    if (method_exists($entity, $setMethod)) {
+                    if (method_exists($entity, $setMethod) && $value != null) {
                         $dateTimeProperties = [
                           'updatedAt'
                         ];
-                        if (in_array($key, $dateTimeProperties) && $value) {
+                        if (in_array($key, $dateTimeProperties)) {
                             $value = DateTimeFormatter::createFromDb($value);
                         }
                         $entity->$setMethod($value);

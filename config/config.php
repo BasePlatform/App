@@ -12,14 +12,15 @@
 declare(strict_types=1);
 
 /**
- * Create a Config object that merges the data from multiple providers
+ * Create an App Config object that merges data from param.php and params-local.php
  * If debug is false, it will create a cache file at
  * /runtime/cache/config.php
  */
 return new \Base\Config\ConfigAggregator([
-  \Base\TenantService\Service::getConfig(),
-  // Add other config that you want to override the config of above services here
-  require __DIR__.'/common-dependencies.php',
-  require __DIR__.'/params.php',
-  require __DIR__.'/params-local.php',
+    \Base\TenantService\Service::getConfig(),
+    \Base\AppService\Service::getConfig(),
+    // Add other config that you want to override the config of above services here
+    require __DIR__.'/dependencies.php',
+    require __DIR__.'/params.php',
+    require __DIR__.'/params-local.php',
 ], __DIR__.'/../runtime/cache/config.php', env('APP_DEBUG', false));

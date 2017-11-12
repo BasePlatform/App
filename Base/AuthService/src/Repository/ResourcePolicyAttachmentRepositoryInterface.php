@@ -39,7 +39,7 @@ interface ResourcePolicyAttachmentRepositoryInterface
      *
      * @return integer|null The inserted Resource Policy Attachment Id
      */
-    public function add(ResourcePolicyAttachmentInterface $item): ?integer;
+    public function add(ResourcePolicyAttachmentInterface $item): ?int;
 
     /**
      * Delete an Attached Policy of a Resource Id of a Tenant

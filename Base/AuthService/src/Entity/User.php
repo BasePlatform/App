@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Base\AuthService\Entity;
 
 use Base\AuthService\ValueObject\ZoneInterface;
-use ReflectionClass;
 
 /**
  * User Entity
@@ -307,7 +306,7 @@ class User implements UserInterface
      */
     public function getStatusOptions(string $status = null)
     {
-        $reflector = new ReflectionClass(get_class($this));
+        $reflector = new \ReflectionClass(get_class($this));
         $constants = $reflector->getConstants();
         $result = [];
         foreach ($constants as $constant => $value) {

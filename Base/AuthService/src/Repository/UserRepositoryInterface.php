@@ -64,7 +64,7 @@ interface UserRepositoryInterface
      *
      * @return integer|null The inserted User Id
      */
-    public function add(UserInterface $item): ?integer;
+    public function add(UserInterface $item): ?int;
 
     /**
      * Update a User

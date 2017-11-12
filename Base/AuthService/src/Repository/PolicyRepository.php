@@ -185,16 +185,16 @@ class PolicyRepository implements PolicyRepositoryInterface
                 $entity = $this->factory->create();
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
-                    if ($key == 'zone' && $value) {
-                        $zone = $this->zoneFactory->create();
-                        $zone->setZoneId($value);
-                        $value = $zone;
-                    }
-                    if (method_exists($entity, $setMethod)) {
+                    if (method_exists($entity, $setMethod) && $value != null) {
+                        if ($key == 'zone') {
+                            $zone = $this->zoneFactory->create();
+                            $zone->setZoneId($value);
+                            $value = $zone;
+                        }
                         $jsonProperties = [
                           'params'
                         ];
-                        if (in_array($key, $jsonProperties) && $value) {
+                        if (in_array($key, $jsonProperties)) {
                             $value = json_decode($value);
                         }
                         $entity->$setMethod($value);

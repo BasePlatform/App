@@ -43,11 +43,11 @@ interface TenantInterface
     /**
      * Set the value of field Platform
      *
-     * @param  string $platform
+     * @param  string|null $platform
      *
      * @return $this
      */
-    public function setPlatform(string $platform);
+    public function setPlatform(string $platform = null);
 
     /**
      * Set the value of field timeZone

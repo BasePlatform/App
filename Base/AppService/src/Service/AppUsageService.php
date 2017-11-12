@@ -28,6 +28,8 @@ use Base\Formatter\DateTimeFormatter;
  */
 class AppUsageService implements AppUsageServiceInterface
 {
+    const STATUS_ACTIVATED = 'activated';
+
     /**
      * @var AppUsageRepositoryInterface
      */
@@ -58,7 +60,7 @@ class AppUsageService implements AppUsageServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function activate(array $data, array $appConfig)
+    public function activate(array $data, int $trialDays): array
     {
         // Get Info from $data
         $tenantId = $data['tenantId'] ?? null;
@@ -89,16 +91,16 @@ class AppUsageService implements AppUsageServiceInterface
             $appUsage = $this->factory->create();
             $appUsage->setTenantId($tenantId);
             $appUsage->setAppId($appId);
+            $appUsage->setStatus($appUsage->getStatusOptions('STATUS_ACTIVE'));
             $appUsage->setFirstInstallAt($now);
             $appUsage->setRecentInstallAt($now);
-            $appUsage->setCreatedAt($now);
             $appUsage->setUpdatedAt($now);
             // Calculate the trial days
-            if ($appConfig['trialDays'] > 0) {
+            if ($trialDays > 0) {
                 $trialExpiresAt = $now;
-                $trialExpiresAt->add(new DateInterval('P'.$appConfig['trialDays'].'D'));
+                $trialExpiresAt->add(new DateInterval('P'.$$trialDays.'D'));
                 $appUsage->setTrialExpiresAt($trialExpiresAt);
-            } elseif ($appConfig['trialDays'] == 0) {
+            } elseif ($trialDays == 0) {
                 $appUsage->setTrialExpiresAt($now);
             }
             $result = $this->repository->add($appUsage);
@@ -108,7 +110,14 @@ class AppUsageService implements AppUsageServiceInterface
             $appUsage->setUpdatedAt($now);
             $result = $this->repository->update($appUsage);
         }
-        return $result ? true : false;
+        if ($result) {
+            return [
+              'appId' => $appId,
+              'tenantId' => $tenantId,
+              'status' => self::STATUS_ACTIVATED
+            ];
+        }
+        throw new ServerErrorException(sprintf('Failed Activating App `%s` For Tenant `%s`', $appId, $tenantId));
     }
 
     /**

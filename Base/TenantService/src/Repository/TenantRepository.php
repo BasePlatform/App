@@ -127,8 +127,8 @@ class TenantRepository implements TenantRepositoryInterface
                 $entity = $this->factory->create();
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
-                    if (method_exists($entity, $setMethod)) {
-                        if ($key == 'id' && $value) {
+                    if (method_exists($entity, $setMethod) && $value != null) {
+                        if ($key == 'id') {
                             $tenantId = $this->factory->createTenantId();
                             $tenantId->setId($value);
                             $value = $tenantId;
@@ -137,7 +137,7 @@ class TenantRepository implements TenantRepositoryInterface
                           'createdAt',
                           'updatedAt'
                         ];
-                        if (in_array($key, $dateTimeProperties) && $value) {
+                        if (in_array($key, $dateTimeProperties)) {
                             $value = DateTimeFormatter::createFromDb($value);
                         }
                         $entity->$setMethod($value);

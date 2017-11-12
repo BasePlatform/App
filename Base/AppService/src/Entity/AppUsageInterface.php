@@ -45,34 +45,34 @@ interface AppUsageInterface
     /**
      * Set the value of field selectedPlan
      *
-     * @param  string $selectedPlan
+     * @param  string|null $selectedPlan
      * @return $this
      */
-    public function setSelectedPlan(string $selectedPlan);
+    public function setSelectedPlan(string $selectedPlan = null);
 
     /**
      * Set the value of field appParams
      *
-     * @param  array $appParams
+     * @param  array|null $appParams
      * @return $this
      */
-    public function setAppParams(array $appParams);
+    public function setAppParams(array $appParams = null);
 
     /**
      * Set the value of field externalInfo
      *
-     * @param  array $externalInfo
+     * @param  array|null $externalInfo
      * @return $this
      */
-    public function setExternalInfo(array $externalInfo);
+    public function setExternalInfo(array $externalInfo = null);
 
     /**
      * Set the value of field chargeInfo
      *
-     * @param  array $chargeInfo
+     * @param  array|null $chargeInfo
      * @return $this
      */
-    public function setChargeInfo(array $chargeInfo);
+    public function setChargeInfo(array $chargeInfo = null);
     /**
      * Set the value of field exceededPlanUsage
      *
@@ -84,10 +84,10 @@ interface AppUsageInterface
     /**
      * Set the value of field exceededPlanAt
      *
-     * @param  \DateTime $exceededPlanAt
+     * @param  \DateTime|null $exceededPlanAt
      * @return $this
      */
-    public function setExceededPlanAt(\DateTime $exceededPlanAt);
+    public function setExceededPlanAt(\DateTime $exceededPlanAt = null);
 
     /**
      * Set the value of field planUpgradeRequired
@@ -100,34 +100,34 @@ interface AppUsageInterface
     /**
      * Set the value of field firstInstallAt
      *
-     * @param  \DateTime $firstInstallAt
+     * @param  \DateTime|null $firstInstallAt
      * @return $this
      */
-    public function setFirstInstallAt(\DateTime $firstInstallAt);
+    public function setFirstInstallAt(\DateTime $firstInstallAt = null);
 
     /**
      * Set the value of field recentInstallAt
      *
-     * @param  \DateTime $recentInstallAt
+     * @param  \DateTime|null $recentInstallAt
      * @return $this
      */
-    public function setRecentInstallAt(\DateTime $recentInstallAt);
+    public function setRecentInstallAt(\DateTime $recentInstallAt = null);
 
     /**
      * Set the value of field recentUninstallAt
      *
-     * @param  \DateTime $recentUninstallAt
+     * @param  \DateTime|null $recentUninstallAt
      * @return $this
      */
-    public function setRecentUninstallAt(\DateTime $recentUninstallAt);
+    public function setRecentUninstallAt(\DateTime $recentUninstallAt = null);
 
     /**
      * Set the value of field trialExpiresAt
      *
-     * @param  \DateTime $trialExpiresAt
+     * @param  \DateTime|null $trialExpiresAt
      * @return $this
      */
-    public function setTrialExpiresAt(\DateTime $trialExpiresAt);
+    public function setTrialExpiresAt(\DateTime $trialExpiresAt = null);
 
     /**
      * Set the value of field status
@@ -150,7 +150,7 @@ interface AppUsageInterface
      *
      * @return integer
      */
-    public function getId(): integer;
+    public function getId(): int;
 
     /**
      * Return the value of field tenantId
@@ -220,14 +220,14 @@ interface AppUsageInterface
      *
      * @return \DateTime
      */
-    public function getFirstInstallAt(): \DateTime;
+    public function getFirstInstallAt(): ?\DateTime;
 
     /**
      * Return the value of field recentInstallAt
      *
      * @return \DateTime
      */
-    public function getRecentInstallAt(): \DateTime;
+    public function getRecentInstallAt(): ?\DateTime;
 
     /**
      * Return the value of field recentUninstallAt

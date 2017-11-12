@@ -58,7 +58,7 @@ class TenantService implements TenantServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function register(array $data, array $appConfig)
+    public function register(array $data, string $appId, string $domain, string $platform = null)
     {
         // Get Info from $data
         $name = $data['name'] ?? null;
@@ -69,7 +69,7 @@ class TenantService implements TenantServiceInterface
         // Validate the Data here
 
         // Create TenantId
-        $tenantId = call_user_func_array([$this->factory->getTenantIdClassName(), 'createTenantId'], [$name, $appConfig['domain']]);
+        $tenantId = call_user_func_array([$this->factory->getTenantIdClassName(), 'createTenantId'], [$name, $domain]);
 
         // Get Tenant
         $tenant = $this->repository->get($tenantId);
@@ -81,7 +81,7 @@ class TenantService implements TenantServiceInterface
             $tenant = $this->factory->create();
             $tenant->setId($tenantId);
             $tenant->setDomain((string) $tenantId);
-            $tenant->setPlatform($appConfig['platform']);
+            $tenant->setPlatform($platform);
             $tenant->setTimeZone($timeZone);
             $tenant->setStatus($tenant->getStatusOptions('STATUS_ACTIVE'));
             $tenant->setCreatedAt($nowTime);
@@ -93,14 +93,14 @@ class TenantService implements TenantServiceInterface
             $options = [
               'json' => [
                 'tenantId' => (string) $tenantId,
-                'appId' => $appConfig['defaultAppId'],
+                'appId' => $appId,
                 'email' => $email,
                 'password' => $password,
                 'attachedPolicies' => ['tenant.tenantOwner']
               ]
             ];
 
-            // $activateAppresult = $this->serviceRequest->send('APP_SERVICE', 'activateAppEndpoint', $options, true);
+            $activateAppresult = $this->serviceRequest->send('APP_SERVICE', 'activateAppEndpoint', $options, true);
 
             // $result = $this->serviceRequest->send('AUTH_SERVICE', 'activateAppEndpoint', $options, true);
 

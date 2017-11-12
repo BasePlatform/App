@@ -39,7 +39,7 @@ interface AppUsageRepositoryInterface
      *
      * @return integer|null The inserted AppUsage Id
      */
-    public function add(AppUsageInterface $item): ?integer;
+    public function add(AppUsageInterface $item): ?int;
 
     /**
      * Update an App Usage

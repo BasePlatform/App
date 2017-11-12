@@ -26,17 +26,10 @@ use Base\Exception\ServerErrorException;
  */
 class ActivateAppAction extends RestAction
 {
-    const STATUS_ACTIVATED = 'activated';
-
     /**
      * @var AppUsageServiceInterface
      */
     private $appUsageService;
-
-    /**
-     * @var array
-     */
-    private $appConfig;
 
     /**
      * @var ResponseFactoryInterface
@@ -46,13 +39,11 @@ class ActivateAppAction extends RestAction
     /**
      * @param ResponseFactoryInterface $responseFactory
      * @param AppUsageServiceInterface $response
-     * @param array $appConfig
      */
-    public function __construct(ResponseFactoryInterface $responseFactory, AppUsageServiceInterface $appUsageService, array$appConfig)
+    public function __construct(ResponseFactoryInterface $responseFactory, AppUsageServiceInterface $appUsageService)
     {
         $this->responseFactory = $responseFactory;
         $this->appUsageService = $appUsageService;
-        $this->appConfig = $appConfig;
     }
 
     /**
@@ -66,13 +57,7 @@ class ActivateAppAction extends RestAction
     public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         $data = $request->getParsedBody();
-        $result = $this->appUsageService->activate($data, $this->appConfig);
-        if ($result) {
-            return $this->responseFactory->createJson([
-              'status' => self::STATUS_ACTIVATED
-            ]);
-        } else {
-            throw new ServerErrorException(sprintf('Failed Activating App `%s` For Tenant `%s`', $appId, $tenantId));
-        }
+        $trialDays = \Base\Base::$config->get('app.trialDays');
+        return $this->responseFactory->createJson($this->appUsageService->activate($data, $trialDays));
     }
 }

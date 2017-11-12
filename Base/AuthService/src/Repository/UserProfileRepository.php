@@ -82,7 +82,7 @@ class UserProfileRepository implements UserProfileRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function add(UserProfileInterface $item): ?integer
+    public function add(UserProfileInterface $item): ?int
     {
         try {
             $this->pdo->beginTransaction();
@@ -124,7 +124,7 @@ class UserProfileRepository implements UserProfileRepositoryInterface
             ]);
             $id = null;
             if ($result) {
-                $id = $this->pdo->lastInsertId();
+                $id = (int) $this->pdo->lastInsertId();
             }
             $this->pdo->commit();
             return $id;
@@ -152,8 +152,7 @@ class UserProfileRepository implements UserProfileRepositoryInterface
                 company = :company,
                 info = :info,
                 updatedAt = :updatedAt
-              WHERE ui.id = :id LIMIT 1
-              )';
+              WHERE ui.id = :id LIMIT 1';
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
               'id' => (int) $item->getId(),
@@ -186,7 +185,7 @@ class UserProfileRepository implements UserProfileRepositoryInterface
                 $entity = $this->factory->create();
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
-                    if (method_exists($entity, $setMethod)) {
+                    if (method_exists($entity, $setMethod) && $value != null) {
                         if ($key == 'birthDate' && $value) {
                             $value = \DateTime::creatFromFormat(DateTimeFormatter::DB_DATE_FORMAT, $value);
                         }
@@ -196,10 +195,10 @@ class UserProfileRepository implements UserProfileRepositoryInterface
                         $dateTimeProperties = [
                           'updatedAt'
                         ];
-                        if (in_array($key, $jsonProperties) && $value) {
+                        if (in_array($key, $jsonProperties)) {
                             $value = json_decode($value);
                         }
-                        if (in_array($key, $dateTimeProperties) && $value) {
+                        if (in_array($key, $dateTimeProperties)) {
                             $value = DateTimeFormatter::createFromDb($value);
                         }
                         $entity->$setMethod($value);

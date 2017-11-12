@@ -12,23 +12,6 @@
 use Psr\Log\LoggerInterface;
 
 /**
- * Get Config object
- */
-$config = require __DIR__ . '/../config/config.php';
-
-// Define the SERVICES CONSTANTS
-foreach ($config->get('constants') as $key => $value) {
-    define($key, $value);
-}
-
-// Set Default TimeZone
-$timeZone = $config->get('timeZone');
-if (!$timeZone) {
-    $timeZone = 'UTC';
-}
-date_default_timezone_set($timeZone);
-
-/**
  * Create a container
  *
  * You can use other containers such as:
@@ -38,23 +21,15 @@ date_default_timezone_set($timeZone);
 $container = new Auryn\Injector;
 
 /**
- * Add $config to the container for future use
- */
-$container->share($config);
-
-/**
- * Set some aliases based on the characteristics of
+ * Set some definitions based on the characteristics of
  * the app and container
  */
 
-$serviceRequest = new Base\ServiceRequest\ServiceRequest($config->get('endpoints'));
-$container->share($serviceRequest);
+$dependencies = \Base\Base::$config->get('dependencies');
 
-$dependencies = $config->get('dependencies');
-
-// Loop through aliases and set
-if (isset($dependencies['aliases']) && !empty($dependencies['aliases'])) {
-    foreach ($dependencies['aliases'] as $key => $value) {
+// Loop through definitions and set
+if (isset($dependencies['definitions']) && !empty($dependencies['definitions'])) {
+    foreach ($dependencies['definitions'] as $key => $value) {
         $container->alias($key, $value);
     }
 }
@@ -63,16 +38,28 @@ if (isset($dependencies['aliases']) && !empty($dependencies['aliases'])) {
 if (isset($dependencies['params']) && !empty($dependencies['params'])) {
     foreach ($dependencies['params'] as $key => $value) {
         if (is_callable($value)) {
-            $container->define($key, call_user_func($value));
-        } else {
-            $container->define($key, $value);
+            // Check the required params of the function
+            $params = $value($container, $config);
+        }
+        if (is_array($value)) {
+            $params = $value;
+        }
+        // We expect the returned $params is array
+        if ($params && is_array($params) && !empty($params)) {
+            foreach ($params as $paramKey => $paramValue) {
+                $params[':'.$paramKey] = $paramValue;
+                unset($params[$paramKey]);
+            }
+            $container->define($key, $params);
         }
     }
 }
 
-// Define some params
-// $container->define(Base\TenantService\Controller\Site\RegisterTenantAction::class, [':appConfig' => $config->get('app')]);
-
+/**
+ * Define service request with list of endpoints
+ */
+$serviceRequest = new Base\ServiceRequest\ServiceRequest(\Base\Base::$config->get('endpoints'));
+$container->share($serviceRequest);
 
 /**
  * Create a logger and register it with the container
@@ -85,18 +72,16 @@ $container->share($logger);
 /**
  * Setup the PDO for MySQL
  */
-$dbConfig = $config->get('db');
-
-$mysqlConfig = isset($dbConfig['mysql']) ? $dbConfig['mysql'] : [];
-if (!empty($mysqlConfig)) {
+$dbConfig = \Base\Base::$config->get('database.mysql');
+if (!empty($dbConfig)) {
     $pdoOptions = [
       PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
       PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
       PDO::ATTR_EMULATE_PREPARES   => false,
     ];
     $pdo = new Base\PDO\PDOProxy($pdoOptions);
-    $pdo->addMaster($mysqlConfig['master']['m1']);
-    $pdo->addSlave($mysqlConfig['slave']['s1']);
+    $pdo->addMaster($dbConfig['master']['m1']);
+    $pdo->addSlave($dbConfig['slave']['s1']);
     // Share it
     $container->share($pdo);
 }

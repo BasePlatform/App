@@ -63,7 +63,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
     {
         try {
             $sql = 'SELECT * FROM '. $this->tablePrefix . 'AppUsage au WHERE
-                au.tenantId = :tenantI AND
+                au.tenantId = :tenantId AND
                 au.appId = :appId
               LIMIT 0,1';
             $stmt = $this->pdo->prepare($sql);
@@ -82,7 +82,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function add(AppUsageInterface $item): ?integer
+    public function add(AppUsageInterface $item): ?int
     {
         try {
             $this->pdo->beginTransaction();
@@ -127,9 +127,9 @@ class AppUsageRepository implements AppUsageRepositoryInterface
               'appParams' => ($item->getAppParams() != null) ? json_encode($item->getAppParams()) : null,
               'externalInfo' => ($item->getExternalInfo() != null) ? json_encode($item->getExternalInfo()) : null,
               'chargeInfo' => ($item->getChargeInfo() != null) ? json_encode($item->getChargeInfo()) : null,
-              'exceededPlanUsage' => (bool) $item->getExceededPlanUsage(),
+              'exceededPlanUsage' => (int) $item->getExceededPlanUsage(),
               'exceededPlanAt' => DateTimeFormatter::toDb($item->getExceededPlanAt()),
-              'planUpgradeRequired' => (bool) $item->getPlanUpgradeRequired(),
+              'planUpgradeRequired' => (int) $item->getPlanUpgradeRequired(),
               'firstInstallAt' => DateTimeFormatter::toDb($item->getFirstInstallAt()),
               'recentInstallAt' => DateTimeFormatter::toDb($item->getRecentInstallAt()),
               'recentUninstallAt' => DateTimeFormatter::toDb($item->getRecentUninstallAt()),
@@ -139,7 +139,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
             ]);
             $id = null;
             if ($result) {
-                $id = $this->pdo->lastInsertId();
+                $id = (int) $this->pdo->lastInsertId();
             }
             $this->pdo->commit();
             return $id;
@@ -172,8 +172,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
                 trialExpiresAt = :trialExpiresAt,
                 status = :status,
                 updatedAt = :updatedAt
-              WHERE au.id = :id LIMIT 1
-              )';
+              WHERE au.id = :id LIMIT 1';
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
               'id' => (int) $item->getId(),
@@ -183,9 +182,9 @@ class AppUsageRepository implements AppUsageRepositoryInterface
               'appParams' => ($item->getAppParams() != null) ? json_encode($item->getAppParams()) : null,
               'externalInfo' => ($item->getExternalInfo() != null) ? json_encode($item->getExternalInfo()) : null,
               'chargeInfo' => ($item->getChargeInfo() != null) ? json_encode($item->getChargeInfo()) : null,
-              'exceededPlanUsage' => (bool) $item->getExceededPlanUsage(),
+              'exceededPlanUsage' => (int) $item->getExceededPlanUsage(),
               'exceededPlanAt' => DateTimeFormatter::toDb($item->getExceededPlanAt()),
-              'planUpgradeRequired' => (bool) $item->getPlanUpgradeRequired(),
+              'planUpgradeRequired' => (int) $item->getPlanUpgradeRequired(),
               'firstInstallAt' => DateTimeFormatter::toDb($item->getFirstInstallAt()),
               'recentInstallAt' => DateTimeFormatter::toDb($item->getRecentInstallAt()),
               'recentUninstallAt' => DateTimeFormatter::toDb($item->getRecentUninstallAt()),
@@ -211,7 +210,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
                 $entity = $this->factory->create();
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
-                    if (method_exists($entity, $setMethod)) {
+                    if (method_exists($entity, $setMethod) && $value != null) {
                         $jsonProperties = [
                           'appParams',
                           'externalInfo',
@@ -225,10 +224,10 @@ class AppUsageRepository implements AppUsageRepositoryInterface
                           'trialExpiresAt',
                           'updatedAt'
                         ];
-                        if (in_array($key, $jsonProperties) && $value) {
+                        if (in_array($key, $jsonProperties)) {
                             $value = json_decode($value);
                         }
-                        if (in_array($key, $dateTimeProperties) && $value) {
+                        if (in_array($key, $dateTimeProperties)) {
                             $value = DateTimeFormatter::createFromDb($value);
                         }
                         $entity->$setMethod($value);

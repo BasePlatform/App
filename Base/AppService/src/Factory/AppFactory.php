@@ -24,39 +24,13 @@ use Base\AppService\Entity\AppUsageInterface;
  */
 class AppFactory implements AppFactoryInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
+    use \Base\Factory\FactoryTrait;
 
     /**
-     * @var FactoryInterface
+     * @param string $className
      */
-    private $appUsagefactory;
-
-    /**
-     * @param FactoryInterface $factory
-     * @param FactoryInterface $appUsagefactory
-     */
-    public function __construct(FactoryInterface $factory, FactoryInterface $appUsagefactory)
+    public function __construct(string $className)
     {
-        $this->factory = $factory;
-        $this->appUsagefactory = $appUsagefactory;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function create(): AppInterface
-    {
-        return $this->factory->create();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName(): string
-    {
-        return $this->factory->getClassName();
+        $this->className = $className;
     }
 }

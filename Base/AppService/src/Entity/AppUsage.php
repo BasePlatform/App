@@ -138,7 +138,7 @@ class AppUsage implements AppUsageInterface
     /**
      * {@inheritdoc}
      */
-    public function setSelectedPlan(string $selectedPlan)
+    public function setSelectedPlan(string $selectedPlan = null)
     {
         $this->selectedPlan = $selectedPlan;
         return $this;
@@ -147,7 +147,7 @@ class AppUsage implements AppUsageInterface
     /**
      * {@inheritdoc}
      */
-    public function setAppParams(array $appParams)
+    public function setAppParams(array $appParams = null)
     {
         $this->appParams = $appParams;
         return $this;
@@ -156,7 +156,7 @@ class AppUsage implements AppUsageInterface
     /**
      * {@inheritdoc}
      */
-    public function setExternalInfo(array $externalInfo)
+    public function setExternalInfo(array $externalInfo = null)
     {
         $this->externalInfo = $externalInfo;
         return $this;
@@ -165,7 +165,7 @@ class AppUsage implements AppUsageInterface
     /**
      * {@inheritdoc}
      */
-    public function setChargeInfo(array $chargeInfo)
+    public function setChargeInfo(array $chargeInfo = null)
     {
         $this->chargeInfo = $chargeInfo;
         return $this;
@@ -183,7 +183,7 @@ class AppUsage implements AppUsageInterface
     /**
      * {@inheritdoc}
      */
-    public function setExceededPlanAt(\DateTime $exceededPlanAt)
+    public function setExceededPlanAt(\DateTime $exceededPlanAt = null)
     {
         $this->exceededPlanAt = $exceededPlanAt;
         return $this;
@@ -201,7 +201,7 @@ class AppUsage implements AppUsageInterface
     /**
      * {@inheritdoc}
      */
-    public function setFirstInstallAt(\DateTime $firstInstallAt)
+    public function setFirstInstallAt(\DateTime $firstInstallAt = null)
     {
         $this->firstInstallAt = $firstInstallAt;
         return $this;
@@ -210,7 +210,7 @@ class AppUsage implements AppUsageInterface
     /**
      * {@inheritdoc}
      */
-    public function setRecentInstallAt(\DateTime $recentInstallAt)
+    public function setRecentInstallAt(\DateTime $recentInstallAt = null)
     {
         $this->recentInstallAt = $recentInstallAt;
         return $this;
@@ -219,7 +219,7 @@ class AppUsage implements AppUsageInterface
     /**
      * {@inheritdoc}
      */
-    public function setRecentUninstallAt(\DateTime $recentUninstallAt)
+    public function setRecentUninstallAt(\DateTime $recentUninstallAt = null)
     {
         $this->recentUninstallAt = $recentUninstallAt;
         return $this;
@@ -228,7 +228,7 @@ class AppUsage implements AppUsageInterface
     /**
      * {@inheritdoc}
      */
-    public function setTrialExpiresAt(\DateTime $trialExpiresAt)
+    public function setTrialExpiresAt(\DateTime $trialExpiresAt = null)
     {
         $this->trialExpiresAt = $trialExpiresAt;
         return $this;
@@ -255,7 +255,7 @@ class AppUsage implements AppUsageInterface
     /**
      * {@inheritdoc}
      */
-    public function getId(): integer
+    public function getId(): int
     {
         return $this->id;
     }
@@ -335,7 +335,7 @@ class AppUsage implements AppUsageInterface
     /**
      * {@inheritdoc}
      */
-    public function getFirstInstallAt(): \DateTime
+    public function getFirstInstallAt(): ?\DateTime
     {
         return $this->firstInstallAt;
     }
@@ -343,7 +343,7 @@ class AppUsage implements AppUsageInterface
     /**
      * {@inheritdoc}
      */
-    public function getRecentInstallAt(): \DateTime
+    public function getRecentInstallAt(): ?\DateTime
     {
         return $this->recentInstallAt;
     }
@@ -385,7 +385,7 @@ class AppUsage implements AppUsageInterface
      */
     public function getStatusOptions(string $status = null)
     {
-        $reflector = new ReflectionClass(get_class($this));
+        $reflector = new \ReflectionClass(get_class($this));
         $constants = $reflector->getConstants();
         $result = [];
         foreach ($constants as $constant => $value) {

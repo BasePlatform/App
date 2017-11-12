@@ -30,21 +30,36 @@ interface ConfigInterface
     public function getAll();
 
     /**
-     * Return the full content of the config
+     * Determine if the given configuration value exists.
      *
-     * @param string $key
-     *
-     * @return mixed
+     * @param  string $key
+     * @return bool
      */
-    public function get(string $key);
+    public function has(string $key);
 
     /**
-     * Set a config
+     * Get the specified configuration value.
      *
-     * @param string $key
-     * @param mixed $value
+     * @param  array|string  $key
+     * @param  mixed   $default
+     * @return mixed
+     */
+    public function get($key, $default = null);
+
+    /**
+     * Get many configuration values.
      *
+     * @param  array  $keys
+     * @return array
+     */
+    public function getMany($keys);
+
+    /**
+     * Set a given configuration value.
+     *
+     * @param  array|string  $key
+     * @param  mixed   $value
      * @return void
      */
-    public function set(string $key, $value);
+    public function set($key, $value = null);
 }

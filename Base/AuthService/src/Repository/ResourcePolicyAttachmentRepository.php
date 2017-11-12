@@ -88,7 +88,7 @@ class ResourcePolicyAttachmentRepository implements ResourcePolicyAttachmentRepo
     /**
      * {@inheritdoc}
      */
-    public function add(ResourcePolicyAttachmentInterface $item): ?integer
+    public function add(ResourcePolicyAttachmentInterface $item): ?int
     {
         try {
             $this->pdo->beginTransaction();
@@ -112,7 +112,7 @@ class ResourcePolicyAttachmentRepository implements ResourcePolicyAttachmentRepo
             ]);
             $id = null;
             if ($result) {
-                $id = $this->pdo->lastInsertId();
+                $id = (int) $this->pdo->lastInsertId();
             }
             $this->pdo->commit();
             return $id;
@@ -181,11 +181,11 @@ class ResourcePolicyAttachmentRepository implements ResourcePolicyAttachmentRepo
                 $entity = $this->factory->create();
                 foreach ($data as $key => $value) {
                     $setMethod = 'set'.ucfirst($key);
-                    if (method_exists($entity, $setMethod)) {
+                    if (method_exists($entity, $setMethod) && $value != null) {
                         $dateTimeProperties = [
                           'attachedAt'
                         ];
-                        if (in_array($key, $dateTimeProperties) && $value) {
+                        if (in_array($key, $dateTimeProperties)) {
                             $value = DateTimeFormatter::createFromDb($value);
                         }
                         $entity->$setMethod($value);

@@ -23,32 +23,13 @@ use Base\AuthService\Entity\UserProfileInterface;
  */
 class UserProfileFactory implements UserProfileFactoryInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
+    use \Base\Factory\FactoryTrait;
 
     /**
-     * @param FactoryInterface $factory
+     * @param string $className
      */
-    public function __construct(FactoryInterface $factory)
+    public function __construct(string $className)
     {
-        $this->factory = $factory;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function create(): UserProfileInterface
-    {
-        return $this->factory->create();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName(): string
-    {
-        return $this->factory->getClassName();
+        $this->className = $className;
     }
 }

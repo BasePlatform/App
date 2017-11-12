@@ -26,11 +26,13 @@ interface TenantServiceInterface
      * 2. Send Request to App Service Activate the default App
      *
      * @param array $data
-     * @param array $appConfig
+     * @param string $appId
+     * @param string $domain
+     * @param string $platform
      *
      * @return mixed
      */
-    public function register(array $data, array $appConfig);
+    public function register(array $data, string $appId, string $domain, string $platform = null);
 
     /**
      * Validate the data for service
