@@ -97,8 +97,8 @@ class AppUsageService implements AppUsageServiceInterface
             $appUsage->setUpdatedAt($now);
             // Calculate the trial days
             if ($trialDays > 0) {
-                $trialExpiresAt = $now;
-                $trialExpiresAt->add(new DateInterval('P'.$$trialDays.'D'));
+                $trialExpiresAt = clone $now;
+                $trialExpiresAt->add(new \DateInterval('P'.$trialDays.'D'));
                 $appUsage->setTrialExpiresAt($trialExpiresAt);
             } elseif ($trialDays == 0) {
                 $appUsage->setTrialExpiresAt($now);

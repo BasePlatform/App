@@ -19,7 +19,7 @@ return [
     'domain' => env('APP_DOMAIN', '.base.platform'),
     'platform' => env('APP_PLATFORM', null),
     'defaultInstallAppId' => env('APP_INSTALL_DEFAULT_ID', 'default'),
-    'trialDays' => -1, // -1: No Trial, >= 0: Actual Trial Days
+    'trialDays' => 14, // -1: No Trial, >= 0: Actual Trial Days
     // Secret 32 Characters Key
     'key' => env('APP_KEY', 'secret'),
     'env' => env('APP_ENV', 'production'),
