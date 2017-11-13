@@ -26,6 +26,8 @@ use Exception;
  */
 class ResponseFactory implements ResponseFactoryInterface
 {
+    const INTERNAL_SERVER_ERROR_CODE = 500;
+
     /**
      * {@inheritdoc}
      */
@@ -84,7 +86,11 @@ class ResponseFactory implements ResponseFactoryInterface
         if (property_exists($e, 'additionalData') && !empty($e->getAdditionalData())) {
             $response['additionalData'] = $e->getAdditionalData();
         }
-        return static::createJson($response, 500);
+        $statusCode = self::INTERNAL_SERVER_ERROR_CODE;
+        if (property_exists($e, 'statusCode') && !empty($e->getStatusCode())) {
+            $statusCode = $e->getStatusCode();
+        }
+        return static::createJson($response, $statusCode);
     }
 
     /**
