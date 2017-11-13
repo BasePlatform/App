@@ -34,7 +34,7 @@ class ExistedTenantException extends RuntimeException implements ServiceExceptio
     public function __construct(string $message = 'Tenant Is Already Existed', bool $notification = false, string $details = null, array $additionalData = null)
     {
         $this->message = $message;
-        $this->statusCode = 403;
+        $this->statusCode = 422;
         $this->code = TENANT_SERVICE_CONSTANTS['ERROR_CODE_SPACE']+2;
         $this->notification = $notification;
         $this->details = $details;

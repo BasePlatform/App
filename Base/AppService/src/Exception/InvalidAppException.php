@@ -34,7 +34,7 @@ class InvalidAppException extends RuntimeException implements ServiceExceptionIn
     public function __construct(string $message = 'Invalid App', bool $notification = false, string $details = null, array $additionalData = null)
     {
         $this->message = $message;
-        $this->statusCode = 403;
+        $this->statusCode = 422;
         $this->code = APP_SERVICE_CONSTANTS['ERROR_CODE_SPACE']+1;
         $this->notification = $notification;
         $this->details = $details;
