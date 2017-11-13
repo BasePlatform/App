@@ -19,27 +19,17 @@ require __DIR__.'/../bootstrap/autoload.php';
 $container = require_once __DIR__.'/../bootstrap/container.php';
 
 /**
- * Get the route dispatcher
+ * Get the routes middlewares function
  */
-$routeDispatcher = require_once __DIR__.'/../bootstrap/route-dispatcher.php';
+$routesMiddlewares = require_once __DIR__.'/../bootstrap/routes-middlewares.php';
 ;
 
-/**
- * Setup the middleware queue
- */
-$middlewares = [
-  Base\Middleware\RequestIdMiddleware::class,
-  Base\Middleware\ErrorHandlerMiddleware::class,
-  new Base\Middleware\FastRouteMiddleware($routeDispatcher),
-  new Base\Middleware\BodyParserMiddleware('urlencoded'),
-  new Base\Middleware\BodyParserMiddleware('json'),
-  new Base\Middleware\RequestHandlerMiddleware($container)
-];
+$middlewares = $routesMiddlewares($container);
 
 /**
  * Dispatch the request through middleware queue and get a response
  */
-$middlewareDispatcher = new Base\Middleware\Dispatcher($middlewares, $container);
+$middlewareDispatcher = new \Base\Middleware\Dispatcher($middlewares, $container);
 $response = $middlewareDispatcher->dispatch(RequestFactory::create());
 
 /**

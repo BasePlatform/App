@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Base\AppService;
+namespace Base\AuthService;
 
 /**
- * App Service
+ * Auth Service
  *
- * @package Base\AppService
+ * @package Base\AuthService
  */
 class Service
 {

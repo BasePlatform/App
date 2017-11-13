@@ -56,9 +56,9 @@ if (isset($dependencies['params']) && !empty($dependencies['params'])) {
 }
 
 /**
- * Define service request with list of endpoints
+ * Define service request with list of required endpoints
  */
-$serviceRequest = new Base\ServiceRequest\ServiceRequest(\Base\Base::$config->get('endpoints'));
+$serviceRequest = new Base\ServiceRequest\ServiceRequest(\Base\Base::$config->get('requiredEndpoints'));
 $container->share($serviceRequest);
 
 /**

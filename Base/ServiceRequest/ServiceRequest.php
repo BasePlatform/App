@@ -76,8 +76,8 @@ class ServiceRequest implements ServiceRequestInterface
                 throw new InvalidArgumentException('Invalid Endpoint Method In Service Request');
             }
 
-            $serviceURI = defined($service.'_URI') ? constant($service.'_URI') : SERVICE_DEFAULT_URI;
-            $endpointURI = $endpoints[$service][$endpoint]['uri'] ?? '';
+            $serviceURL = defined($service.'_URL') ? constant($service.'_URL') : SERVICE_DEFAULT_URI;
+            $endpointPath = $endpoints[$service][$endpoint]['path'] ?? '';
 
             $endpointOptions = $endpoints[$service][$endpoint]['options'] ?? [];
             $options = array_merge($this->options, $endpointOptions, $options);
@@ -100,7 +100,7 @@ class ServiceRequest implements ServiceRequestInterface
             try {
                 $result = $client->{$method}(
                     $endpointMethod,
-                    $serviceURI.$endpointURI,
+                    $serviceURL.$endpointPath,
                     $options
                 );
                 return $sendAsync ? $result->wait() : $result;

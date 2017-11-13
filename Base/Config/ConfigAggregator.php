@@ -49,7 +49,7 @@ class ConfigAggregator implements ArrayAccess, ConfigInterface
             ;
         } else {
             foreach ($providers as $provider) {
-                $this->items = array_replace_recursive($this->items, $provider);
+                $this->items = $this->mergeArray($this->items, $provider);
             }
             if (!$enableCache) {
                 $this->saveCache();
@@ -184,6 +184,8 @@ class ConfigAggregator implements ArrayAccess, ConfigInterface
     /**
      * Determine if the given key exists in the provided array.
      *
+     * Source: https://github.com/laravel/framework/blob/5.5/src/Illuminate/Support/Arr.php
+     *
      * @param  \ArrayAccess|array  $array
      * @param  string|int  $key
      * @return bool
@@ -217,6 +219,8 @@ class ConfigAggregator implements ArrayAccess, ConfigInterface
      *
      * If no key is given to the method, the entire array will be replaced.
      *
+     * Source: https://github.com/laravel/framework/blob/5.5/src/Illuminate/Support/Arr.php
+     *
      * @param  array   $array
      * @param  string  $key
      * @param  mixed   $value
@@ -240,6 +244,39 @@ class ConfigAggregator implements ArrayAccess, ConfigInterface
         }
         $array[array_shift($keys)] = $value;
         return $array;
+    }
+
+    /**
+     * Perform a recursive merge of two multi-dimensional arrays.
+     *
+     * Copied from https://github.com/zendframework/zend-stdlib/blob/980ce463c29c1a66c33e0eb67961bba895d0e19e/src/ArrayUtils.php#L269
+     *
+     * @param array $a
+     * @param array $b
+     * @return $a
+     */
+    private function mergeArray(array $a, array $b)
+    {
+        foreach ($b as $key => $value) {
+            if ($value instanceof MergeReplaceKeyInterface) {
+                $a[$key] = $value->getData();
+            } elseif (isset($a[$key]) || array_key_exists($key, $a)) {
+                if ($value instanceof MergeRemoveKey) {
+                    unset($a[$key]);
+                } elseif (is_int($key)) {
+                    $a[] = $value;
+                } elseif (is_array($value) && is_array($a[$key])) {
+                    $a[$key] = $this->mergeArray($a[$key], $value);
+                } else {
+                    $a[$key] = $value;
+                }
+            } else {
+                if (! $value instanceof MergeRemoveKey) {
+                    $a[$key] = $value;
+                }
+            }
+        }
+        return $a;
     }
 
     /**

@@ -12,6 +12,6 @@
 use Fig\Http\Message\RequestMethodInterface as RequestMethod;
 
 return [
-  'endpoints' => [
+  'requiredEndpoints' => [
   ]
 ];

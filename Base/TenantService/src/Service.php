@@ -30,7 +30,7 @@ class Service
             require __DIR__.'/../config/dependencies.php',
             require __DIR__.'/../config/routes.php',
             require __DIR__.'/../config/policies.php',
-            require __DIR__.'/../config/endpoints.php'
+            require __DIR__.'/../config/required-endpoints.php'
         );
     }
 }

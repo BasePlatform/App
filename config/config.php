@@ -17,8 +17,9 @@ declare(strict_types=1);
  * /runtime/cache/config.php
  */
 return new \Base\Config\ConfigAggregator([
-    \Base\TenantService\Service::getConfig(),
     \Base\AppService\Service::getConfig(),
+    \Base\TenantService\Service::getConfig(),
+    \Base\AuthService\Service::getConfig(),
     // Add other config that you want to override the config of above services here
     require __DIR__.'/dependencies.php',
     require __DIR__.'/params.php',

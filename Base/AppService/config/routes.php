@@ -16,16 +16,17 @@ $pathPrefix = 'apps';
 return [
   'routes' => [
     [
-      // System - Activate the app
-      'path' => 'system/'.$pathPrefix.'/activate',
-      'name' => \Base\AppService\Controller\Tenant\AppSystemController::class.':activateAction',
-      'handler' => \Base\AppService\Controller\Tenant\AppSystemController::class.':activateAction',
+      // System - Activate The App
+      'name' => 'app.system.activateAppEndpoint',
+      'path' => '/system/'.$pathPrefix.'/activate',
+      'handler' => \Base\AppService\Controller\System\ActivateAppAction::class,
       'middlewares' => null,
       'allowedMethods' => [RequestMethod::METHOD_POST],
       'allowedPolicies' => [
         'app.internalServiceRequest',
         'app.systemAdmin'
-      ]
+      ],
+      'enabled' => true
     ]
   ]
 ];

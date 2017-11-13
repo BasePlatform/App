@@ -40,12 +40,16 @@ $config = require __DIR__ . '/../config/config.php';
  */
 \Base\Base::$config = $config;
 
-// Define the SERVICE CONSTANTS
+/**
+ * Define SERVICE CONSTANTS
+ */
 foreach ($config->get('constants') as $key => $value) {
     define($key, $value);
 }
 
-// Set Default TimeZone
+/**
+ * Set Default Time Zone
+ */
 $timeZone = $config->get('timeZone');
 if (!$timeZone) {
     $timeZone = 'UTC';
@@ -53,18 +57,18 @@ if (!$timeZone) {
 date_default_timezone_set($timeZone);
 
 /**
- * Define services uri
+ * Define services url
  *
  * If a service uri is not defined when needed, the system will use
- * the default service uri for making a service request
+ * the default service url for making a service request
  */
 $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, 5)) == 'https' ? 'https' : 'http';
 
-define('SERVICE_DEFAULT_URI', env('SERVICE_DEFAULT_URI', $protocol.$_SERVER['HTTP_HOST']));
+define('SERVICE_DEFAULT_URL', env('SERVICE_DEFAULT_URL', $protocol.$_SERVER['HTTP_HOST']));
 
 /*
- * Uncomment and edit if you want to define custom uri per service
+ * Uncomment and edit if you want to define custom url per service
  */
-// define('TENANT_SERVICE_URI', SERVICE_DEFAULT_URI);
-// define('APP_SERVICE_URI', SERVICE_DEFAULT_URI);
-// define('AUTH_SERVICE_URI', SERVICE_DEFAULT_URI);
+// define('TENANT_SERVICE_URL', SERVICE_DEFAULT_URL);
+// define('APP_SERVICE_URL', SERVICE_DEFAULT_URL);
+// define('AUTH_SERVICE_URL', SERVICE_DEFAULT_URL);

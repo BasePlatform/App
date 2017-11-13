@@ -11,18 +11,21 @@
 
 use Fig\Http\Message\RequestMethodInterface as RequestMethod;
 
+$appPathPrefix = 'apps';
+$authPathPrefix = 'auth';
+
 return [
-  'endpoints' => [
+  'requiredEndpoints' => [
     'APP_SERVICE' => [
-      'activateAppEndpoint' => [
-        'uri' => 'system/apps/activate',
+      'app.system.activateAppEndpoint' => [
+        'path' => 'system/'.$appPathPrefix.'/activate',
         'method' => RequestMethod::METHOD_POST,
         'options' => []
       ]
     ],
     'AUTH_SERVICE' => [
-      'registerTenantOwnerEndpoint' => [
-        'uri' => 'system/auth/users/register-tenant-owner',
+      'auth.system.registerTenantOwnerEndpoint' => [
+        'path' => 'system/'.$authPathPrefix.'/users/register-tenant-owner',
         'method' => RequestMethod::METHOD_POST,
         'options' => []
       ]
