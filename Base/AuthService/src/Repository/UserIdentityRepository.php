@@ -17,7 +17,7 @@ use Base\AuthService\Entity\UserIdentityInterface;
 use Base\AuthService\Factory\UserIdentityFactoryInterface;
 use Base\PDO\PDOProxyInterface;
 use Base\Exception\ServerErrorException;
-use Base\Formatter\DateTimeFormatter;
+use Base\Helper\DateTimeHelper;
 
 /**
  * User Identity Repository
@@ -93,12 +93,7 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
                 authProviderUid,
                 passwordHash,
                 authParams,
-                accountActivateToken,
-                accountActivateExpiresAt,
-                passwordResetToken,
-                passwordResetExpiresAt,
                 recentPasswordUpdateAt,
-                recentLoginAt,
                 updatedAt,
               ) VALUES (
                 :tenantId,
@@ -107,12 +102,7 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
                 :authProviderUid,
                 :passwordHash,
                 :authParams,
-                :accountActivateToken,
-                :accountActivateExpiresAt,
-                :passwordResetToken,
-                :passwordResetExpiresAt,
                 :recentPasswordUpdateAt,
-                :recentLoginAt,
                 :updatedAt
               )';
             $stmt = $this->pdo->prepare($sql);
@@ -123,12 +113,7 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
               'authProviderUid' => $item->getAuthProviderUid(),
               'passwordHash' => ($item->getPasswordHash() != null) ? (string) $item->getPasswordHash() : null,
               'authParams' => ($item->getAuthParams() != null) ? json_encode($item->getAuthParams()) : null,
-              'accountActivateToken' => $item->getAccountActivateToken(),
-              'accountActivateExpiresAt' => DateTimeFormatter::toDb($item->getAccountActivateExpiresAt()),
-              'passwordResetToken' => $item->getPasswordResetToken(),
-              'passwordResetExpiresAt' => DateTimeFormatter::toDb($item->getPasswordResetExpiresAt()),
               'recentPasswordUpdateAt' => DateTimeFormatter::toDb($item->getRecentPasswordUpdateAt()),
-              'recentLoginAt' => DateTimeFormatter::toDb($item->getRecentLoginAt()),
               'updatedAt' => DateTimeFormatter::toDb($item->getUpdatedAt())
             ]);
             $id = null;
@@ -157,12 +142,7 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
                 authProviderUid = :authProviderUid,
                 passwordHash = :passwordHash,
                 authParams = :authParams,
-                accountActivateToken = :accountActivateToken,
-                accountActivateExpiresAt = :accountActivateExpiresAt,
-                passwordResetToken = :passwordResetToken,
-                passwordResetExpiresAt = :passwordResetExpiresAt,
                 recentPasswordUpdateAt = :recentPasswordUpdateAt,
-                recentLoginAt = :recentLoginAt,
                 updatedAt = :updatedAt
               WHERE ui.id = :id LIMIT 1';
             $stmt = $this->pdo->prepare($sql);
@@ -174,12 +154,7 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
               'authProviderUid' => $item->getAuthProviderUid(),
               'passwordHash' => ($item->getPasswordHash() != null) ? (string) $item->getPasswordHash() : null,
               'authParams' => ($item->getAuthParams() != null) ? json_encode($item->getAuthParams()) : null,
-              'accountActivateToken' => $item->getAccountActivateToken(),
-              'accountActivateExpiresAt' => DateTimeFormatter::toDb($item->getAccountActivateExpiresAt()),
-              'passwordResetToken' => $item->getPasswordResetToken(),
-              'passwordResetExpiresAt' => DateTimeFormatter::toDb($item->getPasswordResetExpiresAt()),
               'recentPasswordUpdateAt' => DateTimeFormatter::toDb($item->getRecentPasswordUpdateAt()),
-              'recentLoginAt' => DateTimeFormatter::toDb($item->getRecentLoginAt()),
               'updatedAt' => DateTimeFormatter::toDb($item->getUpdatedAt())
             ]);
             $this->pdo->commit();
@@ -210,10 +185,7 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
                           'authParams'
                         ];
                         $dateTimeProperties = [
-                          'accountActivateExpiresAt',
-                          'passwordResetExpiresAt',
                           'recentPasswordUpdateAt',
-                          'recentLoginAt',
                           'updatedAt'
                         ];
                         if (in_array($key, $jsonProperties)) {

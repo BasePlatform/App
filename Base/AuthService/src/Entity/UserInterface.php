@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Base\AuthService\Entity;
 
 use Base\AuthService\ValueObject\ZoneInterface;
+use Base\AuthService\Entity\UserIdentityInterface;
+use Base\AuthService\Entity\UserProfileInterface;
 
 /**
  * User Entity Interface
@@ -65,26 +67,26 @@ interface UserInterface
     /**
      * Set the value of field displayName
      *
-     * @param  string $displayName
+     * @param  string|null $displayName
      * @return $this
      */
-    public function setDisplayName(string $displayName);
+    public function setDisplayName(string $displayName = null);
 
     /**
      * Set the value of field tagLine
      *
-     * @param  string $tagLine
+     * @param  string|null $tagLine
      * @return $this
      */
-    public function setTagLine(string $tagLine);
+    public function setTagLine(string $tagLine = null);
 
     /**
      * Set the value of field avatar
      *
-     * @param  string $avatar
+     * @param  string|null $avatar
      * @return $this
      */
-    public function setAvatar(string $avatar);
+    public function setAvatar(string $avatar = null);
 
     /**
      * Set the value of field status
@@ -115,11 +117,29 @@ interface UserInterface
     /**
      * Set the value of field deletedAt
      *
-     * @param  \DateTime $deletedAt
+     * @param  \DateTime|null $deletedAt
      *
      * @return $this
      */
-    public function setDeletedAt(\DateTime $deletedAt);
+    public function setDeletedAt(\DateTime $deletedAt = null);
+
+    /**
+     * Set the value of identity
+     *
+     * @param  UserIdentityInterface|null identity
+     *
+     * @return $this
+     */
+    public function setIdentity(UserIdentityInterface $identity = null);
+
+    /**
+     * Set the value of profile
+     *
+     * @param  UserProfileInterface|null identity
+     *
+     * @return $this
+     */
+    public function setProfile(UserProfileInterface $profile = null);
 
     /**
      * Return the value of field zone
@@ -159,28 +179,28 @@ interface UserInterface
     /**
      * Return the value of field displayName
      *
-     * @return string
+     * @return string|null
      */
     public function getDisplayName(): ?string;
 
     /**
      * Return the value of field tagLine
      *
-     * @return string
+     * @return string|null
      */
     public function getTagLine(): ?string;
 
     /**
      * Return the value of field avatar
      *
-     * @return string
+     * @return string|null
      */
     public function getAvatar(): ?string;
 
     /**
      * Return the value of field status
      *
-     * @return string
+     * @return string|null
      */
     public function getStatus(): string;
 
@@ -201,9 +221,23 @@ interface UserInterface
     /**
      * Return the value of field deletedAt
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getDeletedAt(): ?\DateTime;
+
+    /**
+     * Return the value of identity
+     *
+     * @return UserIdentityInterface|null
+     */
+    public function getIdentity(): ?UserIdentityInterface;
+
+    /**
+     * Return the value of profile
+     *
+     * @return UserProfileInterface|null
+     */
+    public function getProfile(): ?UserProfileInterface;
 
     /**
      * Get Status Options from Constants

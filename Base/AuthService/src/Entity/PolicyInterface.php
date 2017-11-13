@@ -61,20 +61,20 @@ interface PolicyInterface
     /**
      * Set the value of field description
      *
-     * @param  string $description
+     * @param  string|null $description
      *
      * @return $this
      */
-    public function setDescription(string $description);
+    public function setDescription(string $description = null);
 
     /**
      * Set the value of field params
      *
-     * @param  array $params
+     * @param  array|null $params
      *
      * @return $this
      */
-    public function setParams(array $params);
+    public function setParams(array $params = null);
 
     /**
      * Return the value of field id

@@ -14,9 +14,10 @@
  */
 return [
   'basePath' => dirname(__DIR__),
-  'debug' => env('APP_DEBUG', false),
+  'passwordHashCost' => env('PASSWORD_HASH_COST', 13),
   'app' => [
     'id' => 'base-app',
+    'debug' => env('APP_DEBUG', false),
     'domain' => env('APP_DOMAIN', '.base.platform'),
     'platform' => env('APP_PLATFORM', null),
     'defaultInstallAppId' => env('APP_INSTALL_DEFAULT_ID', 'default'),

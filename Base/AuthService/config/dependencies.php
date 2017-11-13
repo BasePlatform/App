@@ -82,8 +82,7 @@ return [
         ],
 
         \Base\AuthService\Factory\UserIdentityFactory::class => [
-          'className' => \Base\AuthService\Entity\UserIdentity::class,
-          'passwordClassName' => \Base\AuthService\ValueObject\Password::class
+          'className' => \Base\AuthService\Entity\UserIdentity::class
         ],
 
         \Base\AuthService\Factory\UserProfileFactory::class => [

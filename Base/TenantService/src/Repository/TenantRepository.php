@@ -18,7 +18,7 @@ use Base\TenantService\ValueObject\TenantIdInterface;
 use Base\TenantService\Factory\TenantFactoryInterface;
 use Base\PDO\PDOProxyInterface;
 use Base\Exception\ServerErrorException;
-use Base\Formatter\DateTimeFormatter;
+use Base\Helper\DateTimeHelper;
 
 /**
  * Tenant Repository

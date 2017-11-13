@@ -27,33 +27,10 @@ class UserIdentityFactory implements UserIdentityFactoryInterface
     use \Base\Factory\FactoryTrait;
 
     /**
-     * @var string
-     */
-    private $passwordClassName;
-
-    /**
      * @param string $className
-     * @param string $passwordClassName
      */
-    public function __construct(string $className, string $passwordClassName)
+    public function __construct(string $className)
     {
         $this->className = $className;
-        $this->passwordClassName = $passwordClassName;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createPassword(): PasswordInterface
-    {
-        return new $this->passwordClassName();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPasswordClassName(): string
-    {
-        return new $this->passwordClassName;
     }
 }

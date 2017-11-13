@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Base\Formatter;
+namespace Base\Helper;
 
 use RuntimeException;
 
 /**
- * Formatter for converting UTC Time, Date Time Format with ISO 8601
+ * Helper for converting UTC Time, Date Time Format with ISO 8601
  *
- * @package Base\Formatter
+ * @package Base\Helper
  */
-class DateTimeFormatter
+class DateTimeHelper
 {
     const DB_DATETIME_FORMAT = 'Y-m-d H:i:s';
 

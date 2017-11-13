@@ -91,7 +91,7 @@ class Policy implements PolicyInterface
     /**
      * {@inheritdoc}
      */
-    public function setDescription(string $description)
+    public function setDescription(string $description = null)
     {
         $this->description = $description;
         return $this;
@@ -100,7 +100,7 @@ class Policy implements PolicyInterface
     /**
      * {@inheritdoc}
      */
-    public function setParams(array $params)
+    public function setParams(array $params = null)
     {
         $this->params = $params;
         return $this;

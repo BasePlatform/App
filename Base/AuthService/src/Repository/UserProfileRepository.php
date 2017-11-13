@@ -17,7 +17,7 @@ use Base\AuthService\Entity\UserProfileInterface;
 use Base\AuthService\Factory\UserProfileFactoryInterface;
 use Base\PDO\PDOProxyInterface;
 use Base\Exception\ServerErrorException;
-use Base\Formatter\DateTimeFormatter;
+use Base\Helper\DateTimeHelper;
 
 /**
  * User Profile Repository

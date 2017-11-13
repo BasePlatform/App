@@ -17,7 +17,7 @@ use Base\AuthService\Entity\ResourcePolicyAttachmentInterface;
 use Base\AuthService\Factory\ResourcePolicyAttachmentFactoryInterface;
 use Base\PDO\PDOProxyInterface;
 use Base\Exception\ServerErrorException;
-use Base\Formatter\DateTimeFormatter;
+use Base\Helper\DateTimeHelper;
 
 /**
  * Resource Policy Attachment Repository

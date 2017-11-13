@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Base\AuthService\Entity;
 
 use Base\AuthService\ValueObject\ZoneInterface;
+use Base\AuthService\Entity\UserIdentityInterface;
+use Base\AuthService\Entity\UserProfileInterface;
 
 /**
  * User Entity
@@ -98,6 +100,16 @@ class User implements UserInterface
     protected $deletedAt = null;
 
     /**
+     * @var UserIdentityInterface
+     */
+    protected $identity = null;
+
+    /**
+     * @var UseProfileInterface
+     */
+    protected $profile = null;
+
+    /**
      * {@inheritdoc}
      */
     public function setId(int $id)
@@ -145,7 +157,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setDisplayName(string $displayName)
+    public function setDisplayName(string $displayName = null)
     {
         $this->displayName = $displayName;
         return $this;
@@ -154,7 +166,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setTagLine(string $tagLine)
+    public function setTagLine(string $tagLine = null)
     {
         $this->tagLine = $tagLine;
         return $this;
@@ -163,7 +175,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setAvatar(string $avatar)
+    public function setAvatar(string $avatar = null)
     {
         $this->avatar = $avatar;
         return $this;
@@ -199,9 +211,27 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setDeletedAt(\DateTime $deletedAt)
+    public function setDeletedAt(\DateTime $deletedAt = null)
     {
         $this->deletedAt = $deletedAt;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIdentity(UserIdentityInterface $identity = null)
+    {
+        $this->identity = $identity;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProfile(UserProfileInterface $profile = null)
+    {
+        $this->profile = $profile;
         return $this;
     }
 
@@ -297,6 +327,22 @@ class User implements UserInterface
      * {@inheritdoc}
      */
     public function getDeletedAt(): ?\DateTime
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentity(): ?UserIdentityInterface
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProfile(): ?UserProfileInterface
     {
         return $this->deletedAt;
     }

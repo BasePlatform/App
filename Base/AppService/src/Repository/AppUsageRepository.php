@@ -17,7 +17,7 @@ use Base\AppService\Entity\AppUsageInterface;
 use Base\AppService\Factory\AppUsageFactoryInterface;
 use Base\PDO\PDOProxyInterface;
 use Base\Exception\ServerErrorException;
-use Base\Formatter\DateTimeFormatter;
+use Base\Helper\DateTimeHelper;
 
 /**
  * App Usage Repository

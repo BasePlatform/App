@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Base\AuthService\Entity;
 
-use Base\AuthService\ValueObject\PasswordInterface;
-
 /**
  * User Identity Entity
  *
@@ -48,7 +46,7 @@ class UserIdentity implements UserIdentityInterface
     protected $authProviderUid;
 
     /**
-     * @var PasswordInterface
+     * @var string
      */
     protected $passwordHash;
 
@@ -60,32 +58,12 @@ class UserIdentity implements UserIdentityInterface
     /**
      * @var string
      */
-    protected $accountActivateToken;
-
-    /**
-     * @var \DateTime
-     */
-    protected $accountActivateExpiresAt;
-
-    /**
-     * @var string
-     */
-    protected $passwordResetToken;
-
-    /**
-     * @var \DateTime
-     */
-    protected $passwordResetExpiresAt;
+    protected $authToken;
 
     /**
      * @var \DateTime
      */
     protected $recentPasswordUpdateAt;
-
-    /**
-     * @var \DateTime
-     */
-    protected $recentLoginAt;
 
     /**
      * @var \DateTime
@@ -131,7 +109,7 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function setAuthProviderUid(string $authProviderUid)
+    public function setAuthProviderUid(string $authProviderUid = null)
     {
         $this->authProviderUid = $authProviderUid;
         return $this;
@@ -140,7 +118,16 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function setPasswordHash(PasswordInterface $passwordHash)
+    public function setAuthToken(string $authToken)
+    {
+        $this->authToken = $authToken;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPasswordHash(string $passwordHash = null)
     {
         $this->passwordHash = $passwordHash;
         return $this;
@@ -149,45 +136,9 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function setAuthParams(array $authParams)
+    public function setAuthParams(array $authParams = null)
     {
         $this->authParams = $authParams;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAccountActivateToken(string $accountActivateToken)
-    {
-        $this->accountActivateToken = $accountActivateToken;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAccountActivateExpiresAt(\DateTime $accountActivateExpiresAt)
-    {
-        $this->accountActivateExpiresAt = $accountActivateExpiresAt;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPasswordResetToken(string $passwordResetToken)
-    {
-        $this->passwordResetToken = $passwordResetToken;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPasswordResetExpiresAt(\DateTime $passwordResetExpiresAt)
-    {
-        $this->passwordResetExpiresAt = $passwordResetExpiresAt;
         return $this;
     }
 
@@ -197,15 +148,6 @@ class UserIdentity implements UserIdentityInterface
     public function setRecentPasswordUpdateAt(\DateTime $getRecentPasswordUpdateAt)
     {
         $this->getRecentPasswordUpdateAt = $getRecentPasswordUpdateAt;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setRecentLoginAt(\DateTime $recentLoginAt)
-    {
-        $this->recentLoginAt = $recentLoginAt;
         return $this;
     }
 
@@ -261,7 +203,15 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function getPasswordHash(): ?PasswordInterface
+    public function getAuthToken(): string
+    {
+        return $this->authToken;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPasswordHash(): ?string
     {
         return $this->passwordHash;
     }
@@ -277,49 +227,9 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function getAccountActivateToken(): ?string
-    {
-        return $this->accountActivateToken;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAccountActivateExpiresAt(): ?\DateTime
-    {
-        return $this->accountActivateExpiresAt;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPasswordResetToken(): ?string
-    {
-        return $this->passwordResetToken;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPasswordResetExpiresAt(): ?\DateTime
-    {
-        return $this->passwordResetExpiresAt;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getRecentPasswordUpdateAt(): \DateTime
     {
         return $this->recentPasswordUpdateAt;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRecentLoginAt(): ?\DateTime
-    {
-        return $this->recentLoginAt;
     }
 
     /**

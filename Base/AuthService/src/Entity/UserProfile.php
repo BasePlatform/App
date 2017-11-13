@@ -105,7 +105,7 @@ class UserProfile implements UserProfileInterface
     /**
      * {@inheritdoc}
      */
-    public function setGender(string $gender)
+    public function setGender(string $gender = null)
     {
         $this->gender = $gender;
         return $this;
@@ -114,7 +114,7 @@ class UserProfile implements UserProfileInterface
     /**
      * {@inheritdoc}
      */
-    public function setBirthDate(\DateTime $birthDate)
+    public function setBirthDate(\DateTime $birthDate = null)
     {
         $this->birthDate = $birthDate;
         return $this;
@@ -123,7 +123,7 @@ class UserProfile implements UserProfileInterface
     /**
      * {@inheritdoc}
      */
-    public function setFirstName(string $firstName)
+    public function setFirstName(string $firstName = null)
     {
         $this->firstName = $firstName;
         return $this;
@@ -132,7 +132,7 @@ class UserProfile implements UserProfileInterface
     /**
      * {@inheritdoc}
      */
-    public function setLastName(string $lastName)
+    public function setLastName(string $lastName = null)
     {
         $this->lastName = $lastName;
         return $this;
@@ -141,7 +141,7 @@ class UserProfile implements UserProfileInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocation(string $location)
+    public function setLocation(string $location = null)
     {
         $this->location = $location;
         return $this;
@@ -150,7 +150,7 @@ class UserProfile implements UserProfileInterface
     /**
      * {@inheritdoc}
      */
-    public function setCompany(string $company)
+    public function setCompany(string $company = null)
     {
         $this->company = $company;
         return $this;
@@ -159,7 +159,7 @@ class UserProfile implements UserProfileInterface
     /**
      * {@inheritdoc}
      */
-    public function setInfo(array $info)
+    public function setInfo(array $info = null)
     {
         $this->info = $info;
         return $this;

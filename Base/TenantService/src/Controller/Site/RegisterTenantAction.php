@@ -62,6 +62,11 @@ class RegisterTenantAction extends RestAction
     {
         $data = $request->getParsedBody();
         $config = \Base\Base::$config;
-        return $this->responseFactory->createJson($this->tenantService->register($data, $config->get('app.defaultInstallAppId'), $config->get('app.domain'), $config->get('app.platform')));
+        return $this->responseFactory->createJson($this->tenantService->register(
+            $data,
+            $config->get('app.defaultInstallAppId'),
+            $config->get('app.domain'),
+            $config->get('app.platform')
+        ));
     }
 }

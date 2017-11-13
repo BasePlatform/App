@@ -21,8 +21,11 @@ return [
       // Define for PDOProxyInterface
       \Base\PDO\PDOProxyInterface::class => \Base\PDO\PDOProxy::class,
 
+      // Define for Security Interface
+      \Base\Security\SecurityInterface::class => \Base\Security\Security::class,
+
       // Define for LoggerInterface
-      \Psr\Log\LoggerInterface::class => \Monolog\Logger::class,
+      \Psr\Log\LoggerInterface::class => \Monolog\Logger::class
     ]
   ]
 ];

@@ -51,20 +51,15 @@ CREATE TABLE `Base_UserIdentity` (
   `userId` bigint(20) unsigned NOT NULL,
   `authProvider` varchar(255) DEFAULT 'app',
   `authProviderUid` varchar(255) DEFAULT NULL,
+  `authToken` varchar(128) NOT NULL,
   `passwordHash` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `authParams` json DEFAULT NULL,
-  `accountActivateToken` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-  `accountActivateExpiresAt` datetime DEFAULT NULL,
-  `passwordResetToken` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-  `passwordResetExpiresAt` datetime DEFAULT NULL,
   `recentPasswordUpdateAt` datetime NOT NULL,
-  `recentLoginAt` datetime DEFAULT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `tenantId_userId` (`tenantId`,`userId`),
   KEY `authProvider_authProviderUid` (`authProvider`,`authProviderUid`),
-  KEY `accountActivateToken` (`accountActivateToken`),
-  KEY `passwordResetToken` (`passwordResetToken`)
+  KEY `authToken` (`authToken`)
 ) ENGINE=InnoDB CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `Base_Policy`;

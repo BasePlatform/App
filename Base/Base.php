@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Base;
 
+use Base\Config\ConfigInterface;
+use Base\Security\SecurityInterface;
+
 /**
  * Base Helper Class and support Registry
  *

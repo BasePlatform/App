@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Base\AuthService\Factory;
 
 use Base\Factory\FactoryInterface;
-use Base\AuthService\ValueObject\PasswordInterface;
 
 /**
  * User Identity Factory Interface
@@ -23,17 +22,4 @@ use Base\AuthService\ValueObject\PasswordInterface;
  */
 interface UserIdentityFactoryInterface extends FactoryInterface
 {
-    /**
-     * Create an instance of PasswordInterface
-     *
-     * @return PasswordInterface
-     */
-    public function createPassword(): PasswordInterface;
-
-    /**
-     * Return the class name of Password Factory
-     *
-     * @return string
-     */
-    public function getPasswordClassName(): string;
 }

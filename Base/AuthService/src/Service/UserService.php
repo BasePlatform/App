@@ -20,8 +20,9 @@ use Base\AuthService\Factory\UserFactoryInterface;
 use Base\AuthService\Factory\UserIdentityFactoryInterface;
 use Base\AuthService\Factory\UserProfileFactoryInterface;
 use Base\AuthService\Factory\ZoneFactoryInterface;
+use Base\Security\SecurityInterface;
 use Base\Exception\ServerErrorException;
-use Base\Formatter\DateTimeFormatter;
+use Base\Helper\DateTimeHelper;
 
 /**
  * User Service
@@ -66,6 +67,11 @@ class UserService implements UserServiceInterface
     private $zoneFactory;
 
     /**
+     * @var SecurityInterface
+     */
+    private $security;
+
+    /**
      * @param UserRepositoryInterface $repository
      * @param UserIdentityRepositoryInterface $userIdentityRepository
      * @param UserProfileRepositoryInterface $userProfileRepository
@@ -73,6 +79,7 @@ class UserService implements UserServiceInterface
      * @param UserIdentityFactoryInterface $userIdentityFactory
      * @param UserProfileFactoryInterface $userProfileFactory
      * @param ZoneFactoryInterface $zoneFactory
+     * @param SecurityInterface $security
      */
     public function __construct(
         UserRepositoryInterface $repository,
@@ -81,7 +88,8 @@ class UserService implements UserServiceInterface
         UserFactoryInterface $factory,
         UserIdentityFactoryInterface $userIdentityFactory,
         UserProfileFactoryInterface $userProfileFactory,
-        ZoneFactoryInterface $zoneFactory
+        ZoneFactoryInterface $zoneFactory,
+        SecurityInterface $security
     ) {
         $this->repository = $repository;
         $this->userIdentityRepository = $userIdentityRepository;
@@ -90,6 +98,7 @@ class UserService implements UserServiceInterface
         $this->userIdentityFactory = $userIdentityFactory;
         $this->userProfileFactory = $userProfileFactory;
         $this->zoneFactory = $zoneFactory;
+        $this->security = $security;
     }
 
     /**
@@ -101,6 +110,8 @@ class UserService implements UserServiceInterface
         $tenantId = $data['tenantId'] ?? null;
         $email = $data['email'] ?? null;
         $password = $data['password'] ?? null;
+        $authProvider = $data['authProvider'] ?? null;
+        $authProviderUid = $data['authProviderUid'] ?? null;
 
         // Validate the Data here
 
@@ -123,61 +134,36 @@ class UserService implements UserServiceInterface
         if ($userId) {
             // continue adding user identity and profile
             $userIdentity = $this->userIdentityFactory->create();
+            if (empty($password)) {
+                $password = $this->security->generateRandomKey(8);
+            }
+            $authToken = $this->security->generateRandomKey(32);
             $userIdentity->setTenantId($tenantId);
             $userIdentity->setUserId($userId);
+            $userIdentity->setAuthProvider($authProvider);
+            $userIdentity->setAuthProviderUid($authProviderUid);
+            $userIdentity->setAuthToken($authToken);
+            $userIdentity->setPasswordHash($this->security->generatePasswordHash($password));
+            $userIdentity->setRecentPasswordUpdateAt($now);
+            $userIdentity->setUpdatedAt($now);
+            // Save the Identity
+            $userIdentityId = $this->userIdentityRepository->add($userIdentity);
 
             $userProfile = $this->userProfileFactory->create();
+            $userProfile->setTenantId($tenantId);
+            $userProfile->setUserId($userId);
+            $userProfile->setUpdatedAt($now);
+            // Save the Profile
+            $userProfileId = $this->useProfileRepository->add($userProfile);
         }
-        exit;
-        $app = $this->appRepository->get($appId);
-        $appUsage = $this->repository->get($tenantId, $appId);
-
-        // No App or App is disabled
-        if (!$app || ($app && $app->getStatus() != $app->getStatusOptions('STATUS_ACTIVE'))) {
-            throw new InvalidAppException();
-        }
-
-        // App is disabled for the Tenant
-        if ($appUsage && ($appUsage->getStatus() != $appUsage->getStatusOptions('STATUS_ACTIVE'))) {
-            throw new DisabledAppUsageException();
-        }
-        // Get current time
-        $now = DateTimeFormatter::now();
-        // Prepare the result
-        $result = null;
-        // No AppUsage Record?
-        if (!$appUsage) {
-            // Insert a record of AppUsage
-            $appUsage = $this->factory->create();
-            $appUsage->setTenantId($tenantId);
-            $appUsage->setAppId($appId);
-            $appUsage->setStatus($appUsage->getStatusOptions('STATUS_ACTIVE'));
-            $appUsage->setFirstInstallAt($now);
-            $appUsage->setRecentInstallAt($now);
-            $appUsage->setUpdatedAt($now);
-            // Calculate the trial days
-            if ($trialDays > 0) {
-                $trialExpiresAt = clone $now;
-                $trialExpiresAt->add(new \DateInterval('P'.$trialDays.'D'));
-                $appUsage->setTrialExpiresAt($trialExpiresAt);
-            } elseif ($trialDays == 0) {
-                $appUsage->setTrialExpiresAt($now);
-            }
-            $result = $this->repository->add($appUsage);
-        } else {
-            // AppUsage existed, update the recentInstallAt
-            $appUsage->setRecentInstallAt($now);
-            $appUsage->setUpdatedAt($now);
-            $result = $this->repository->update($appUsage);
-        }
-        if ($result) {
+        if ($userId && $userIdentityId && $userProfileId) {
             return [
               'appId' => $appId,
               'tenantId' => $tenantId,
               'status' => self::STATUS_ACTIVATED
             ];
         }
-        throw new ServerErrorException(sprintf('Failed Activating App `%s` For Tenant `%s`', $appId, $tenantId));
+        throw new ServerErrorException(sprintf('Failed Registering Owner For Tenant `%s`', $tenantId));
     }
 
     /**

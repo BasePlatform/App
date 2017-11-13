@@ -19,7 +19,7 @@ use Base\AuthService\Factory\UserFactoryInterface;
 use Base\AuthService\Factory\ZoneFactoryInterface;
 use Base\PDO\PDOProxyInterface;
 use Base\Exception\ServerErrorException;
-use Base\Formatter\DateTimeFormatter;
+use Base\Helper\DateTimeHelper;
 
 /**
  * User Repository

@@ -58,6 +58,9 @@ class ActivateAppAction extends RestAction
     {
         $data = $request->getParsedBody();
         $trialDays = \Base\Base::$config->get('app.trialDays');
-        return $this->responseFactory->createJson($this->appUsageService->activate($data, $trialDays));
+        return $this->responseFactory->createJson($this->appUsageService->activate(
+            $data,
+            $trialDays
+        ));
     }
 }

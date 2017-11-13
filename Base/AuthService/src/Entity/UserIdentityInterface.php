@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Base\AuthService\Entity;
 
-use Base\AuthService\ValueObject\PasswordInterface;
-
 /**
  * User Identity Entity Interface
  *
@@ -57,58 +55,34 @@ interface UserIdentityInterface
     /**
      * Set the value of field authProviderUid
      *
-     * @param  string $authProviderUid
+     * @param  string|null $authProviderUid
      * @return $this
      */
-    public function setAuthProviderUid(string $authProviderUid);
+    public function setAuthProviderUid(string $authProviderUid = null);
+
+    /**
+     * Set the value of field authToken
+     *
+     * @param  string $authToken
+     * @return $this
+     */
+    public function setAuthToken(string $authToken);
 
     /**
      * Set the value of field passwordHash
      *
-     * @param  PasswordInterface $passwordHash
+     * @param  string|null $passwordHash
      * @return $this
      */
-    public function setPasswordHash(PasswordInterface $passwordHash);
+    public function setPasswordHash(string $passwordHash = null);
 
     /**
      * Set the value of field authParams
      *
-     * @param  string $authParams
+     * @param  array|null $authParams
      * @return $this
      */
-    public function setAuthParams(array $authParams);
-
-    /**
-     * Set the value of field accountActivateToken
-     *
-     * @param  string $accountActivateToken
-     * @return $this
-     */
-    public function setAccountActivateToken(string $accountActivateToken);
-
-    /**
-     * Set the value of field accountActivateExpiresAt
-     *
-     * @param  \DateTime $accountActivateExpiresAt
-     * @return $this
-     */
-    public function setAccountActivateExpiresAt(\DateTime $accountActivateExpiresAt);
-
-    /**
-     * Set the value of field passwordResetToken
-     *
-     * @param  string $passwordResetToken
-     * @return $this
-     */
-    public function setPasswordResetToken(string $passwordResetToken);
-
-    /**
-     * Set the value of field passwordResetExpiresAt
-     *
-     * @param  \DateTime $passwordResetExpiresAt
-     * @return $this
-     */
-    public function setPasswordResetExpiresAt(\DateTime $passwordResetExpiresAt);
+    public function setAuthParams(array $authParams = null);
 
     /**
      * Set the value of field recentPasswordUpdateAt
@@ -117,15 +91,6 @@ interface UserIdentityInterface
      * @return $this
      */
     public function setRecentPasswordUpdateAt(\DateTime $recentPasswordUpdateAt);
-
-    /**
-     * Set the value of field recentLoginAt
-     *
-     * @param  \DateTime $recentLoginAt
-     *
-     * @return $this
-     */
-    public function setRecentLoginAt(\DateTime $recentLoginAt);
 
     /**
      * Set the value of field updatedAt
@@ -172,11 +137,18 @@ interface UserIdentityInterface
     public function getAuthProviderUid(): ?string;
 
     /**
+     * Return the value of field authToken
+     *
+     * @return string
+     */
+    public function getAuthToken(): string;
+
+    /**
      * Return the value of field passwordHash
      *
-     * @return PasswordInterface|null
+     * @return string|null
      */
-    public function getPasswordHash(): ?PasswordInterface;
+    public function getPasswordHash(): ?string;
 
     /**
      * Return the value of field authParams
@@ -186,46 +158,11 @@ interface UserIdentityInterface
     public function getAuthParams(): ?array;
 
     /**
-     * Return the value of field accountActivateToken
-     *
-     * @return string|null
-     */
-    public function getAccountActivateToken(): ?string;
-
-    /**
-     * Return the value of field accountActivateExpiresAt
-     *
-     * @return \DateTime|null
-     */
-    public function getAccountActivateExpiresAt(): ?\DateTime;
-
-    /**
-     * Return the value of field passwordResetToken
-     *
-     * @return \DateTime|null
-     */
-    public function getPasswordResetToken(): ?string;
-
-    /**
-     * Return the value of field passwordResetExpiresAt
-     *
-     * @return \DateTime|null
-     */
-    public function getPasswordResetExpiresAt(): ?\DateTime;
-
-    /**
      * Return the value of field recentPasswordUpdateAt
      *
      * @return \DateTime
      */
     public function getRecentPasswordUpdateAt(): \DateTime;
-
-    /**
-     * Return the value of field recentLoginAt
-     *
-     * @return \DateTime|null
-     */
-    public function recentLoginAt(): ?\DateTime;
 
     /**
      * Return the value of field updatedAt

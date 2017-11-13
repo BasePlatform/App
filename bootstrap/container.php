@@ -62,6 +62,12 @@ $serviceRequest = new Base\ServiceRequest\ServiceRequest(\Base\Base::$config->ge
 $container->share($serviceRequest);
 
 /**
+ * Define for security
+ */
+$security = new Base\Security\Security(env('PASSWORD_HASH_COST', 13));
+$container->share($security);
+
+/**
  * Create a logger and register it with the container
  */
 $logger = new Monolog\Logger('logger');

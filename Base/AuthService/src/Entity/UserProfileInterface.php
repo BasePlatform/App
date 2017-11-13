@@ -50,65 +50,65 @@ interface UserProfileInterface
     /**
      * Set the value of field gender
      *
-     * @param  string $gender
+     * @param  string|null $gender
      *
      * @return $this
      */
-    public function setGender(string $gender);
+    public function setGender(string $gender = null);
 
     /**
      * Set the value of field birthDate
      *
-     * @param  \DateTime $birthDate
+     * @param  \DateTime|null $birthDate
      *
      * @return $this
      */
-    public function setBirthDate(\DateTime $birthDate);
+    public function setBirthDate(\DateTime $birthDate = null);
 
     /**
      * Set the value of field firstName
      *
-     * @param  string $firstName
+     * @param  string|null $firstName
      *
      * @return $this
      */
-    public function setFirstName(string $firstName);
+    public function setFirstName(string $firstName = null);
 
     /**
      * Set the value of field lastName
      *
-     * @param  string $lastName
+     * @param  string|null $lastName
      *
      * @return $this
      */
-    public function setLastName(string $lastName);
+    public function setLastName(string $lastName = null);
 
     /**
      * Set the value of field location
      *
-     * @param  string $location
+     * @param  string|null $location
      *
      * @return $this
      */
-    public function setLocation(string $location);
+    public function setLocation(string $location = null);
 
     /**
      * Set the value of field company
      *
-     * @param  string $company
+     * @param  string|null $company
      *
      * @return $this
      */
-    public function setCompany(string $company);
+    public function setCompany(string $company = null);
 
     /**
      * Set the value of field info
      *
-     * @param  array $info
+     * @param  array|null $info
      *
      * @return $this
      */
-    public function setInfo(array $info);
+    public function setInfo(array $info = null);
 
     /**
      * Set the value of field updatedAt

@@ -19,7 +19,7 @@ use Base\AppService\Factory\AppUsageFactoryInterface;
 use Base\AppService\Exception\InvalidAppException;
 use Base\AppService\Exception\DisabledAppUsageException;
 use Base\Exception\ServerErrorException;
-use Base\Formatter\DateTimeFormatter;
+use Base\Helper\DateTimeHelper;
 
 /**
  * App Usage Service

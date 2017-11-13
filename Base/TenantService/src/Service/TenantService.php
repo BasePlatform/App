@@ -19,7 +19,7 @@ use Base\TenantService\Factory\TenantFactoryInterface;
 use Base\TenantService\Exception\InvalidTenantRegistrationInfoException;
 use Base\TenantService\Exception\ExistedTenantException;
 use Base\ServiceRequest\ServiceRequestInterface;
-use Base\Formatter\DateTimeFormatter;
+use Base\Helper\DateTimeHelper;
 
 /**
  * Tenant Service
