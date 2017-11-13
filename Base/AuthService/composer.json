@@ -1,7 +1,7 @@
 {
-    "name": "baseplatform/tenant-service",
-    "description": "The Tenant Service of BasePlatform",
-    "keywords": ["base", "baseplatform", "base platform", "microservice", "saas", "tenant"],
+    "name": "baseplatform/auth-service",
+    "description": "The Auth Service of BasePlatform",
+    "keywords": ["base", "baseplatform", "base platform", "microservice", "saas", "auth"],
     "authors": [{
         "name": "Tuan Nguyen",
         "email": "nganhtuan63@gmail.com"
@@ -17,7 +17,7 @@
         "classmap": [
         ],
         "psr-4": {
-            "Base\\TenantService\\": "src"
+            "Base\\AuthService\\": "src"
         }
     },
     "autoload-dev": {
