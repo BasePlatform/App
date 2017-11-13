@@ -15,6 +15,18 @@ $pathPrefix = 'auth';
 
 return [
   'routes' => [
-
+    [
+      // System - Register Tenant Owner
+      'name' => 'auth.system.registerTenantOwnerEndpoint',
+      'path' => '/system/'.$pathPrefix.'/users/register-tenant-owner',
+      'handler' => \Base\AuthService\Controller\System\RegisterTenantOwnerAction::class,
+      'middlewares' => null,
+      'allowedMethods' => [RequestMethod::METHOD_POST],
+      'allowedPolicies' => [
+        'app.internalServiceRequest',
+        'app.systemAdmin'
+      ],
+      'enabled' => true
+    ]
   ]
 ];

@@ -272,7 +272,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getStatus(): ?string
+    public function getStatus(): string
     {
         return $this->status;
     }

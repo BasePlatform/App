@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Base\AuthService\Repository;
 
 use Base\AuthService\Entity\UserInterface;
+use Base\AuthService\ValueObject\ZoneInterface;
 
 /**
  * User Repository Interface

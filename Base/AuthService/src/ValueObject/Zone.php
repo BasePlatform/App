@@ -55,7 +55,7 @@ class Zone implements ZoneInterface
     /**
      * {@inheritdoc}
      */
-    public static function createZone(string $zoneId): ZoneInterface
+    public static function createZone(string $zoneId = null): ZoneInterface
     {
         return new self($zoneId);
     }
@@ -63,7 +63,7 @@ class Zone implements ZoneInterface
     /**
      * {@inheritdoc}
      */
-    public static function getZoneOptions(string $zone = null)
+    public function getZoneOptions(string $zone = null)
     {
         $reflector = new ReflectionClass(get_class($this));
         $constants = $reflector->getConstants();

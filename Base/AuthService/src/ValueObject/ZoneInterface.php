@@ -23,11 +23,11 @@ interface ZoneInterface
     /**
      * Create a Zone
      *
-     * @param string $zoneId
+     * @param string|null $zoneId
      *
      * @return self
      */
-    public static function createZone(string $zoneId): ZoneInterface;
+    public static function createZone(string $zoneId = null): ZoneInterface;
 
     /**
      * Get Zone Options
@@ -36,7 +36,7 @@ interface ZoneInterface
      *
      * @return mixed
      */
-    public static function getZoneOptions(string $zoneId = null);
+    public function getZoneOptions(string $zoneId = null);
 
     /**
      * Set the value of zoneId

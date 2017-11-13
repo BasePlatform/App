@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Base\AuthService\Factory;
 
 use Base\Factory\FactoryInterface;
-use Base\TenantService\ValueObject\PasswordInterface;
+use Base\AuthService\ValueObject\PasswordInterface;
 
 /**
  * User Identity Factory Interface

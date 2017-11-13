@@ -62,7 +62,7 @@ return [
       /**
        * Services
        */
-
+      \Base\AuthService\Service\UserServiceInterface::class => \Base\AuthService\Service\UserService::class,
 
     ],
     'params' => [
