@@ -74,8 +74,15 @@ class UserService implements UserServiceInterface
      * @param UserProfileFactoryInterface $userProfileFactory
      * @param ZoneFactoryInterface $zoneFactory
      */
-    public function __construct(UserRepositoryInterface $repository, UserIdentityRepositoryInterface $userIdentityRepository, UserProfileRepositoryInterface $userProfileRepository, UserFactoryInterface $factory, UserIdentityFactoryInterface $userIdentityFactory, UserProfileFactoryInterface $userProfileFactory, ZoneFactoryInterface $zoneFactory)
-    {
+    public function __construct(
+        UserRepositoryInterface $repository,
+        UserIdentityRepositoryInterface $userIdentityRepository,
+        UserProfileRepositoryInterface $userProfileRepository,
+        UserFactoryInterface $factory,
+        UserIdentityFactoryInterface $userIdentityFactory,
+        UserProfileFactoryInterface $userProfileFactory,
+        ZoneFactoryInterface $zoneFactory
+    ) {
         $this->repository = $repository;
         $this->userIdentityRepository = $userIdentityRepository;
         $this->userProfileRepository = $userProfileRepository;

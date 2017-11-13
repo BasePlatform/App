@@ -50,8 +50,11 @@ class AppUsageService implements AppUsageServiceInterface
      * @param AppRepositoryInterface $appRepository
      * @param AppUsageFactoryInterface $factory
      */
-    public function __construct(AppUsageRepositoryInterface $repository, AppRepositoryInterface $appRepository, AppUsageFactoryInterface $factory)
-    {
+    public function __construct(
+        AppUsageRepositoryInterface $repository,
+        AppRepositoryInterface $appRepository,
+        AppUsageFactoryInterface $factory
+    ) {
         $this->repository = $repository;
         $this->appRepository = $appRepository;
         $this->factory = $factory;

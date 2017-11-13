@@ -48,8 +48,11 @@ class TenantService implements TenantServiceInterface
      * @param TenantFactoryInterface $factory
      * @param ServiceRequestInterface $serviceRequest
      */
-    public function __construct(TenantRepositoryInterface $repository, TenantFactoryInterface $factory, ServiceRequestInterface $serviceRequest)
-    {
+    public function __construct(
+        TenantRepositoryInterface $repository,
+        TenantFactoryInterface $factory,
+        ServiceRequestInterface $serviceRequest
+    ) {
         $this->repository = $repository;
         $this->factory = $factory;
         $this->serviceRequest = $serviceRequest;
