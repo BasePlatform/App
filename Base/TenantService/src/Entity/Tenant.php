@@ -52,11 +52,6 @@ class Tenant implements TenantInterface, \JsonSerializable
     /**
      * @var string
      */
-    protected $timeZone = 'UTC';
-
-    /**
-     * @var string
-     */
     protected $status = 'disabled';
 
     /**
@@ -93,15 +88,6 @@ class Tenant implements TenantInterface, \JsonSerializable
     public function setPlatform(string $platform = null)
     {
         $this->platform = $platform;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTimeZone(string $timeZone = 'UTC')
-    {
-        $this->timeZone = $timeZone;
         return $this;
     }
 
@@ -160,14 +146,6 @@ class Tenant implements TenantInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getTimeZone(): string
-    {
-        return $this->timeZone;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getStatus(): string
     {
         return $this->status;
@@ -219,7 +197,6 @@ class Tenant implements TenantInterface, \JsonSerializable
             'id' => (string) $this->id,
             'domain' => $this->domain,
             'platform' => $this->platform,
-            'timeZone' => $this->timeZone,
             'status' => $this->status,
             'createdAt' => DateTimeHelper::toISO8601($this->createdAt),
             'updatedAt' => DateTimeHelper::toISO8601($this->updatedAt)

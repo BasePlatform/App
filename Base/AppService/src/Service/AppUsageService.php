@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Base\AppService\Service;
 
+use Base\AppService\Entity\AppUsageInterface;
 use Base\AppService\Repository\AppRepositoryInterface;
 use Base\AppService\Repository\AppUsageRepositoryInterface;
 use Base\AppService\Factory\AppUsageFactoryInterface;
@@ -63,7 +64,7 @@ class AppUsageService implements AppUsageServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function activate(array $data, int $trialDays): array
+    public function activate(array $data, int $trialDays): ?AppUsageInterface
     {
         // Get Info from $data
         $tenantId = $data['tenantId'] ?? null;
@@ -106,19 +107,15 @@ class AppUsageService implements AppUsageServiceInterface
             } elseif ($trialDays == 0) {
                 $appUsage->setTrialExpiresAt($now);
             }
-            $result = $this->repository->insert($appUsage);
+            $appUsage = $this->repository->insert($appUsage);
         } else {
             // AppUsage existed, update the recentInstallAt
             $appUsage->setRecentInstallAt($now);
             $appUsage->setUpdatedAt($now);
             $result = $this->repository->update($appUsage);
         }
-        if ($result) {
-            return [
-              'appId' => $appId,
-              'tenantId' => $tenantId,
-              'status' => self::STATUS_ACTIVATED
-            ];
+        if ($appUsage) {
+            return $appUsage;
         }
         throw new ServerErrorException(sprintf('Failed Activating App `%s` For Tenant `%s`', $appId, $tenantId));
     }

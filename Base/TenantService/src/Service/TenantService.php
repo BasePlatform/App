@@ -20,6 +20,7 @@ use Base\TenantService\Exception\InvalidTenantRegistrationInfoException;
 use Base\TenantService\Exception\ExistedTenantException;
 use Base\ServiceRequest\ServiceRequestInterface;
 use Base\Helper\DateTimeHelper;
+use Base\Http\ResponseStatusCode;
 
 /**
  * Tenant Service
@@ -67,7 +68,6 @@ class TenantService implements TenantServiceInterface
         $name = $data['name'] ?? null;
         $email = $data['email'] ?? null;
         $password = $data['password'] ?? null;
-        $timeZone = $data['timeZone'] ?? 'UTC';
 
         // Validate the Data here
 
@@ -85,31 +85,33 @@ class TenantService implements TenantServiceInterface
             $tenant->setId($tenantId);
             $tenant->setDomain((string) $tenantId);
             $tenant->setPlatform($platform);
-            $tenant->setTimeZone($timeZone);
             $tenant->setStatus($tenant->getStatusOptions('STATUS_ACTIVE'));
             $tenant->setCreatedAt($nowTime);
             $tenant->setupdatedAt($nowTime);
-            $insertedTenant = $this->repository->insert($tenant);
+            $tenant = $this->repository->insert($tenant);
 
-            // Call to other services to finish the registration process
-            // Prepare data to send to other services
-            $options = [
-              'json' => [
-                'tenantId' => (string) $tenantId,
-                'appId' => $appId,
-                'email' => $email,
-                'password' => $password,
-                'attachedPolicies' => ['tenant.tenantOwner']
-              ]
-            ];
+            if ($tenant) {
+              // Call to other services to finish the registration process
+              // Prepare data to send to other services
+                $options = [
+                  'json' => [
+                    'tenantId' => (string) $tenantId,
+                    'appId' => $appId,
+                    'email' => $email,
+                    'password' => $password,
+                    'authProvider' => 'app'
+                  ]
+                ];
 
-            $activateAppresult = $this->serviceRequest->send('APP_SERVICE', 'activateAppEndpoint', $options, true);
+                $activateAppResult = $this->serviceRequest->send('APP_SERVICE', 'app.system.activateAppEndpoint', $options, true);
 
-            // $result = $this->serviceRequest->send('AUTH_SERVICE', 'activateAppEndpoint', $options, true);
+                $registerTenantOwnerResult = $this->serviceRequest->send('AUTH_SERVICE', 'auth.system.registerTenantOwnerEndpoint', $options, true);
 
-            //return json_decode($result->getBody()->getContents(), true);
-            //
-            return $options;
+                if ($activateAppResult->getStatusCode() == ResponseStatusCode::HTTP_OK && $registerTenantOwnerResult->getStatusCode() == ResponseStatusCode::HTTP_OK) {
+                    return $tenant;
+                }
+            }
+            throw new ServerErrorException(sprintf('Failed Registering Tenant `%s` Tenant `%s`', $tenantId));
         }
     }
 

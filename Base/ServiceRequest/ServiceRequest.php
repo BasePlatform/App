@@ -76,7 +76,7 @@ class ServiceRequest implements ServiceRequestInterface
                 throw new InvalidArgumentException('Invalid Endpoint Method In Service Request');
             }
 
-            $serviceURL = defined($service.'_URL') ? constant($service.'_URL') : SERVICE_DEFAULT_URI;
+            $serviceURL = defined($service.'_URL') ? constant($service.'_URL') : SERVICE_DEFAULT_URL;
             $endpointPath = $endpoints[$service][$endpoint]['path'] ?? '';
 
             $endpointOptions = $endpoints[$service][$endpoint]['options'] ?? [];

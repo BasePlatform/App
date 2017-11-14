@@ -24,7 +24,7 @@ use Base\Helper\DateTimeHelper;
  *
  * @package Base\AuthService\Repository
  */
-class ResourcePolicyAttachmentRepository implements ResourcePolicyAttachmentRepository
+class ResourcePolicyAttachmentRepository implements ResourcePolicyAttachmentRepositoryInterface
 {
     /**
      * @var string

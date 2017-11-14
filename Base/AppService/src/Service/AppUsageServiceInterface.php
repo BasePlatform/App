@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Base\AppService\Service;
 
+use Base\AppService\Entity\AppUsageInterface;
+
 /**
  * App Usage Service Interface
  *
@@ -25,7 +27,7 @@ interface AppUsageServiceInterface
      *
      * @param  array  $data
      * @param  int    $trialDays
-     * @return array
+     * @return AppUsageInterface|null
      */
-    public function activate(array $data, int $trialDays): array;
+    public function activate(array $data, int $trialDays): ?AppUsageInterface;
 }

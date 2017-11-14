@@ -50,15 +50,6 @@ interface TenantInterface
     public function setPlatform(string $platform = null);
 
     /**
-     * Set the value of field timeZone
-     *
-     * @param  string $timeZone
-     *
-     * @return $this
-     */
-    public function setTimeZone(string $timeZone);
-
-    /**
      * Set the value of field status
      *
      * @param  string $status
@@ -105,13 +96,6 @@ interface TenantInterface
      * @return string|null
      */
     public function getPlatform(): ?string;
-
-    /**
-     * Return the value of field timeZone
-     *
-     * @return string
-     */
-    public function getTimeZone(): string;
 
     /**
      * Return the value of field status

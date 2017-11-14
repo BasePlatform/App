@@ -16,9 +16,11 @@ namespace Base\AuthService\Service;
 use Base\AuthService\Repository\UserRepositoryInterface;
 use Base\AuthService\Repository\UserIdentityRepositoryInterface;
 use Base\AuthService\Repository\UserProfileRepositoryInterface;
+use Base\AuthService\Repository\ResourcePolicyAttachmentRepositoryInterface;
 use Base\AuthService\Factory\UserFactoryInterface;
 use Base\AuthService\Factory\UserIdentityFactoryInterface;
 use Base\AuthService\Factory\UserProfileFactoryInterface;
+use Base\AuthService\Factory\ResourcePolicyAttachmentFactoryInterface;
 use Base\AuthService\Factory\ZoneFactoryInterface;
 use Base\Security\SecurityInterface;
 use Base\Exception\ServerErrorException;
@@ -47,6 +49,11 @@ class UserService implements UserServiceInterface
     private $userProfileRepository;
 
     /**
+     * @var ResourcePolicyAttachmentRepositoryInterface
+     */
+    private $resourcePolicyAttachmentRepository;
+
+    /**
      * @var UserFactoryInterface
      */
     private $factory;
@@ -62,6 +69,11 @@ class UserService implements UserServiceInterface
     private $userProfileFactory;
 
     /**
+     * @var ResourcePolicyAttachmentFactory
+     */
+    private $resourcePolicyAttacmentFactory;
+
+    /**
      * @var ZoneFactoryInterface
      */
     private $zoneFactory;
@@ -75,9 +87,11 @@ class UserService implements UserServiceInterface
      * @param UserRepositoryInterface $repository
      * @param UserIdentityRepositoryInterface $userIdentityRepository
      * @param UserProfileRepositoryInterface $userProfileRepository
+     * @param ResourcePolicyAttachmentRepositoryInterface $resourcePolicyAttachmentRepository
      * @param UserFactoryInterface $factory
      * @param UserIdentityFactoryInterface $userIdentityFactory
      * @param UserProfileFactoryInterface $userProfileFactory
+     * @param ResourcePolicyAttachmentFactoryInterface $resourcePolicyAttacmentFactory
      * @param ZoneFactoryInterface $zoneFactory
      * @param SecurityInterface $security
      */
@@ -85,18 +99,22 @@ class UserService implements UserServiceInterface
         UserRepositoryInterface $repository,
         UserIdentityRepositoryInterface $userIdentityRepository,
         UserProfileRepositoryInterface $userProfileRepository,
+        ResourcePolicyAttachmentRepositoryInterface $resourcePolicyAttachmentRepository,
         UserFactoryInterface $factory,
         UserIdentityFactoryInterface $userIdentityFactory,
         UserProfileFactoryInterface $userProfileFactory,
+        ResourcePolicyAttachmentFactoryInterface $resourcePolicyAttacmentFactory,
         ZoneFactoryInterface $zoneFactory,
         SecurityInterface $security
     ) {
         $this->repository = $repository;
         $this->userIdentityRepository = $userIdentityRepository;
         $this->userProfileRepository = $userProfileRepository;
+        $this->resourcePolicyAttachmentRepository = $resourcePolicyAttachmentRepository;
         $this->factory = $factory;
         $this->userIdentityFactory = $userIdentityFactory;
         $this->userProfileFactory = $userProfileFactory;
+        $this->resourcePolicyAttacmentFactory = $resourcePolicyAttacmentFactory;
         $this->zoneFactory = $zoneFactory;
         $this->security = $security;
     }
@@ -156,7 +174,17 @@ class UserService implements UserServiceInterface
             // Save the Profile
             $userProfile = $this->userProfileRepository->insert($userProfile);
 
-            if ($userIdentity && $userProfile) {
+            // Attach the tenant.tenantOwner policy
+            $attachedPolicy = $this->resourcePolicyAttacmentFactory->create();
+            $attachedPolicy->setTenantId($tenantId);
+            $resourceId = call_user_func_array([$this->resourcePolicyAttacmentFactory->getClassName(), 'createResourceId'], ['user', $user->getId()]);
+            $attachedPolicy->setResourceId($resourceId);
+            $attachedPolicy->setPolicyId('tenant.tenantOwner');
+            $attachedPolicy->setAttachedAt($now);
+            // Save attached Policy
+            $attachedPolicy = $this->resourcePolicyAttachmentRepository->insert($attachedPolicy);
+
+            if ($userIdentity && $userProfile && $attachedPolicy) {
                 $user->setIdentity($userIdentity);
                 $user->setProfile($userProfile);
                 return $user;
