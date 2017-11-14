@@ -243,7 +243,7 @@ interface UserInterface
      * Get Status Options from Constants
      * If $status is passed, it will return the value of the status constant
      *
-     * @param  string $status
+     * @param  string|null $status
      *
      * @return array|string
      */
@@ -251,8 +251,12 @@ interface UserInterface
 
     /**
      * Convert Entity to Array
+     *
+     * @param array excludedAttributes
+     *
+     * @return array
      */
-    public function toArray();
+    public function toArray(array $excludedAttributes = []): array;
 
     /**
      * Specify data which should be serialized to JSON

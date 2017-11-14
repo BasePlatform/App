@@ -406,9 +406,9 @@ class AppUsage implements AppUsageInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray(array $excludedAttributes = []): array
     {
-        return [
+        return array_diff_key([
             'id' => $this->id,
             'tenantId' => $this->tenantId,
             'appId' => $this->appId,
@@ -424,7 +424,7 @@ class AppUsage implements AppUsageInterface, \JsonSerializable
             'trialExpiresAt' => DateTimeHelper::toISO8601($this->trialExpiresAt),
             'status' => $this->status,
             'updatedAt' => DateTimeHelper::toISO8601($this->updatedAt)
-        ];
+        ], array_flip($excludedAttributes));
     }
 
     /**

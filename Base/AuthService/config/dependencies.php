@@ -27,8 +27,6 @@ return [
 
       \Base\AuthService\ValueObject\ZoneInterface::class => \Base\AuthService\ValueObject\Zone::class,
 
-      \Base\AuthService\ValueObject\PasswordInterface::class => \Base\AuthService\ValueObject\Password::class,
-
       /**
        * Factories
        */
@@ -43,8 +41,6 @@ return [
       \Base\AuthService\Factory\UserProfileFactoryInterface::class => \Base\AuthService\Factory\UserProfileFactory::class,
 
       \Base\AuthService\Factory\ZoneFactoryInterface::class => \Base\AuthService\Factory\ZoneFactory::class,
-
-      \Base\AuthService\Factory\PasswordFactoryInterface::class => \Base\AuthService\Factory\PasswordFactory::class,
 
       /**
        * Repositories
@@ -62,7 +58,7 @@ return [
       /**
        * Services
        */
-      \Base\AuthService\Service\UserServiceInterface::class => \Base\AuthService\Service\UserService::class,
+      \Base\AuthService\Service\UserServiceInterface::class => \Base\AuthService\Service\UserService::class
 
     ],
     'params' => [
@@ -91,11 +87,8 @@ return [
 
         \Base\AuthService\Factory\ZoneFactory::class => [
           'className' => Base\AuthService\ValueObject\Zone::class
-        ],
+        ]
 
-        \Base\AuthService\Factory\PasswordFactory::class => [
-          'className' => \Base\AuthService\ValueObject\Password::class
-        ],
       ]
     ]
   ];

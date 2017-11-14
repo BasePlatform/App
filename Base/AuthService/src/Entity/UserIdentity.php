@@ -245,9 +245,9 @@ class UserIdentity implements UserIdentityInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray(array $excludedAttributes = []): array
     {
-        return [
+        return array_diff_key([
             'id' => $this->id,
             'tenantId' => $this->tenantId,
             'userId' => $this->userId,
@@ -256,7 +256,7 @@ class UserIdentity implements UserIdentityInterface, \JsonSerializable
             // We skip authToken, authParams and passwordHash
             'recentPasswordUpdateAt' => DateTimeHelper::toISO8601($this->recentPasswordUpdateAt),
             'updatedAt' => DateTimeHelper::toISO8601($this->updatedAt)
-        ];
+        ], array_flip($excludedAttributes));
     }
 
     /**

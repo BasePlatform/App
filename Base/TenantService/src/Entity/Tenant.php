@@ -213,9 +213,9 @@ class Tenant implements TenantInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray(array $excludedAttributes = []): array
     {
-        return [
+        return array_diff_key([
             'id' => (string) $this->id,
             'domain' => $this->domain,
             'platform' => $this->platform,
@@ -223,7 +223,7 @@ class Tenant implements TenantInterface, \JsonSerializable
             'status' => $this->status,
             'createdAt' => DateTimeHelper::toISO8601($this->createdAt),
             'updatedAt' => DateTimeHelper::toISO8601($this->updatedAt)
-        ];
+        ], array_flip($excludedAttributes));
     }
 
     /**

@@ -129,9 +129,9 @@ class UserService implements UserServiceInterface
         $user->setStatus($user->getStatusOptions('STATUS_ACTIVE'));
         $user->setCreatedAt($now);
         $user->setUpdatedAt($now);
-        $insertedUser = $this->repository->insert($user);
+        $user = $this->repository->insert($user);
 
-        if ($insertedUser) {
+        if ($user) {
             // continue adding user identity and profile
             $userIdentity = $this->userIdentityFactory->create();
             if (empty($password)) {
@@ -139,7 +139,7 @@ class UserService implements UserServiceInterface
             }
             $authToken = $this->security->generateRandomString(32);
             $userIdentity->setTenantId($tenantId);
-            $userIdentity->setUserId($insertedUser->getId());
+            $userIdentity->setUserId($user->getId());
             $userIdentity->setAuthProvider($authProvider);
             $userIdentity->setAuthProviderUid($authProviderUid);
             $userIdentity->setAuthToken($authToken);
@@ -147,19 +147,19 @@ class UserService implements UserServiceInterface
             $userIdentity->setRecentPasswordUpdateAt($now);
             $userIdentity->setUpdatedAt($now);
             // Save the Identity
-            $insertedUserIdentity = $this->userIdentityRepository->insert($userIdentity);
+            $userIdentity = $this->userIdentityRepository->insert($userIdentity);
 
             $userProfile = $this->userProfileFactory->create();
             $userProfile->setTenantId($tenantId);
-            $userProfile->setUserId($insertedUser->getId());
+            $userProfile->setUserId($user->getId());
             $userProfile->setUpdatedAt($now);
             // Save the Profile
-            $insertedUserProfile = $this->userProfileRepository->insert($userProfile);
+            $userProfile = $this->userProfileRepository->insert($userProfile);
 
-            if ($insertedUserIdentity && $insertedUserProfile) {
-                $insertedUser->setIdentity($insertedUserIdentity);
-                $insertedUser->setProfile($insertedUserProfile);
-                return $insertedUser;
+            if ($userIdentity && $userProfile) {
+                $user->setIdentity($userIdentity);
+                $user->setProfile($userProfile);
+                return $user;
             }
         }
 

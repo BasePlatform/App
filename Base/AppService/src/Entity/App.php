@@ -166,15 +166,15 @@ class App implements AppInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray(array $excludedAttributes = []): array
     {
-        return [
+        return array_diff_key([
             'id' => $this->id,
             'plans' => $this->plans,
             'params' => $this->params,
             'status' => $this->status,
             'updatedAt' => DateTimeHelper::toISO8601($this->updatedAt)
-        ];
+        ], array_flip($excludedAttributes));
     }
 
     /**

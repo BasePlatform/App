@@ -267,9 +267,9 @@ class UserProfile implements UserProfileInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray(array $excludedAttributes = []): array
     {
-        return [
+        return array_diff_key([
             'id' => $this->id,
             'tenantId' => $this->tenantId,
             'userId' => $this->userId,
@@ -281,7 +281,7 @@ class UserProfile implements UserProfileInterface, \JsonSerializable
             'company' => $this->company,
             'info' => $this->info,
             'updatedAt' => DateTimeHelper::toISO8601($this->updatedAt)
-        ];
+        ], array_flip($excludedAttributes));
     }
 
     /**

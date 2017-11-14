@@ -157,16 +157,16 @@ class Policy implements PolicyInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray(array $excludedAttributes = []): array
     {
-        return [
+        return array_diff_key([
             'id' => $this->id,
             'appId' => $this->appId,
             'type' => $this->type,
             'zone' => (string) $this->zone,
             'description' => $this->description,
             'params' => $this->params
-        ];
+        ], array_flip($excludedAttributes));
     }
 
     /**

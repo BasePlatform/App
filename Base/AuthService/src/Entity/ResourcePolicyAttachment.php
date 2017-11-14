@@ -143,15 +143,15 @@ class ResourcePolicyAttachment implements ResourcePolicyAttachmentInterface, \Js
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray(array $excludedAttributes = []): array
     {
-        return [
+        return array_diff_key([
             'id' => $this->id,
             'tenantId' => $this->tenantId,
             'resourceId' => $this->resourceId,
             'policyId' => $this->policyId,
             'attachedAt' => DateTimeHelper::toISO8601($this->attachedAt)
-        ];
+        ], array_flip($excludedAttributes));
     }
 
     /**

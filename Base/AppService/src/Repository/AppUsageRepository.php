@@ -138,8 +138,8 @@ class AppUsageRepository implements AppUsageRepositoryInterface
               'updatedAt' => DateTimeHelper::toDb($item->getUpdatedAt())
             ]);
             if ($result) {
-                $this->pdo->commit();
                 $id = (int) $this->pdo->lastInsertId();
+                $this->pdo->commit();
                 $item->setId($id);
                 return $item;
             } else {

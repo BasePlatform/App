@@ -173,8 +173,12 @@ interface UserIdentityInterface
 
     /**
      * Convert Entity to Array
+     *
+     * @param array excludedAttributes
+     *
+     * @return array
      */
-    public function toArray();
+    public function toArray(array $excludedAttributes = []): array;
 
     /**
      * Specify data which should be serialized to JSON

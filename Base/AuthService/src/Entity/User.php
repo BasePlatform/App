@@ -372,9 +372,9 @@ class User implements UserInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function toArray(): array
+    public function toArray(array $excludedAttributes = []): array
     {
-        return [
+        return array_diff_key([
             'id' => $this->id,
             'tenantId' => $this->tenantId,
             'zone' => (string) $this->zone,
@@ -384,11 +384,11 @@ class User implements UserInterface, \JsonSerializable
             'tagLine' => $this->tagLine,
             'avatar' => $this->avatar,
             'status' => $this->status,
-            'identity' => $this->identity->toArray(),
-            'profile' => $this->profile->toArray(),
+            'identity' => $this->identity->toArray(['tenantId', 'userId']),
+            'profile' => $this->profile->toArray(['tenantId', 'userId']),
             'createdAt' => DateTimeHelper::toISO8601($this->createdAt),
             'updatedAt' => DateTimeHelper::toISO8601($this->updatedAt)
-        ];
+        ], array_flip($excludedAttributes));
     }
 
     /**
