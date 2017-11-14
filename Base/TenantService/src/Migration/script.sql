@@ -5,7 +5,6 @@ CREATE TABLE `Base_Tenant` (
   `id` varchar(255) NOT NULL,
   `domain` varchar(255) NOT NULL,
   `platform` varchar(64) DEFAULT NULL,
-  `timeZone` varchar(128) NOT NULL DEFAULT 'UTC',
   `status` varchar(64) NOT NULL DEFAULT 'disabled',
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
