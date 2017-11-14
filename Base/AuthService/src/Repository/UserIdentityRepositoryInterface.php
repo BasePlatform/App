@@ -33,22 +33,22 @@ interface UserIdentityRepositoryInterface
     public function find(string $tenantId, int $userId): ?UserIdentityInterface;
 
     /**
-     * Add a User Identity
+     * Insert a User Identity
      *
      * @param UserIdentityInterface $item
      *
-     * @return integer|null The inserted User Identity Id
+     * @return UserIdentityInterface|null
      */
-    public function add(UserIdentityInterface $item): ?int;
+    public function insert(UserIdentityInterface $item): ?UserIdentityInterface;
 
     /**
      * Update a User Identity
      *
      * @param UserIdentityInterface $item
      *
-     * @return boolean
+     * @return UserIdentityInterface|null
      */
-    public function update(UserIdentityInterface $item): bool;
+    public function update(UserIdentityInterface $item): ?UserIdentityInterface;
 
     /**
      * Convert an array data from fetch assoc to Entity

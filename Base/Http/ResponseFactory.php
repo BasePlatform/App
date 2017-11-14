@@ -63,7 +63,7 @@ class ResponseFactory implements ResponseFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createJson(array $data, int $status = 200, array $headers = [], int $encodingOptions = 79): ResponseInterface
+    public function createJson($data, int $status = 200, array $headers = [], int $encodingOptions = 79): ResponseInterface
     {
         return new \Zend\Diactoros\Response\JsonResponse($data, $status, $headers, $encodingOptions);
     }

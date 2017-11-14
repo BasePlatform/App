@@ -14,7 +14,6 @@
  */
 return [
   'basePath' => dirname(__DIR__),
-  'passwordHashCost' => env('PASSWORD_HASH_COST', 13),
   'app' => [
     'id' => 'base-app',
     'debug' => env('APP_DEBUG', false),

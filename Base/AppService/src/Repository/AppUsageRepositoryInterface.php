@@ -23,32 +23,32 @@ use Base\AppService\Entity\AppUsageInterface;
 interface AppUsageRepositoryInterface
 {
     /**
-     * Get App Usage by App Id and Tenant Id
+     * Find App Usage by App Id and Tenant Id
      *
      * @param string $tenantId
      * @param string $apId
      *
      * @return AppUsageInterface|null
      */
-    public function get(string $tenantId, string $appId): ?AppUsageInterface;
+    public function find(string $tenantId, string $appId): ?AppUsageInterface;
 
     /**
-     * Add an App Usage
+     * Insert an App Usage
      *
      * @param AppUsageInterface $item
      *
-     * @return integer|null The inserted AppUsage Id
+     * @return AppUsageInterface|null
      */
-    public function add(AppUsageInterface $item): ?int;
+    public function insert(AppUsageInterface $item): ?AppUsageInterface;
 
     /**
      * Update an App Usage
      *
      * @param AppUsageInterface $item
      *
-     * @return bool
+     * @return AppUsageInterface|null
      */
-    public function update(AppUsageInterface $item): bool;
+    public function update(AppUsageInterface $item): ?AppUsageInterface;
 
     /**
      * Convert an array data from fetch assoc to Entity

@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Base\AuthService\Entity;
 
+use Base\Helper\DateTimeHelper;
+
 /**
  * User Identity Entity
  *
  * @package Base\AuthService\Entity
  */
-class UserIdentity implements UserIdentityInterface
+class UserIdentity implements UserIdentityInterface, \JsonSerializable
 {
     /**
      * @var int
@@ -145,16 +147,16 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function setRecentPasswordUpdateAt(\DateTime $getRecentPasswordUpdateAt)
+    public function setRecentPasswordUpdateAt(\DateTime $recentPasswordUpdateAt = null)
     {
-        $this->getRecentPasswordUpdateAt = $getRecentPasswordUpdateAt;
+        $this->recentPasswordUpdateAt = $recentPasswordUpdateAt;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setUpdatedAt(\DateTime $updatedA)
+    public function setUpdatedAt(\DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
         return $this;
@@ -227,7 +229,7 @@ class UserIdentity implements UserIdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function getRecentPasswordUpdateAt(): \DateTime
+    public function getRecentPasswordUpdateAt(): ?\DateTime
     {
         return $this->recentPasswordUpdateAt;
     }
@@ -238,5 +240,30 @@ class UserIdentity implements UserIdentityInterface
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'tenantId' => $this->tenantId,
+            'userId' => $this->userId,
+            'authProvider' => $this->authProvider,
+            'authProviderUid' => $this->authProviderUid,
+            // We skip authToken, authParams and passwordHash
+            'recentPasswordUpdateAt' => DateTimeHelper::toISO8601($this->recentPasswordUpdateAt),
+            'updatedAt' => DateTimeHelper::toISO8601($this->updatedAt)
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

@@ -104,7 +104,7 @@ class UserService implements UserServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function registerTenantOwner(array $data): array
+    public function registerTenantOwner(array $data)
     {
         // Get Info from $data
         $tenantId = $data['tenantId'] ?? null;
@@ -120,7 +120,7 @@ class UserService implements UserServiceInterface
         $zone->setZoneId($zoneAdminId);
 
         // Adding the User
-        $now = DateTimeFormatter::now();
+        $now = DateTimeHelper::now();
         $user = $this->factory->create();
         $user->setTenantId($tenantId);
         $user->setZone($zone);
@@ -129,17 +129,17 @@ class UserService implements UserServiceInterface
         $user->setStatus($user->getStatusOptions('STATUS_ACTIVE'));
         $user->setCreatedAt($now);
         $user->setUpdatedAt($now);
-        $userId = $this->repository->add($user);
+        $insertedUser = $this->repository->insert($user);
 
-        if ($userId) {
+        if ($insertedUser) {
             // continue adding user identity and profile
             $userIdentity = $this->userIdentityFactory->create();
             if (empty($password)) {
                 $password = $this->security->generateRandomKey(8);
             }
-            $authToken = $this->security->generateRandomKey(32);
+            $authToken = $this->security->generateRandomString(32);
             $userIdentity->setTenantId($tenantId);
-            $userIdentity->setUserId($userId);
+            $userIdentity->setUserId($insertedUser->getId());
             $userIdentity->setAuthProvider($authProvider);
             $userIdentity->setAuthProviderUid($authProviderUid);
             $userIdentity->setAuthToken($authToken);
@@ -147,22 +147,22 @@ class UserService implements UserServiceInterface
             $userIdentity->setRecentPasswordUpdateAt($now);
             $userIdentity->setUpdatedAt($now);
             // Save the Identity
-            $userIdentityId = $this->userIdentityRepository->add($userIdentity);
+            $insertedUserIdentity = $this->userIdentityRepository->insert($userIdentity);
 
             $userProfile = $this->userProfileFactory->create();
             $userProfile->setTenantId($tenantId);
-            $userProfile->setUserId($userId);
+            $userProfile->setUserId($insertedUser->getId());
             $userProfile->setUpdatedAt($now);
             // Save the Profile
-            $userProfileId = $this->useProfileRepository->add($userProfile);
+            $insertedUserProfile = $this->userProfileRepository->insert($userProfile);
+
+            if ($insertedUserIdentity && $insertedUserProfile) {
+                $insertedUser->setIdentity($insertedUserIdentity);
+                $insertedUser->setProfile($insertedUserProfile);
+                return $insertedUser;
+            }
         }
-        if ($userId && $userIdentityId && $userProfileId) {
-            return [
-              'appId' => $appId,
-              'tenantId' => $tenantId,
-              'status' => self::STATUS_ACTIVATED
-            ];
-        }
+
         throw new ServerErrorException(sprintf('Failed Registering Owner For Tenant `%s`', $tenantId));
     }
 

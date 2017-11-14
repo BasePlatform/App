@@ -16,13 +16,14 @@ namespace Base\AuthService\Entity;
 use Base\AuthService\ValueObject\ZoneInterface;
 use Base\AuthService\Entity\UserIdentityInterface;
 use Base\AuthService\Entity\UserProfileInterface;
+use Base\Helper\DateTimeHelper;
 
 /**
  * User Entity
  *
  * @package Base\AuthService\Entity
  */
-class User implements UserInterface
+class User implements UserInterface, \JsonSerializable
 {
     /**
      * Active Status
@@ -366,5 +367,35 @@ class User implements UserInterface
             }
         }
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'tenantId' => $this->tenantId,
+            'zone' => (string) $this->zone,
+            'email' => $this->email,
+            'userName' => $this->userName,
+            'displayName' => $this->displayName,
+            'tagLine' => $this->tagLine,
+            'avatar' => $this->avatar,
+            'status' => $this->status,
+            'identity' => $this->identity->toArray(),
+            'profile' => $this->profile->toArray(),
+            'createdAt' => DateTimeHelper::toISO8601($this->createdAt),
+            'updatedAt' => DateTimeHelper::toISO8601($this->updatedAt)
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

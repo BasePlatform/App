@@ -82,7 +82,7 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function add(UserIdentityInterface $item): ?int
+    public function insert(UserIdentityInterface $item): ?UserIdentityInterface
     {
         try {
             $this->pdo->beginTransaction();
@@ -91,15 +91,17 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
                 userId,
                 authProvider,
                 authProviderUid,
+                authToken,
                 passwordHash,
                 authParams,
                 recentPasswordUpdateAt,
-                updatedAt,
+                updatedAt
               ) VALUES (
                 :tenantId,
                 :userId,
                 :authProvider,
                 :authProviderUid,
+                :authToken,
                 :passwordHash,
                 :authParams,
                 :recentPasswordUpdateAt,
@@ -111,17 +113,21 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
               'userId' => (int) $item->getUserId(),
               'authProvider' => $item->getAuthProvider(),
               'authProviderUid' => $item->getAuthProviderUid(),
+              'authToken' => $item->getAuthToken(),
               'passwordHash' => ($item->getPasswordHash() != null) ? (string) $item->getPasswordHash() : null,
               'authParams' => ($item->getAuthParams() != null) ? json_encode($item->getAuthParams()) : null,
-              'recentPasswordUpdateAt' => DateTimeFormatter::toDb($item->getRecentPasswordUpdateAt()),
-              'updatedAt' => DateTimeFormatter::toDb($item->getUpdatedAt())
+              'recentPasswordUpdateAt' => DateTimeHelper::toDb($item->getRecentPasswordUpdateAt()),
+              'updatedAt' => DateTimeHelper::toDb($item->getUpdatedAt())
             ]);
-            $id = null;
             if ($result) {
+                $this->pdo->commit();
                 $id = (int) $this->pdo->lastInsertId();
+                $item->setId($id);
+                return $item;
+            } else {
+                $this->pdo->rollBack();
+                return null;
             }
-            $this->pdo->commit();
-            return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
             throw new ServerErrorException('Failed Adding User Identity Information', false, $e->getMessage());
@@ -131,7 +137,7 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function update(UserIdentityInterface $item): bool
+    public function update(UserIdentityInterface $item): ?UserIdentityInterface
     {
         try {
             $this->pdo->beginTransaction();
@@ -140,6 +146,7 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
                 userId = :userId,
                 authProvider = :authProvider,
                 authProviderUid = :authProviderUid,
+                authToken = :authToken,
                 passwordHash = :passwordHash,
                 authParams = :authParams,
                 recentPasswordUpdateAt = :recentPasswordUpdateAt,
@@ -152,13 +159,19 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
               'userId' => (int) $item->getUserId(),
               'authProvider' => $item->getAuthProvider(),
               'authProviderUid' => $item->getAuthProviderUid(),
+              'authToken' => $item->getAuthToken(),
               'passwordHash' => ($item->getPasswordHash() != null) ? (string) $item->getPasswordHash() : null,
               'authParams' => ($item->getAuthParams() != null) ? json_encode($item->getAuthParams()) : null,
-              'recentPasswordUpdateAt' => DateTimeFormatter::toDb($item->getRecentPasswordUpdateAt()),
-              'updatedAt' => DateTimeFormatter::toDb($item->getUpdatedAt())
+              'recentPasswordUpdateAt' => DateTimeHelper::toDb($item->getRecentPasswordUpdateAt()),
+              'updatedAt' => DateTimeHelper::toDb($item->getUpdatedAt())
             ]);
-            $this->pdo->commit();
-            return $result;
+            if ($result) {
+                $this->pdo->commit();
+                return $item;
+            } else {
+                $this->pdo->rollBack();
+                return null;
+            }
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
             throw new ServerErrorException('Failed Updating User Identity Information', false, $e->getMessage());
@@ -192,7 +205,7 @@ class UserIdentityRepository implements UserIdentityRepositoryInterface
                             $value = json_decode($value);
                         }
                         if (in_array($key, $dateTimeProperties)) {
-                            $value = DateTimeFormatter::createFromDb($value);
+                            $value = DateTimeHelper::createFromDb($value);
                         }
                         $entity->$setMethod($value);
                     }

@@ -67,7 +67,7 @@ class PolicyRepository implements PolicyRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function get(string $policyId): ?PolicyInterface
+    public function find(string $policyId): ?PolicyInterface
     {
         try {
             $sql = 'SELECT * FROM '. $this->tablePrefix . 'Policy p WHERE p.id = :id LIMIT 0,1';
@@ -115,7 +115,7 @@ class PolicyRepository implements PolicyRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function add(PolicyInterface $item): ?string
+    public function insert(PolicyInterface $item): ?PolicyInterface
     {
         try {
             $this->pdo->beginTransaction();
@@ -143,12 +143,13 @@ class PolicyRepository implements PolicyRepositoryInterface
               'description' => $item->getDescription(),
               'params' => ($item->getParams() != null) ? json_encode($item->getParams()) : null
             ]);
-            $id = null;
             if ($result) {
-                $id = $item->getId();
+                $this->pdo->commit();
+                return $item;
+            } else {
+                $this->pdo->rollBack();
+                return $null;
             }
-            $this->pdo->commit();
-            return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
             throw new ServerErrorException('Failed Adding Policy Information', false, $e->getMessage());

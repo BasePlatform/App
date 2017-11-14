@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Base\TenantService\Repository;
 
 use Base\TenantService\Entity\TenantInterface;
-use Base\TenantService\ValueObject\TenantIdInterface;
 use Base\TenantService\Factory\TenantFactoryInterface;
 use Base\PDO\PDOProxyInterface;
 use Base\Exception\ServerErrorException;
@@ -60,7 +59,7 @@ class TenantRepository implements TenantRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function get(TenantIdInterface $tenantId): ?TenantInterface
+    public function find(TenantIdInterface $tenantId): ?TenantInterface
     {
         try {
             $sql = 'SELECT * FROM '. $this->tablePrefix . 'Tenant t WHERE t.id = :id LIMIT 0,1';
@@ -77,7 +76,7 @@ class TenantRepository implements TenantRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function add(TenantInterface $item): ?TenantIdInterface
+    public function insert(TenantInterface $item): ?TenantInterface
     {
         try {
             $this->pdo->beginTransaction();
@@ -85,6 +84,7 @@ class TenantRepository implements TenantRepositoryInterface
                 id,
                 domain,
                 platform,
+                timeZone,
                 status,
                 createdAt,
                 updatedAt
@@ -92,6 +92,7 @@ class TenantRepository implements TenantRepositoryInterface
                 :id,
                 :domain,
                 :platform,
+                :timeZone,
                 :status,
                 :createdAt,
                 :updatedAt
@@ -101,16 +102,18 @@ class TenantRepository implements TenantRepositoryInterface
               'id' => (string) $item->getId(),
               'domain' => $item->getDomain(),
               'platform' => $item->getPlatform(),
+              'timeZone' => $item->getTimeZone(),
               'status' => $item->getStatus(),
-              'createdAt' => DateTimeFormatter::toDb($item->getCreatedAt()),
-              'updatedAt' => DateTimeFormatter::toDb($item->getUpdatedAt())
+              'createdAt' => DateTimeHelper::toDb($item->getCreatedAt()),
+              'updatedAt' => DateTimeHelper::toDb($item->getUpdatedAt())
             ]);
-            $id = null;
             if ($result) {
-                $id = $item->getId();
+                $this->pdo->commit();
+                return $item;
+            } else {
+                $this->pdo->rollBack();
+                return null;
             }
-            $this->pdo->commit();
-            return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
             throw new ServerErrorException('Failed Adding Tenant Information', false, $e->getMessage());
@@ -138,7 +141,7 @@ class TenantRepository implements TenantRepositoryInterface
                           'updatedAt'
                         ];
                         if (in_array($key, $dateTimeProperties)) {
-                            $value = DateTimeFormatter::createFromDb($value);
+                            $value = DateTimeHelper::createFromDb($value);
                         }
                         $entity->$setMethod($value);
                     }

@@ -64,7 +64,7 @@ $container->share($serviceRequest);
 /**
  * Define for security
  */
-$security = new Base\Security\Security(env('PASSWORD_HASH_COST', 13));
+$security = new Base\Security\Security();
 $container->share($security);
 
 /**

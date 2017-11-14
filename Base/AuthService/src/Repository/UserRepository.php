@@ -94,7 +94,7 @@ class UserRepository implements UserRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findOneByZoneAndEmail(string $tenantId, string $email, ZoneInterface $zone, bool $withTrashed = false): ?UserInterface
+    public function findByZoneAndEmail(string $tenantId, string $email, ZoneInterface $zone, bool $withTrashed = false): ?UserInterface
     {
         try {
             $sql = 'SELECT * FROM '. $this->tablePrefix . 'User u WHERE
@@ -122,7 +122,7 @@ class UserRepository implements UserRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findOneByZoneAndUserName(string $tenantId, string $userName, ZoneInterface $zone, bool $withTrashed = false): ?UserInterface
+    public function findByZoneAndUserName(string $tenantId, string $userName, ZoneInterface $zone, bool $withTrashed = false): ?UserInterface
     {
         try {
             $sql = 'SELECT * FROM '. $this->tablePrefix . 'User u WHERE
@@ -150,7 +150,7 @@ class UserRepository implements UserRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function add(UserInterface $item): ?int
+    public function insert(UserInterface $item): ?UserInterface
     {
         try {
             $this->pdo->beginTransaction();
@@ -187,15 +187,18 @@ class UserRepository implements UserRepositoryInterface
               'tagLine' => $item->getTagLine(),
               'avatar' => $item->getAvatar(),
               'status' => $item->getStatus(),
-              'createdAt' => DateTimeFormatter::toDb($item->getCreatedAt()),
-              'updatedAt' => DateTimeFormatter::toDb($item->getUpdatedAt())
+              'createdAt' => DateTimeHelper::toDb($item->getCreatedAt()),
+              'updatedAt' => DateTimeHelper::toDb($item->getUpdatedAt())
             ]);
-            $id = null;
             if ($result) {
+                $this->pdo->commit();
                 $id = (int) $this->pdo->lastInsertId();
+                $item->setId($id);
+                return $item;
+            } else {
+                $this->pdo->rollBack();
+                return null;
             }
-            $this->pdo->commit();
-            return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
             throw new ServerErrorException('Failed Adding User Information', false, $e->getMessage());
@@ -205,7 +208,7 @@ class UserRepository implements UserRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function update(UserInterface $item): bool
+    public function update(UserInterface $item): ?UserInterface
     {
         try {
             $this->pdo->beginTransaction();
@@ -232,11 +235,16 @@ class UserRepository implements UserRepositoryInterface
               'tagLine' => $item->getTagLine(),
               'avatar' => $item->getAvatar(),
               'status' => $item->getStatus(),
-              'createdAt' => DateTimeFormatter::toDb($item->getCreatedAt()),
-              'updatedAt' => DateTimeFormatter::toDb($item->getUpdatedAt())
+              'createdAt' => DateTimeHelper::toDb($item->getCreatedAt()),
+              'updatedAt' => DateTimeHelper::toDb($item->getUpdatedAt())
             ]);
-            $this->pdo->commit();
-            return $result;
+            if ($result) {
+                $this->pdo->commit();
+                return $item;
+            } else {
+                $this->pdo->rollBack();
+                return null;
+            }
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
             throw new ServerErrorException('Failed Updating User Information', false, $e->getMessage());
@@ -257,7 +265,7 @@ class UserRepository implements UserRepositoryInterface
                 LIMIT 1';
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
-              'time' => DateTimeFormatter::now(DateTimeFormatter::DB_DATETIME_FORMAT),
+              'time' => DateTimeHelper::now(DateTimeHelper::DB_DATETIME_FORMAT),
               'tenantId' => $tenantId,
               'id' => $userId,
             ]);
@@ -316,7 +324,7 @@ class UserRepository implements UserRepositoryInterface
                           'deletedAt'
                         ];
                         if (in_array($key, $dateTimeProperties)) {
-                            $value = DateTimeFormatter::createFromDb($value);
+                            $value = DateTimeHelper::createFromDb($value);
                         }
                         $entity->$setMethod($value);
                     }

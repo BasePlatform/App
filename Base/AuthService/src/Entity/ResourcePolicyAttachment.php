@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Base\AuthService\Entity;
 
+use Base\Helper\DateTimeHelper;
+
 /**
  * Resource Policy Attachment Entity
  *
  * @package Base\AuthService\Entity
  */
-class ResourcePolicyAttachment implements ResourcePolicyAttachmentInterface
+class ResourcePolicyAttachment implements ResourcePolicyAttachmentInterface, \JsonSerializable
 {
     /**
      * @var int
@@ -136,5 +138,27 @@ class ResourcePolicyAttachment implements ResourcePolicyAttachmentInterface
     public static function createResourceId(string $type, string $id): string
     {
         return $type.':'.$id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'tenantId' => $this->tenantId,
+            'resourceId' => $this->resourceId,
+            'policyId' => $this->policyId,
+            'attachedAt' => DateTimeHelper::toISO8601($this->attachedAt)
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

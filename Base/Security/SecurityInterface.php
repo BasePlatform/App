@@ -16,6 +16,7 @@ namespace Base\Security;
 /**
  * Security Interface
  *
+ * Source: https://github.com/yiisoft/yii2/blob/master/framework/base/Security.php
  * @package Base\Security
  */
 interface SecurityInterface

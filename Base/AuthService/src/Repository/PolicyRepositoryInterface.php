@@ -24,13 +24,13 @@ use Base\AuthService\ValueObject\ZoneInterface;
 interface PolicyRepositoryInterface
 {
     /**
-     * Get Policy by Policy Id
+     * Find Policy by Policy Id
      *
      * @param string $policyId
      *
      * @return PolicyInterface|null
      */
-    public function get(string $policyId): ?PolicyInterface;
+    public function find(string $policyId): ?PolicyInterface;
 
     /**
      * Find All Policies by App Id, Type, Zone
@@ -44,13 +44,13 @@ interface PolicyRepositoryInterface
     public function findAllByAppTypeZone(string $appId, string $type, ZoneInterface $zone): ?array;
 
     /**
-     * Add a Policy
+     * Insert a Policy
      *
      * @param PolicyInterface $item
      *
-     * @return string|null The inserted Policy Id
+     * @return PolicyInterface|null
      */
-    public function add(PolicyInterface $item): ?string;
+    public function insert(PolicyInterface $item): ?PolicyInterface;
 
     /**
      * Delete a Policy by Policy Id

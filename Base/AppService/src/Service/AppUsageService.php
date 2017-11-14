@@ -72,8 +72,8 @@ class AppUsageService implements AppUsageServiceInterface
         // Validate the Data here
 
         // Get Info
-        $app = $this->appRepository->get($appId);
-        $appUsage = $this->repository->get($tenantId, $appId);
+        $app = $this->appRepository->find($appId);
+        $appUsage = $this->repository->find($tenantId, $appId);
 
         // No App or App is disabled
         if (!$app || ($app && $app->getStatus() != $app->getStatusOptions('STATUS_ACTIVE'))) {
@@ -85,7 +85,7 @@ class AppUsageService implements AppUsageServiceInterface
             throw new DisabledAppUsageException();
         }
         // Get current time
-        $now = DateTimeFormatter::now();
+        $now = DateTimeHelper::now();
         // Prepare the result
         $result = null;
         // No AppUsage Record?
@@ -106,7 +106,7 @@ class AppUsageService implements AppUsageServiceInterface
             } elseif ($trialDays == 0) {
                 $appUsage->setTrialExpiresAt($now);
             }
-            $result = $this->repository->add($appUsage);
+            $result = $this->repository->insert($appUsage);
         } else {
             // AppUsage existed, update the recentInstallAt
             $appUsage->setRecentInstallAt($now);

@@ -20,7 +20,7 @@ use Base\AuthService\ValueObject\ZoneInterface;
  *
  * @package Base\AuthService\Entity
  */
-class Policy implements PolicyInterface
+class Policy implements PolicyInterface, \JsonSerializable
 {
     /**
      * @var string
@@ -152,5 +152,28 @@ class Policy implements PolicyInterface
     public function getParams(): ?array
     {
         return $this->params;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'appId' => $this->appId,
+            'type' => $this->type,
+            'zone' => (string) $this->zone,
+            'description' => $this->description,
+            'params' => $this->params
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

@@ -88,7 +88,7 @@ class ResourcePolicyAttachmentRepository implements ResourcePolicyAttachmentRepo
     /**
      * {@inheritdoc}
      */
-    public function add(ResourcePolicyAttachmentInterface $item): ?int
+    public function insert(ResourcePolicyAttachmentInterface $item): ?ResourcePolicyAttachmentInterface
     {
         try {
             $this->pdo->beginTransaction();
@@ -108,14 +108,17 @@ class ResourcePolicyAttachmentRepository implements ResourcePolicyAttachmentRepo
               'tenantId' => $item->getTenantId(),
               'resourceId' => $item->getResourceId(),
               'policyId' => $item->getPolicyId(),
-              'attachedAt' => DateTimeFormatter::toDb($item->getAttachedAt())
+              'attachedAt' => DateTimeHelper::toDb($item->getAttachedAt())
             ]);
-            $id = null;
             if ($result) {
+                $this->pdo->commit();
                 $id = (int) $this->pdo->lastInsertId();
+                $item->setId($id);
+                return $item;
+            } else {
+                $this->pdo->rollBack();
+                return null;
             }
-            $this->pdo->commit();
-            return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
             throw new ServerErrorException('Failed Attaching Resource Policy', false, $e->getMessage());
@@ -186,7 +189,7 @@ class ResourcePolicyAttachmentRepository implements ResourcePolicyAttachmentRepo
                           'attachedAt'
                         ];
                         if (in_array($key, $dateTimeProperties)) {
-                            $value = DateTimeFormatter::createFromDb($value);
+                            $value = DateTimeHelper::createFromDb($value);
                         }
                         $entity->$setMethod($value);
                     }

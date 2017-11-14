@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Base\AuthService\Entity;
 
+use Base\Helper\DateTimeHelper;
+
 /**
  * User Profile Entity
  *
  * @package Base\AuthService\Entity
  */
-class UserProfile implements UserProfileInterface
+class UserProfile implements UserProfileInterface, \JsonSerializable
 {
     /**
      * @var int
@@ -209,7 +211,7 @@ class UserProfile implements UserProfileInterface
     /**
      * {@inheritdoc}
      */
-    public function getBirthDate(): \DateTime
+    public function getBirthDate(): ?\DateTime
     {
         return $this->birthDate;
     }
@@ -260,5 +262,33 @@ class UserProfile implements UserProfileInterface
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'tenantId' => $this->tenantId,
+            'userId' => $this->userId,
+            'gender' => $this->gender,
+            'birthDate' => DateTimeHelper::toISO8601($this->birthDate, 'UTC', DateTimeHelper::DB_DATE_FORMAT),
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
+            'location' => $this->location,
+            'company' => $this->company,
+            'info' => $this->info,
+            'updatedAt' => DateTimeHelper::toISO8601($this->updatedAt)
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

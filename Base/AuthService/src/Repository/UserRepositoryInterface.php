@@ -44,7 +44,7 @@ interface UserRepositoryInterface
      *
      * @return UserInterface|null
      */
-    public function findOneByZoneAndEmail(string $tenantId, string $email, ZoneInterface $zone, bool $withTrashed = false): ?UserInterface;
+    public function findByZoneAndEmail(string $tenantId, string $email, ZoneInterface $zone, bool $withTrashed = false): ?UserInterface;
 
     /**
      * Find a User by Zone and userName
@@ -56,25 +56,25 @@ interface UserRepositoryInterface
      *
      * @return UserInterface|null
      */
-    public function findOneByZoneAndUserName(string $tenantId, string $userName, ZoneInterface $zone, bool $withTrashed = false): ?UserInterface;
+    public function findByZoneAndUserName(string $tenantId, string $userName, ZoneInterface $zone, bool $withTrashed = false): ?UserInterface;
 
     /**
      * Add a User
      *
      * @param UserInterface $item
      *
-     * @return integer|null The inserted User Id
+     * @return UserInterface|null
      */
-    public function add(UserInterface $item): ?int;
+    public function insert(UserInterface $item): ?UserInterface;
 
     /**
      * Update a User
      *
      * @param UserInterface $item
      *
-     * @return boolean
+     * @return UserInterface|null
      */
-    public function update(UserInterface $item): bool;
+    public function update(UserInterface $item): ?UserInterface;
 
     /**
      * Soft Delete a User

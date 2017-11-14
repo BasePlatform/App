@@ -11,12 +11,14 @@
 
 namespace Base\AppService\Entity;
 
+use Base\Helper\DateTimeHelper;
+
 /**
  * App Usage Entity
  *
  * @package Base\AppService\Entity
  */
-class AppUsage implements AppUsageInterface
+class AppUsage implements AppUsageInterface, \JsonSerializable
 {
     /**
      * Active Status
@@ -399,5 +401,37 @@ class AppUsage implements AppUsageInterface
             }
         }
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'tenantId' => $this->tenantId,
+            'appId' => $this->appId,
+            'selectedPlan' => $this->selectedPlan,
+            'appParams' => $this->appParams,
+            'externalInfo' => $this->chargeInfo,
+            'exceededPlanUsage' => $this->exceededPlanUsage,
+            'exceededPlanAt' => DateTimeHelper::toISO8601($this->exceededPlanAt),
+            'planUpgradeRequired' => $this->planUpgradeRequired,
+            'firstInstallAt' => DateTimeHelper::toISO8601($this->firstInstallAt),
+            'recentInstallAt' => DateTimeHelper::toISO8601($this->recentInstallAt),
+            'recentUninstallAt' => DateTimeHelper::toISO8601($this->recentUninstallAt),
+            'trialExpiresAt' => DateTimeHelper::toISO8601($this->trialExpiresAt),
+            'status' => $this->status,
+            'updatedAt' => DateTimeHelper::toISO8601($this->updatedAt)
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

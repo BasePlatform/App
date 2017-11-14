@@ -31,7 +31,7 @@ class DateTimeHelper
     /**
      * Create a DateTime or Formatted DateTime value of now time based on the timezone
      *
-     * This function could be used for creating the datetime for inserting to DB by using $now = DateTimeFormatter::now(DateTimeFormatter::DB_DATETIME_FORMAT);
+     * This function could be used for creating the datetime for inserting to DB by using $now = DateTimeHelper::now(DateTimeHelper::DB_DATETIME_FORMAT);
      *
      * @param  string $outputFormat
      * @param  string $timezone default value is UTC
@@ -48,9 +48,9 @@ class DateTimeHelper
     }
 
     /**
-     * Create a DateTime or Formatted DateTime value of now time based on the timezone
+     * Create a DateTime from Db String Value
      *
-     * This function could be used for creating the datetime for inserting to DB by using $now = DateTimeFormatter::now(DateTimeFormatter::DB_DATETIME_FORMAT);
+     * This function could be used for creating the datetime for inserting to DB by using $now = DateTimeHelper::now(DateTimeHelper::DB_DATETIME_FORMAT);
      *
      * @param  string $value
      * @return \DateTime
@@ -104,7 +104,7 @@ class DateTimeHelper
                 $result->setTimeZone(new \DateTimeZone('UTC'));
                 return $result->format(self::DB_DATETIME_FORMAT);
             } else {
-                throw new RuntimeException('Invalid DateTime Input Value');
+                return $result;
             }
         } catch (\Exception $e) {
             throw new RuntimeException('Could Not Convert to DB Format');
@@ -143,7 +143,7 @@ class DateTimeHelper
                 $result->setTimeZone(new \DateTimeZone($outputTimeZone));
                 return $result->format(DATE_ATOM);
             } else {
-                throw new RuntimeException('Invalid DateTime Input Value');
+                return $result;
             }
         } catch (\Exception $e) {
             throw new RuntimeException('Could Not Convert to ISO8601 Format');

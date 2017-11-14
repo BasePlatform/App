@@ -37,18 +37,18 @@ interface UserProfileRepositoryInterface
      *
      * @param UserProfileInterface $item
      *
-     * @return integer|null The inserted User Profile Id
+     * @return UserProfileInterface|null
      */
-    public function add(UserProfileInterface $item): ?int;
+    public function insert(UserProfileInterface $item): ?UserProfileInterface;
 
     /**
      * Update a User Profile
      *
      * @param UserProfileInterface $item
      *
-     * @return boolean
+     * @return UserProfileInterface|null
      */
-    public function update(UserProfileInterface $item): bool;
+    public function update(UserProfileInterface $item): ?UserProfileInterface;
 
     /**
      * Convert an array data from fetch assoc to Entity

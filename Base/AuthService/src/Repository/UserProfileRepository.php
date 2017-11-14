@@ -82,7 +82,7 @@ class UserProfileRepository implements UserProfileRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function add(UserProfileInterface $item): ?int
+    public function insert(UserProfileInterface $item): ?UserProfileInterface
     {
         try {
             $this->pdo->beginTransaction();
@@ -114,20 +114,23 @@ class UserProfileRepository implements UserProfileRepositoryInterface
               'tenantId' => $item->getTenantId(),
               'userId' => (int) $item->getUserId(),
               'gender' => $item->getGender(),
-              'birthDate' => ($item->getBirthDate() != null) ?$item->getBirthDate->format(DateTimeFormatter::DB_DATE_FORMAT) : null,
+              'birthDate' => ($item->getBirthDate() != null) ?$item->getBirthDate->format(DateTimeHelper::DB_DATE_FORMAT) : null,
               'firstName' => $item->getFirstName(),
               'lastName' => $item->getLastName(),
               'location' => $item->getLocation(),
               'company' => $item->getCompany(),
               'info' => ($item->getInfo() != null) ? json_encode($item->getInfo()) : null,
-              'updatedAt' => DateTimeFormatter::toDb($item->getUpdatedAt())
+              'updatedAt' => DateTimeHelper::toDb($item->getUpdatedAt())
             ]);
-            $id = null;
             if ($result) {
+                $this->pdo->commit();
                 $id = (int) $this->pdo->lastInsertId();
+                $item->setId($id);
+                return $item;
+            } else {
+                $this->pdo->rollBack();
+                return null;
             }
-            $this->pdo->commit();
-            return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
             throw new ServerErrorException('Failed Adding User Profile Information', false, $e->getMessage());
@@ -137,7 +140,7 @@ class UserProfileRepository implements UserProfileRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function update(UserProfileInterface $item): bool
+    public function update(UserProfileInterface $item): ?UserProfileInterface
     {
         try {
             $this->pdo->beginTransaction();
@@ -159,16 +162,21 @@ class UserProfileRepository implements UserProfileRepositoryInterface
               'tenantId' => $item->getTenantId(),
               'userId' => (int) $item->getUserId(),
               'gender' => $item->getGender(),
-              'birthDate' => ($item->getBirthDate() != null) ?$item->getBirthDate->format(DateTimeFormatter::DB_DATE_FORMAT) : null,
+              'birthDate' => ($item->getBirthDate() != null) ?$item->getBirthDate->format(DateTimeHelper::DB_DATE_FORMAT) : null,
               'firstName' => $item->getFirstName(),
               'lastName' => $item->getLastName(),
               'location' => $item->getLocation(),
               'company' => $item->getCompany(),
               'info' => ($item->getInfo() != null) ? json_encode($item->getInfo()) : null,
-              'updatedAt' => DateTimeFormatter::toDb($item->getUpdatedAt())
+              'updatedAt' => DateTimeHelper::toDb($item->getUpdatedAt())
             ]);
-            $this->pdo->commit();
-            return $result;
+            if ($result) {
+                $this->pdo->commit();
+                return $item;
+            } else {
+                $this->pdo->rollBack();
+                return null;
+            }
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
             throw new ServerErrorException('Failed Updating User Profile Information', false, $e->getMessage());
@@ -187,7 +195,7 @@ class UserProfileRepository implements UserProfileRepositoryInterface
                     $setMethod = 'set'.ucfirst($key);
                     if (method_exists($entity, $setMethod) && $value != null) {
                         if ($key == 'birthDate' && $value) {
-                            $value = \DateTime::creatFromFormat(DateTimeFormatter::DB_DATE_FORMAT, $value);
+                            $value = \DateTime::creatFromFormat(DateTimeHelper::DB_DATE_FORMAT, $value);
                         }
                         $jsonProperties = [
                           'info'
@@ -199,7 +207,7 @@ class UserProfileRepository implements UserProfileRepositoryInterface
                             $value = json_decode($value);
                         }
                         if (in_array($key, $dateTimeProperties)) {
-                            $value = DateTimeFormatter::createFromDb($value);
+                            $value = DateTimeHelper::createFromDb($value);
                         }
                         $entity->$setMethod($value);
                     }

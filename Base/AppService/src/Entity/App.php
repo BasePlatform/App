@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Base\AppService\Entity;
 
+use Base\Helper\DateTimeHelper;
+
 /**
  * App Entity
  *
  * @package Base\AppService\Entity
  */
-class App implements AppInterface
+class App implements AppInterface, \JsonSerializable
 {
     /**
      * Active Status
@@ -159,5 +161,27 @@ class App implements AppInterface
             }
         }
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'plans' => $this->plans,
+            'params' => $this->params,
+            'status' => $this->status,
+            'updatedAt' => DateTimeHelper::toISO8601($this->updatedAt)
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

@@ -71,14 +71,14 @@ interface ResponseFactoryInterface
     /**
      * Create a Json Response
      *
-     * @param array $data
+     * @param mixed $data
      * @param int $status
      * @param array $headers
      * @param int $encodingOptions
      *
      * @return ResponseInterface
      */
-    public function createJson(array $data, int $status = 200, array $headers = [], int $encodingOptions = 79): ResponseInterface;
+    public function createJson($data, int $status = 200, array $headers = [], int $encodingOptions = 79): ResponseInterface;
 
     /**
      * Create an Error Response

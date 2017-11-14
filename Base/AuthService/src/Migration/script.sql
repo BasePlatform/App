@@ -15,10 +15,9 @@ CREATE TABLE `Base_User` (
   `updatedAt` datetime NOT NULL,
   `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `tenantId_email_zone` (`tenantId`,`email`, `zone`, `deletedAt`),
-  UNIQUE KEY `tenantId_userName_zone` (`tenantId`,`userName`, `zone`, `deletedAt`),
-  KEY `email_status` (`email`, `status`),
-  KEY `deletedAt` (`deletedAt`)
+  UNIQUE KEY `tenantId_email_zone` (`tenantId`,`email`, `zone`),
+  UNIQUE KEY `tenantId_userName_zone` (`tenantId`,`userName`, `zone`),
+  KEY `email_status` (`email`, `status`)
 ) ENGINE=InnoDB CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 ALTER TABLE `Base_User` AUTO_INCREMENT=1010;
@@ -54,7 +53,7 @@ CREATE TABLE `Base_UserIdentity` (
   `authToken` varchar(128) NOT NULL,
   `passwordHash` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `authParams` json DEFAULT NULL,
-  `recentPasswordUpdateAt` datetime NOT NULL,
+  `recentPasswordUpdateAt` datetime DEFAULT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `tenantId_userId` (`tenantId`,`userId`),

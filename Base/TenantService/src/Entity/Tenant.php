@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Base\TenantService\Entity;
 
 use Base\TenantService\ValueObject\TenantIdInterface;
+use Base\Helper\DateTimeHelper;
 use ReflectionClass;
 
 /**
@@ -21,7 +22,7 @@ use ReflectionClass;
  *
  * @package Base\TenantService\Entity
  */
-class Tenant implements TenantInterface
+class Tenant implements TenantInterface, \JsonSerializable
 {
     /**
      * Active Status
@@ -207,5 +208,29 @@ class Tenant implements TenantInterface
             }
         }
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray()
+    {
+        return [
+            'id' => (string) $this->id,
+            'domain' => $this->domain,
+            'platform' => $this->platform,
+            'timeZone' => $this->timeZone,
+            'status' => $this->status,
+            'createdAt' => DateTimeHelper::toISO8601($this->createdAt),
+            'updatedAt' => DateTimeHelper::toISO8601($this->updatedAt)
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

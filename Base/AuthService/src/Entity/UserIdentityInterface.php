@@ -87,10 +87,10 @@ interface UserIdentityInterface
     /**
      * Set the value of field recentPasswordUpdateAt
      *
-     * @param  \DateTime $recentPasswordUpdateAt
+     * @param  \DateTime|null $recentPasswordUpdateAt
      * @return $this
      */
-    public function setRecentPasswordUpdateAt(\DateTime $recentPasswordUpdateAt);
+    public function setRecentPasswordUpdateAt(\DateTime $recentPasswordUpdateAt = null);
 
     /**
      * Set the value of field updatedAt
@@ -160,9 +160,9 @@ interface UserIdentityInterface
     /**
      * Return the value of field recentPasswordUpdateAt
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
-    public function getRecentPasswordUpdateAt(): \DateTime;
+    public function getRecentPasswordUpdateAt(): ?\DateTime;
 
     /**
      * Return the value of field updatedAt
@@ -170,4 +170,18 @@ interface UserIdentityInterface
      * @return \DateTime
      */
     public function getUpdatedAt(): \DateTime;
+
+    /**
+     * Convert Entity to Array
+     */
+    public function toArray();
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize();
 }

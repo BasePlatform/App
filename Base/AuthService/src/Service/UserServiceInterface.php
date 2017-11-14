@@ -26,5 +26,5 @@ interface UserServiceInterface
      * @param  array  $data
      * @return array
      */
-    public function registerTenantOwner(array $data): array;
+    public function registerTenantOwner(array $data);
 }

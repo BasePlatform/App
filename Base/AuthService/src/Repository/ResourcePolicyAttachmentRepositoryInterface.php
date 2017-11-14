@@ -33,13 +33,13 @@ interface ResourcePolicyAttachmentRepositoryInterface
     public function findAll(string $tenantId, string $resourceId): ?array;
 
     /**
-     * Add a record of Resource Policy Attachement
+     * Insert a record of Resource Policy Attachement
      *
      * @param ResourcePolicyAttachmentInterface $item
      *
-     * @return integer|null The inserted Resource Policy Attachment Id
+     * @return ResourcePolicyAttachmentInterface|null
      */
-    public function add(ResourcePolicyAttachmentInterface $item): ?int;
+    public function insert(ResourcePolicyAttachmentInterface $item): ?ResourcePolicyAttachmentInterface;
 
     /**
      * Delete an Attached Policy of a Resource Id of a Tenant

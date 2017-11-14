@@ -75,12 +75,12 @@ class TenantService implements TenantServiceInterface
         $tenantId = call_user_func_array([$this->factory->getTenantIdClassName(), 'createTenantId'], [$name, $domain]);
 
         // Get Tenant
-        $tenant = $this->repository->get($tenantId);
+        $tenant = $this->repository->find($tenantId);
 
         if ($tenant) {
             throw new ExistedTenantException();
         } else {
-            $nowTime = DateTimeFormatter::now();
+            $nowTime = DateTimeHelper::now();
             $tenant = $this->factory->create();
             $tenant->setId($tenantId);
             $tenant->setDomain((string) $tenantId);
@@ -89,7 +89,7 @@ class TenantService implements TenantServiceInterface
             $tenant->setStatus($tenant->getStatusOptions('STATUS_ACTIVE'));
             $tenant->setCreatedAt($nowTime);
             $tenant->setupdatedAt($nowTime);
-            $this->repository->add($tenant);
+            $insertedTenant = $this->repository->insert($tenant);
 
             // Call to other services to finish the registration process
             // Prepare data to send to other services

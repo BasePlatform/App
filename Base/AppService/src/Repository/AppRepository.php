@@ -59,7 +59,7 @@ class AppRepository implements AppRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function get(string $appId): ?AppInterface
+    public function find(string $appId): ?AppInterface
     {
         try {
             $sql = 'SELECT * FROM '. $this->tablePrefix . 'App a WHERE a.id = :id LIMIT 0,1';
@@ -76,7 +76,7 @@ class AppRepository implements AppRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function add(AppInterface $item): ?string
+    public function insert(AppInterface $item): ?AppInterface
     {
         try {
             $this->pdo->beginTransaction();
@@ -99,14 +99,15 @@ class AppRepository implements AppRepositoryInterface
               'plans' => ($item->getPlans() != null) ? json_encode($item->getPlans()) : null,
               'params' => ($item->getParams() != null) ? json_encode($item->getParams()) : null,
               'status' => $item->getStatus(),
-              'updatedAt' => DateTimeFormatter::toDb($item->getUpdatedAt())
+              'updatedAt' => DateTimeHelper::toDb($item->getUpdatedAt())
             ]);
-            $id = null;
             if ($result) {
-                $id = $item->getId();
+                $this->pdo->commit();
+                return $item;
+            } else {
+                $this->pdo->rollBack();
+                return null;
             }
-            $this->pdo->commit();
-            return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
             throw new ServerErrorException('Failed Adding App Information', false, $e->getMessage());
@@ -128,7 +129,7 @@ class AppRepository implements AppRepositoryInterface
                           'updatedAt'
                         ];
                         if (in_array($key, $dateTimeProperties)) {
-                            $value = DateTimeFormatter::createFromDb($value);
+                            $value = DateTimeHelper::createFromDb($value);
                         }
                         $entity->$setMethod($value);
                     }

@@ -59,7 +59,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function get(string $tenantId, string $appId): ?AppUsageInterface
+    public function find(string $tenantId, string $appId): ?AppUsageInterface
     {
         try {
             $sql = 'SELECT * FROM '. $this->tablePrefix . 'AppUsage au WHERE
@@ -82,7 +82,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function add(AppUsageInterface $item): ?int
+    public function insert(AppUsageInterface $item): ?AppUsageInterface
     {
         try {
             $this->pdo->beginTransaction();
@@ -128,21 +128,24 @@ class AppUsageRepository implements AppUsageRepositoryInterface
               'externalInfo' => ($item->getExternalInfo() != null) ? json_encode($item->getExternalInfo()) : null,
               'chargeInfo' => ($item->getChargeInfo() != null) ? json_encode($item->getChargeInfo()) : null,
               'exceededPlanUsage' => (int) $item->getExceededPlanUsage(),
-              'exceededPlanAt' => DateTimeFormatter::toDb($item->getExceededPlanAt()),
+              'exceededPlanAt' => DateTimeHelper::toDb($item->getExceededPlanAt()),
               'planUpgradeRequired' => (int) $item->getPlanUpgradeRequired(),
-              'firstInstallAt' => DateTimeFormatter::toDb($item->getFirstInstallAt()),
-              'recentInstallAt' => DateTimeFormatter::toDb($item->getRecentInstallAt()),
-              'recentUninstallAt' => DateTimeFormatter::toDb($item->getRecentUninstallAt()),
-              'trialExpiresAt' => DateTimeFormatter::toDb($item->getTrialExpiresAt()),
+              'firstInstallAt' => DateTimeHelper::toDb($item->getFirstInstallAt()),
+              'recentInstallAt' => DateTimeHelper::toDb($item->getRecentInstallAt()),
+              'recentUninstallAt' => DateTimeHelper::toDb($item->getRecentUninstallAt()),
+              'trialExpiresAt' => DateTimeHelper::toDb($item->getTrialExpiresAt()),
               'status' => $item->getStatus(),
-              'updatedAt' => DateTimeFormatter::toDb($item->getUpdatedAt())
+              'updatedAt' => DateTimeHelper::toDb($item->getUpdatedAt())
             ]);
-            $id = null;
             if ($result) {
+                $this->pdo->commit();
                 $id = (int) $this->pdo->lastInsertId();
+                $item->setId($id);
+                return $item;
+            } else {
+                $this->pdo->rollBack();
+                return null;
             }
-            $this->pdo->commit();
-            return $id;
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
             throw new ServerErrorException('Failed Adding App Usage Information', false, $e->getMessage());
@@ -152,7 +155,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function update(AppUsageInterface $item): bool
+    public function update(AppUsageInterface $item): ?AppUsageInterface
     {
         try {
             $this->pdo->beginTransaction();
@@ -183,17 +186,22 @@ class AppUsageRepository implements AppUsageRepositoryInterface
               'externalInfo' => ($item->getExternalInfo() != null) ? json_encode($item->getExternalInfo()) : null,
               'chargeInfo' => ($item->getChargeInfo() != null) ? json_encode($item->getChargeInfo()) : null,
               'exceededPlanUsage' => (int) $item->getExceededPlanUsage(),
-              'exceededPlanAt' => DateTimeFormatter::toDb($item->getExceededPlanAt()),
+              'exceededPlanAt' => DateTimeHelper::toDb($item->getExceededPlanAt()),
               'planUpgradeRequired' => (int) $item->getPlanUpgradeRequired(),
-              'firstInstallAt' => DateTimeFormatter::toDb($item->getFirstInstallAt()),
-              'recentInstallAt' => DateTimeFormatter::toDb($item->getRecentInstallAt()),
-              'recentUninstallAt' => DateTimeFormatter::toDb($item->getRecentUninstallAt()),
-              'trialExpiresAt' => DateTimeFormatter::toDb($item->getTrialExpiresAt()),
+              'firstInstallAt' => DateTimeHelper::toDb($item->getFirstInstallAt()),
+              'recentInstallAt' => DateTimeHelper::toDb($item->getRecentInstallAt()),
+              'recentUninstallAt' => DateTimeHelper::toDb($item->getRecentUninstallAt()),
+              'trialExpiresAt' => DateTimeHelper::toDb($item->getTrialExpiresAt()),
               'status' => $item->getStatus(),
-              'updatedAt' => DateTimeFormatter::toDb($item->getUpdatedAt())
+              'updatedAt' => DateTimeHelper::toDb($item->getUpdatedAt())
             ]);
-            $this->pdo->commit();
-            return $result;
+            if ($result) {
+                $this->pdo->commit();
+                return $item;
+            } else {
+                $this->pdo->rollBack();
+                return null;
+            }
         } catch (\PDOException $e) {
             $this->pdo->rollBack();
             throw new ServerErrorException('Failed Updating App Usage Information', false, $e->getMessage());
@@ -228,7 +236,7 @@ class AppUsageRepository implements AppUsageRepositoryInterface
                             $value = json_decode($value);
                         }
                         if (in_array($key, $dateTimeProperties)) {
-                            $value = DateTimeFormatter::createFromDb($value);
+                            $value = DateTimeHelper::createFromDb($value);
                         }
                         $entity->$setMethod($value);
                     }
