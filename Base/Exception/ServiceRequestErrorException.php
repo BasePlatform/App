@@ -12,6 +12,7 @@
 namespace Base\Exception;
 
 use RuntimeException;
+use Base\Http\ResponseStatusCode;
 
 /**
  * Represents a Service Request Communication Error from Service Exception
@@ -33,7 +34,7 @@ class ServiceRequestErrorException extends RuntimeException implements ServiceEx
     public function __construct(string $message = 'Service Communication Error', bool $notification = false, string $details = null, array $additionalData = null)
     {
         $this->message = $message;
-        $this->statusCode = 500;
+        $this->statusCode = ResponseStatusCode::HTTP_INTERNAL_SERVER_ERROR;
         $this->code = 0;
         $this->notification = $notification;
         $this->details = $details;

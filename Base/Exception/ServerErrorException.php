@@ -12,6 +12,7 @@
 namespace Base\Exception;
 
 use RuntimeException;
+use Base\Http\ResponseStatusCode;
 
 /**
  * Represents a Server Error from Service Exception
@@ -35,7 +36,7 @@ class ServerErrorException extends RuntimeException implements ServiceExceptionI
     public function __construct(string $message = 'Internal Server Error', bool $notification = false, string $details = null, array $additionalData = null)
     {
         $this->message = $message;
-        $this->statusCode = 500;
+        $this->statusCode = ResponseStatusCode::HTTP_INTERNAL_SERVER_ERROR;
         $this->code = 0;
         $this->notification = $notification;
         $this->details = $details;

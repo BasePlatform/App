@@ -12,6 +12,7 @@
 namespace Base\Exception;
 
 use RuntimeException;
+use Base\Http\ResponseStatusCode;
 
 /**
  * Represents an HTTP 422 error - Unprocessable Entity
@@ -25,7 +26,7 @@ class UnprocessableEntityException extends RuntimeException implements HttpExcep
      *
      * @param string|integer $code
      */
-    public function __construct($message = 'Unprocessable Entity', $code = 422)
+    public function __construct($message = 'Unprocessable Entity', $code = ResponseStatusCode::HTTP_UNPROCESSABLE_ENTITY)
     {
         parent::__construct($message, $code);
     }

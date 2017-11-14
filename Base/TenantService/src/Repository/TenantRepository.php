@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Base\TenantService\Repository;
 
 use Base\TenantService\Entity\TenantInterface;
+use Base\TenantService\ValueObject\TenantIdInterface;
 use Base\TenantService\Factory\TenantFactoryInterface;
 use Base\PDO\PDOProxyInterface;
 use Base\Exception\ServerErrorException;
@@ -84,7 +85,6 @@ class TenantRepository implements TenantRepositoryInterface
                 id,
                 domain,
                 platform,
-                timeZone,
                 status,
                 createdAt,
                 updatedAt
@@ -92,7 +92,6 @@ class TenantRepository implements TenantRepositoryInterface
                 :id,
                 :domain,
                 :platform,
-                :timeZone,
                 :status,
                 :createdAt,
                 :updatedAt
@@ -102,7 +101,6 @@ class TenantRepository implements TenantRepositoryInterface
               'id' => (string) $item->getId(),
               'domain' => $item->getDomain(),
               'platform' => $item->getPlatform(),
-              'timeZone' => $item->getTimeZone(),
               'status' => $item->getStatus(),
               'createdAt' => DateTimeHelper::toDb($item->getCreatedAt()),
               'updatedAt' => DateTimeHelper::toDb($item->getUpdatedAt())

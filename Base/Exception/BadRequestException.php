@@ -12,6 +12,7 @@
 namespace Base\Exception;
 
 use RuntimeException;
+use Base\Http\ResponseStatusCode;
 
 /**
  * Represents an HTTP 400 error - Bad Request
@@ -25,7 +26,7 @@ class BadRequestException extends RuntimeException implements HttpExceptionInter
      *
      * @param string|integer $code
      */
-    public function __construct(string $message = 'Bad Request', $code = 400)
+    public function __construct(string $message = 'Bad Request', $code = ResponseStatusCode::HTTP_BAD_REQUEST)
     {
         parent::__construct($message, $code);
     }

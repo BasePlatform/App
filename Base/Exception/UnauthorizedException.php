@@ -12,6 +12,7 @@
 namespace Base\Exception;
 
 use RuntimeException;
+use Base\Http\ResponseStatusCode;
 
 /**
  * Represents an HTTP 401 error - Unauthorized
@@ -25,7 +26,7 @@ class UnauthorizedException extends RuntimeException implements HttpExceptionInt
      *
      * @param string|integer $code
      */
-    public function __construct($message = 'Unauthorized', $code = 401)
+    public function __construct($message = 'Unauthorized', $code = ResponseStatusCode::HTTP_UNAUTHORIZED)
     {
         parent::__construct($message, $code);
     }

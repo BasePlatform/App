@@ -12,6 +12,7 @@
 namespace Base\Exception;
 
 use RuntimeException;
+use Base\Http\ResponseStatusCode;
 
 /**
  * Represents an HTTP 404 error - Not Found
@@ -25,7 +26,7 @@ class NotFoundException extends RuntimeException implements HttpExceptionInterfa
      *
      * @param string|integer $code
      */
-    public function __construct($message = 'Not Found', $code = 404)
+    public function __construct($message = 'Not Found', $code = ResponseStatusCode::HTTP_NOT_FOUND)
     {
         parent::__construct($message, $code);
     }

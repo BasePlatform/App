@@ -16,6 +16,7 @@ namespace Base\Http;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Base\Http\ResponseStatusCode;
 use Exception;
 
 /**
@@ -34,7 +35,7 @@ interface ResponseFactoryInterface
      *
      * @return ResponseInterface
      */
-    public function create(string $body = 'php://memory', int $status = 200, array $headers = []): ResponseInterface;
+    public function create(string $body = 'php://memory', int $status = ResponseStatusCode::HTTP_OK, array $headers = []): ResponseInterface;
 
     /**
      * Create an Empty Response
@@ -44,7 +45,7 @@ interface ResponseFactoryInterface
      *
      * @return ResponseInterface
      */
-    public function createEmpty(int $status = 204, array $headers = []): ResponseInterface;
+    public function createEmpty(int $status = ResponseStatusCode::HTTP_NO_CONTENT, array $headers = []): ResponseInterface;
 
     /**
      * Create a Text Response
@@ -55,7 +56,7 @@ interface ResponseFactoryInterface
      *
      * @return ResponseInterface
      */
-    public function createText(string $text, int $status = 200, array $headers = []): ResponseInterface;
+    public function createText(string $text, int $status = ResponseStatusCode::HTTP_OK, array $headers = []): ResponseInterface;
 
     /**
      * Create an Html Response
@@ -66,7 +67,7 @@ interface ResponseFactoryInterface
      *
      * @return ResponseInterface
      */
-    public function createHtml(string $html, int $status = 200, array $headers = []): ResponseInterface;
+    public function createHtml(string $html, int $status = ResponseStatusCode::HTTP_OK, array $headers = []): ResponseInterface;
 
     /**
      * Create a Json Response
@@ -78,7 +79,7 @@ interface ResponseFactoryInterface
      *
      * @return ResponseInterface
      */
-    public function createJson($data, int $status = 200, array $headers = [], int $encodingOptions = 79): ResponseInterface;
+    public function createJson($data, int $status = ResponseStatusCode::HTTP_OK, array $headers = [], int $encodingOptions = 79): ResponseInterface;
 
     /**
      * Create an Error Response
@@ -99,5 +100,5 @@ interface ResponseFactoryInterface
      *
      * @return ResponseInterface
      */
-    public function createRedirect(string $uri, int $status = 302, array $headers = []): ResponseInterface;
+    public function createRedirect(string $uri, int $status = ResponseStatusCode::HTTP_FOUND, array $headers = []): ResponseInterface;
 }

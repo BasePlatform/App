@@ -12,6 +12,7 @@
 namespace Base\Exception;
 
 use RuntimeException;
+use Base\Http\ResponseStatusCode;
 
 /**
  * Represents an HTTP 405 error - Method Not Allowed
@@ -25,7 +26,7 @@ class MethodNotAllowedException extends RuntimeException implements HttpExceptio
      *
      * @param string|integer $code
      */
-    public function __construct($message = 'Method Not Allowed', $code = 405)
+    public function __construct($message = 'Method Not Allowed', $code = ResponseStatusCode::HTTP_METHOD_NOT_ALLOWED)
     {
         parent::__construct($message, $code);
     }

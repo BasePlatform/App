@@ -12,6 +12,7 @@
 namespace Base\Exception;
 
 use RuntimeException;
+use Base\Http\ResponseStatusCode;
 
 /**
  * Represents an HTTP 500 error - Internal Server Error
@@ -25,7 +26,7 @@ class InternalServerErrorException extends RuntimeException implements HttpExcep
      *
      * @param string|integer $code
      */
-    public function __construct($message = 'Internal Server Error', $code = 500)
+    public function __construct($message = 'Internal Server Error', $code = ResponseStatusCode::HTTP_INTERNAL_SERVER_ERROR)
     {
         parent::__construct($message, $code);
     }

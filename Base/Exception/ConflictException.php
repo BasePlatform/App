@@ -12,6 +12,7 @@
 namespace Base\Exception;
 
 use RuntimeException;
+use Base\Http\ResponseStatusCode;
 
 /**
  * Represents an HTTP 409 error - Conflict Exception
@@ -25,7 +26,7 @@ class ConflictException extends RuntimeException implements HttpExceptionInterfa
      *
      * @param string|integer $code
      */
-    public function __construct($message = 'Conflict Exception', $code = 409)
+    public function __construct($message = 'Conflict Exception', $code = ResponseStatusCode::HTTP_CONFLICT)
     {
         parent::__construct($message, $code);
     }

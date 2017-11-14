@@ -12,6 +12,7 @@
 namespace Base\Exception;
 
 use RuntimeException;
+use Base\Http\ResponseStatusCode;
 
 /**
  * Represents an HTTP 403 error - Forbidden Exception
@@ -25,7 +26,7 @@ class ForbiddenException extends RuntimeException implements HttpExceptionInterf
      *
      * @param string|integer $code
      */
-    public function __construct($message = 'Forbidden', $code = 403)
+    public function __construct($message = 'Forbidden', $code = ResponseStatusCode::HTTP_FORBIDDEN)
     {
         parent::__construct($message, $code);
     }
