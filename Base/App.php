@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Base;
 
 use Base\Config\ConfigInterface;
-use Base\Security\SecurityInterface;
 
 /**
- * Base Helper Class and support Registry
+ * Base App Helper Class as Registry
  *
  * @package Base
  */
-class Base
+class App
 {
     /**
      * @var \Base\Config\ConfigInterface
