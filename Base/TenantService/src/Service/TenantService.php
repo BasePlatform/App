@@ -116,9 +116,15 @@ class TenantService implements TenantServiceInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Validate the data for service
+     *
+     * @param array $data
+     * @param array $rules
+     * @param string $context The context of validation
+     *
+     * @return bool
      */
-    public function validate(array $data, string $context = null)
+    protected function validate(array $data, array $rules, string $context = null)
     {
     }
 }

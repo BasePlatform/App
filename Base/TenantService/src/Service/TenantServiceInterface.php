@@ -33,14 +33,4 @@ interface TenantServiceInterface
      * @return mixed
      */
     public function register(array $data, string $appId, string $domain, string $platform = null);
-
-    /**
-     * Validate the data for service
-     *
-     * @param array $data
-     * @param string $context The context of validation
-     *
-     * @return bool
-     */
-    public function validate(array $data, string $context = null);
 }
