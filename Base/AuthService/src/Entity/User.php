@@ -83,7 +83,7 @@ class User implements UserInterface, \JsonSerializable
     /**
      * @var string
      */
-    protected $status = 'disabled';
+    protected $status;
 
     /**
      * @var \DateTime

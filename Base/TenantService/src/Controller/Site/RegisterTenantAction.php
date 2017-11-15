@@ -38,7 +38,6 @@ class RegisterTenantAction extends RestAction
     /**
      * @param ResponseFactoryInterface $responseFactory
      * @param TenantServiceInterface $response
-     * @param array $appConfig
      */
     public function __construct(ResponseFactoryInterface $responseFactory, TenantServiceInterface $tenantService)
     {
@@ -61,7 +60,7 @@ class RegisterTenantAction extends RestAction
     public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         $data = $request->getParsedBody();
-        $config = \Base\Base::$config;
+        $config = \Base\App::$config;
         return $this->responseFactory->createJson($this->tenantService->register(
             $data,
             $config->get('app.defaultInstallAppId'),

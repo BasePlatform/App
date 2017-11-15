@@ -40,7 +40,7 @@ class UserIdentity implements UserIdentityInterface, \JsonSerializable
     /**
      * @var string
      */
-    protected $authProvider = 'app';
+    protected $authProvider;
 
     /**
      * @var string

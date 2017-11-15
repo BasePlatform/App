@@ -132,10 +132,7 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
             ));
         }
 
-        // Handle to hide the message if needed
-        // Consider the ENV dev, etc.
-        // Currently, it wont't show the real value $message if $e is
-        // an instance of Error - Check log at error_log or logger
+        // Handle to hide the details message on production
         $debug = env('APP_DEBUG', false);
         if (!$debug) {
             if (($e instanceof Error) ||
@@ -144,12 +141,12 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
                 if ($e instanceof ServerErrorException) {
                     $e = new ServerErrorException($e->getMessage(), $e->getNotification(), null, null);
                 } else {
-                    $e = new Exception('Internal Server Error', 500);
+                    $e = new ServerErrorException();
                 }
             }
         } else {
             if ($e instanceof Error) {
-                $e = new Exception('Internal Server Error', 500);
+                $e = new ServerErrorException();
             }
         }
         return $this->responseFactory->createError($e, $request);

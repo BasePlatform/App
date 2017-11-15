@@ -52,7 +52,7 @@ class Tenant implements TenantInterface, \JsonSerializable
     /**
      * @var string
      */
-    protected $status = 'disabled';
+    protected $status;
 
     /**
      * @var \DateTime
@@ -63,6 +63,19 @@ class Tenant implements TenantInterface, \JsonSerializable
      * @var \DateTime
      */
     protected $updatedAt;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules(): array
+    {
+        return [
+          'domainLength' => ['domain', 'length', 'min' => 7, 'max' => 255],
+          'domainValid' => ['domain', 'domain'],
+          'platformLength' => ['platform', 'length', 'min' => 3, 'max' => 64],
+          'statusEnum' => ['status', 'in', 'haystack'=> [self::STATUS_ACTIVE, self::STATUS_DISABLED]],
+        ];
+    }
 
     /**
      * {@inheritdoc}

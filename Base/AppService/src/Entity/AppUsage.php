@@ -103,7 +103,7 @@ class AppUsage implements AppUsageInterface, \JsonSerializable
     /**
      * @var string
      */
-    protected $status = 'disabled';
+    protected $status;
 
     /**
      * @var \DateTime

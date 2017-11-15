@@ -30,7 +30,7 @@ class Policy implements PolicyInterface, \JsonSerializable
     /**
      * @var string
      */
-    protected $appId = 'default';
+    protected $appId;
 
     /**
      * @var string

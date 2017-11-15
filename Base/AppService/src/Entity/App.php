@@ -50,7 +50,7 @@ class App implements AppInterface, \JsonSerializable
     /**
      * @var string
      */
-    protected $status = 'disabled';
+    protected $status;
 
     /**
      * @var \DateTime

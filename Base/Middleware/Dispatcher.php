@@ -127,7 +127,7 @@ class Dispatcher implements DispatcherInterface
             // If we do not provide a container
             // so that we cannot create an instance of the provided class
             if ($this->container === null) {
-                throw new InvalidArgumentException(sprintf('Invalid Middleware Provided (%s)', $middlewareDefinition));
+                throw new InvalidArgumentException(sprintf('Invalid Middleware Provided `%s`', $middlewareDefinition));
             }
             // A small tweak for supporting
             // the make() function of Auryn dependency injector
@@ -148,7 +148,7 @@ class Dispatcher implements DispatcherInterface
             return $this->createMiddlewareFromClosure($middlewareDefinition);
         }
 
-        throw new InvalidArgumentException(sprintf('Invalid Middleware Provided (%s)', is_object($middlewareDefinition) ? get_class($middlewareDefinition) : gettype($middlewareDefinition)));
+        throw new InvalidArgumentException(sprintf('Invalid Middleware Provided `%s`', is_object($middlewareDefinition) ? get_class($middlewareDefinition) : gettype($middlewareDefinition)));
     }
 
     /**
