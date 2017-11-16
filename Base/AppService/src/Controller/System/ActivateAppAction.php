@@ -57,7 +57,7 @@ class ActivateAppAction extends RestAction
     public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         $data = $request->getParsedBody();
-        $trialDays = \Base\App::$config->get('app.trialDays');
+        $trialDays = \Base\Service::$config->get('app.trialDays');
         return $this->responseFactory->createJson($this->appUsageService->activate(
             $data,
             $trialDays

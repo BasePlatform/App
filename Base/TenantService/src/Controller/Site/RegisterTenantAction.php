@@ -60,7 +60,7 @@ class RegisterTenantAction extends RestAction
     public function process(ServerRequestInterface $request, RequestHandlerInterface $next): ResponseInterface
     {
         $data = $request->getParsedBody();
-        $config = \Base\App::$config;
+        $config = \Base\Service::$config;
         return $this->responseFactory->createJson($this->tenantService->register(
             $data,
             $config->get('app.defaultInstallAppId'),
