@@ -14,9 +14,6 @@ use Psr\Log\LoggerInterface;
 /**
  * Create a container
  *
- * You can use other containers such as:
- * + Aura.DI
- * + PHP-DI
  */
 $container = new Auryn\Injector;
 
@@ -25,7 +22,7 @@ $container = new Auryn\Injector;
  * the app and container
  */
 
-$dependencies = \Base\Base::$config->get('dependencies');
+$dependencies = \Base\Service::$config->get('dependencies');
 
 // Loop through definitions and set
 if (isset($dependencies['definitions']) && !empty($dependencies['definitions'])) {
@@ -58,7 +55,7 @@ if (isset($dependencies['params']) && !empty($dependencies['params'])) {
 /**
  * Define service request with list of required endpoints
  */
-$serviceRequest = new Base\ServiceRequest\ServiceRequest(\Base\Base::$config->get('requiredEndpoints'));
+$serviceRequest = new Base\ServiceRequest\ServiceRequest(\Base\Service::$config->get('requiredEndpoints'));
 $container->share($serviceRequest);
 
 /**
@@ -66,6 +63,12 @@ $container->share($serviceRequest);
  */
 $security = new Base\Security\Security();
 $container->share($security);
+
+/**
+ * Define for validator
+ */
+$validator = new Base\Validator\RespectValidator();
+$container->share($validator);
 
 /**
  * Create a logger and register it with the container
@@ -78,7 +81,7 @@ $container->share($logger);
 /**
  * Setup the PDO for MySQL
  */
-$dbConfig = \Base\Base::$config->get('database.mysql');
+$dbConfig = \Base\Service::$config->get('database.mysql');
 if (!empty($dbConfig)) {
     $pdoOptions = [
       PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,

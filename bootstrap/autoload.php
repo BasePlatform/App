@@ -36,9 +36,9 @@ $dotenv->load();
 $config = require __DIR__ . '/../config/config.php';
 
 /**
- * Set to Base\Base::$config as config registry for future access
+ * Set to Base\Service::$config as config registry for future access
  */
-\Base\Base::$config = $config;
+\Base\Service::$config = $config;
 
 /**
  * Define SERVICE CONSTANTS

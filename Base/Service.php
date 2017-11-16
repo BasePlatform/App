@@ -16,11 +16,11 @@ namespace Base;
 use Base\Config\ConfigInterface;
 
 /**
- * Base App Helper Class as Registry
+ * Base Service Helper Class acts as a Registry
  *
  * @package Base
  */
-class App
+class Service
 {
     /**
      * @var \Base\Config\ConfigInterface
