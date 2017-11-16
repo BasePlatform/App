@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Base\TenantService\Factory;
 
 use Base\Factory\FactoryInterface;
-use Base\TenantService\ValueObject\TenantIdInterface;
 
 /**
  * TenantId Factory

@@ -207,7 +207,7 @@ class Tenant implements TenantInterface, \JsonSerializable
     public function toArray(array $excludedAttributes = []): array
     {
         return array_diff_key([
-            'id' => (string) $this->id,
+            'id' => $this->id->toString(),
             'domain' => $this->domain,
             'platform' => $this->platform,
             'status' => $this->status,

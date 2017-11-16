@@ -40,24 +40,24 @@ class Zone implements ZoneInterface
     /**
      * @var string
      */
-    protected $zoneId;
+    protected $id;
 
     /**
-     * @param string $zoneId
+     * @param string $id
      */
-    public function __construct(string $zoneId = null)
+    public function __construct(string $id = null)
     {
-        if (!empty($zoneId)) {
-            $this->zoneId = $zoneId;
+        if (!empty($id)) {
+            $this->id = $id;
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function createZone(string $zoneId = null): ZoneInterface
+    public static function createFromString(string $id = null): ZoneInterface
     {
-        return new self($zoneId);
+        return new self($id);
     }
 
     /**
@@ -84,18 +84,26 @@ class Zone implements ZoneInterface
     /**
      * {@inheritdoc}
      */
-    public function setZoneId(string $zoneId)
+    public function setId(string $id)
     {
-        $this->zoneId = $zoneId;
+        $this->id = $id;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getZoneId(): string
+    public function getId(): string
     {
-        return $this->zoneId;
+        return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toString(): string
+    {
+        return $this->id;
     }
 
     /**
@@ -103,6 +111,14 @@ class Zone implements ZoneInterface
      */
     public function __toString(): string
     {
-        return $this->zoneId;
+        return $this->toString();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sameValueAs(self $other): bool
+    {
+        return $this->toString() === $other->toString();
     }
 }

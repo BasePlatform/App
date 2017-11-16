@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Base\AppService\Factory;
 
 use Base\Factory\FactoryInterface;
-use Base\AppService\Entity\AppUsageInterface;
 
 /**
  * App Usage Factory

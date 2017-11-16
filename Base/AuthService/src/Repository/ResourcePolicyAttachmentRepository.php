@@ -37,7 +37,7 @@ class ResourcePolicyAttachmentRepository implements ResourcePolicyAttachmentRepo
     private $pdo;
 
     /**
-     * @var ResourcePolicyAttachmentInterface
+     * @var ResourcePolicyAttachmentFactoryInterface
      */
     private $factory;
 

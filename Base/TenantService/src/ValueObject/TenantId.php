@@ -40,7 +40,7 @@ class TenantId implements TenantIdInterface
     /**
      * {@inheritdoc}
      */
-    public static function createTenantId(string $name = '', string $domain = ''): TenantIdInterface
+    public static function createFromString(string $name = '', string $domain = ''): TenantIdInterface
     {
         if (!empty($name)) {
             return new self($name.$domain);
@@ -70,8 +70,24 @@ class TenantId implements TenantIdInterface
     /**
      * {@inheritdoc}
      */
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString(): string
+    {
+        return $this->toString();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sameValueAs(self $other): bool
+    {
+        return $this->toString() === $other->toString();
     }
 }

@@ -133,9 +133,9 @@ class UserService implements UserServiceInterface
 
         // Validate the Data here
 
-        $zone = call_user_func([$this->zoneFactory->getClassName(), 'createZone']);
+        // Create Zone
         $zoneAdminId = $zone->getZoneOptions('ZONE_ADMIN');
-        $zone->setZoneId($zoneAdminId);
+        $zone = call_user_func_array([$this->zoneFactory->getClassName(), 'createFromString'], [$zoneAdminId]);
 
         // Adding the User
         $now = DateTimeHelper::now();

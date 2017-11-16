@@ -377,7 +377,7 @@ class User implements UserInterface, \JsonSerializable
         return array_diff_key([
             'id' => $this->id,
             'tenantId' => $this->tenantId,
-            'zone' => (string) $this->zone,
+            'zone' => $this->zone->toString(),
             'email' => $this->email,
             'userName' => $this->userName,
             'displayName' => $this->displayName,

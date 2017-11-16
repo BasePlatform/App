@@ -21,41 +21,55 @@ namespace Base\AuthService\ValueObject;
 interface ZoneInterface
 {
     /**
-     * Create a Zone
+     * Create a Zone from string
      *
-     * @param string|null $zoneId
+     * @param string|null $id
      *
      * @return self
      */
-    public static function createZone(string $zoneId = null): ZoneInterface;
+    public static function createFromString(string $id = null): ZoneInterface;
 
     /**
      * Get Zone Options
      *
-     * @param string|null $zoneId
+     * @param string|null $zone
      *
      * @return mixed
      */
-    public function getZoneOptions(string $zoneId = null);
+    public function getZoneOptions(string $zone = null);
 
     /**
-     * Set the value of zoneId
+     * Set the value of id
      *
      * @param  string $id
      *
      * @return $this
      */
-    public function setZoneId(string $zoneId);
+    public function setId(string $id);
 
     /**
-     * Return the value of zoneId
+     * Return the value of id
      *
      * @return string
      */
-    public function getZoneId(): string;
+    public function getId(): string;
+
+    /**
+     * @return string
+     */
+    public function toString(): string;
 
     /**
      * @return string
      */
     public function __toString(): string;
+
+    /**
+     * Equal comparision
+     *
+     * @param ZoneInterface $other
+     *
+     * @return bool
+     */
+    public function sameValueAs(self $other): ZoneInterface;
 }

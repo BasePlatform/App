@@ -98,7 +98,7 @@ class TenantRepository implements TenantRepositoryInterface
               )';
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
-              'id' => (string) $item->getId(),
+              'id' => $item->getId()->toString(),
               'domain' => $item->getDomain(),
               'platform' => $item->getPlatform(),
               'status' => $item->getStatus(),

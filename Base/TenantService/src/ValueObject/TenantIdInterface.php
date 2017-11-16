@@ -21,7 +21,7 @@ namespace Base\TenantService\ValueObject;
 interface TenantIdInterface
 {
     /**
-     * Create a Tenant Id
+     * Create a Tenant Id from String
      *
      * Generate a unique id if name is blank
      *
@@ -30,7 +30,7 @@ interface TenantIdInterface
      *
      * @return self
      */
-    public static function createTenantId(string $name, string $domain): TenantIdInterface;
+    public static function createFromString(string $name, string $domain): TenantIdInterface;
 
     /**
      * Set the value of id
@@ -51,5 +51,19 @@ interface TenantIdInterface
     /**
      * @return string
      */
+    public function toString(): string;
+
+    /**
+     * @return string
+     */
     public function __toString(): string;
+
+    /**
+     * Equal comparision
+     *
+     * @param TenantIdInterface $other
+     *
+     * @return bool
+     */
+    public function sameValueAs(self $other): TenantIdInterface;
 }

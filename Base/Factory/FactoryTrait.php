@@ -26,14 +26,6 @@ trait FactoryTrait
     private $className;
 
     /**
-     * @param string $className
-     */
-    public function __construct(string $className)
-    {
-        $this->className = $className;
-    }
-
-    /**
      * Create an object from the class
      *
      * @return object

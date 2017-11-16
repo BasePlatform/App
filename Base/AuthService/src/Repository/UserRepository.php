@@ -109,7 +109,7 @@ class UserRepository implements UserRepositoryInterface
             $stmt->execute([
               'tenantId' => $tenantId,
               'email' => $email,
-              'zone' => (string) $zone,
+              'zone' => $zone->toString(),
             ]);
             $result = $stmt->fetch();
             // Convert to the desired return type
@@ -137,7 +137,7 @@ class UserRepository implements UserRepositoryInterface
             $stmt->execute([
               'tenantId' => $tenantId,
               'userName' => $userName,
-              'zone' => (string) $zone,
+              'zone' => $zone->toString(),
             ]);
             $result = $stmt->fetch();
             // Convert to the desired return type
@@ -180,7 +180,7 @@ class UserRepository implements UserRepositoryInterface
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([
               'tenantId' => $item->getTenantId(),
-              'zone' => (string) $item->getZone(),
+              'zone' => $item->getZone()->toString(),
               'email' => $item->getEmail(),
               'userName' => $item->getUserName(),
               'displayName' => $item->getDisplayName(),
@@ -228,7 +228,7 @@ class UserRepository implements UserRepositoryInterface
             $result = $stmt->execute([
               'id' => (int) $item->getId(),
               'tenantId' => $item->getTenantId(),
-              'zone' => (string) $item->getZone(),
+              'zone' => $item->getZone()->toString(),
               'email' => $item->getEmail(),
               'userName' => $item->getUserName(),
               'displayName' => $item->getDisplayName(),
@@ -315,7 +315,7 @@ class UserRepository implements UserRepositoryInterface
                     if (method_exists($entity, $setMethod) && $value != null) {
                         if ($key == 'zone') {
                             $zone = $this->zoneFactory->create();
-                            $zone->setZoneId($value);
+                            $zone->setId($value);
                             $value = $zone;
                         }
                         $dateTimeProperties = [

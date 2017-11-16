@@ -95,7 +95,7 @@ class PolicyRepository implements PolicyRepositoryInterface
             $stmt->execute([
               'appId' => $appId,
               'type' => $type,
-              'zone' => (string) $zone,
+              'zone' => $zone->toString(),
             ]);
             $results = $stmt->fetchAll();
             if ($results && !empty($results)) {
@@ -139,7 +139,7 @@ class PolicyRepository implements PolicyRepositoryInterface
               'id' => $item->getId(),
               'appId' => $item->getAppId(),
               'type' => $item->getType(),
-              'zone' => (string) $item->getZone(),
+              'zone' => $item->getZone()->toString(),
               'description' => $item->getDescription(),
               'params' => ($item->getParams() != null) ? json_encode($item->getParams()) : null
             ]);
@@ -189,7 +189,7 @@ class PolicyRepository implements PolicyRepositoryInterface
                     if (method_exists($entity, $setMethod) && $value != null) {
                         if ($key == 'zone') {
                             $zone = $this->zoneFactory->create();
-                            $zone->setZoneId($value);
+                            $zone->setId($value);
                             $value = $zone;
                         }
                         $jsonProperties = [

@@ -163,7 +163,7 @@ class Policy implements PolicyInterface, \JsonSerializable
             'id' => $this->id,
             'appId' => $this->appId,
             'type' => $this->type,
-            'zone' => (string) $this->zone,
+            'zone' => $this->zone->toString(),
             'description' => $this->description,
             'params' => $this->params
         ], array_flip($excludedAttributes));
