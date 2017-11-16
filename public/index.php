@@ -11,6 +11,9 @@
 
 use Base\Http\RequestFactory;
 
+/**
+ * Include autoload
+ */
 require __DIR__.'/../bootstrap/autoload.php';
 
 /**
@@ -19,7 +22,7 @@ require __DIR__.'/../bootstrap/autoload.php';
 $container = require_once __DIR__.'/../bootstrap/container.php';
 
 /**
- * Get the routes middlewares function
+ * Get the routes middlewares function and run it
  */
 $routesMiddlewares = require_once __DIR__.'/../bootstrap/routes-middlewares.php';
 ;

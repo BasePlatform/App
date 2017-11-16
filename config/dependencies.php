@@ -24,6 +24,9 @@ return [
       // Define for Security Interface
       \Base\Security\SecurityInterface::class => \Base\Security\Security::class,
 
+      // Define for Validator Interface
+      \Base\Validator\ValidatorInterface::class => \Base\Validator\RespectValidator::class,
+
       // Define for LoggerInterface
       \Psr\Log\LoggerInterface::class => \Monolog\Logger::class
     ]

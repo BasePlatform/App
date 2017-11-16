@@ -17,7 +17,7 @@ return function ($container) {
      * Define routes based on the config routes and cache it
      */
     $routeDispatcher = \FastRoute\cachedDispatcher(function (\FastRoute\RouteCollector $r) {
-        $routes = \Base\Base::$config->get('routes');
+        $routes = \Base\Service::$config->get('routes');
         if (is_array($routes) && !empty($routes)) {
             foreach ($routes as $route) {
                 $enabled = $route['enabled'] ?? true;
@@ -46,7 +46,7 @@ return function ($container) {
     /**
      * Uncomment this if you want to have custom middlewares per route
      */
-    // $routes = \Base\Base::$config->get('routes');
+    // $routes = \Base\Service::$config->get('routes');
     // if (is_array($routes) && !empty($routes)) {
     //     foreach ($routes as $route) {
     //         $enabled = $route['enabled'] ?? true;
