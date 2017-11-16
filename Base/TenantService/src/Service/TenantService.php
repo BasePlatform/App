@@ -18,6 +18,7 @@ use Base\TenantService\Repository\TenantRepositoryInterface;
 use Base\TenantService\Factory\TenantFactoryInterface;
 use Base\TenantService\Exception\InvalidTenantRegistrationInfoException;
 use Base\TenantService\Exception\ExistedTenantException;
+use Base\Validator\ValidatorInterface;
 use Base\ServiceRequest\ServiceRequestInterface;
 use Base\Helper\DateTimeHelper;
 use Base\Http\ResponseStatusCode;
@@ -40,6 +41,11 @@ class TenantService implements TenantServiceInterface
     private $factory;
 
     /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
+    /**
      * @var ServiceRequestInterface
      */
     private $serviceRequest;
@@ -52,10 +58,12 @@ class TenantService implements TenantServiceInterface
     public function __construct(
         TenantRepositoryInterface $repository,
         TenantFactoryInterface $factory,
+        ValidatorInterface $validator,
         ServiceRequestInterface $serviceRequest
     ) {
         $this->repository = $repository;
         $this->factory = $factory;
+        $this->validator = $validator;
         $this->serviceRequest = $serviceRequest;
     }
 
@@ -70,9 +78,17 @@ class TenantService implements TenantServiceInterface
         $password = $data['password'] ?? null;
 
         // Validate the Data here
+        $this->validator->validate($data, [
+          'name' => ['name', ['stringType', 'length'], 'min' => 3, 'max' => 255],
+          'email' => ['email', ['required','stringType','length'], 'min' => 7, 'max' => 255],
+          'emailFormat' => ['email', 'email', 'message' => 'Tuan uses email']
+        ]);
+
+        var_dump($this->validator->errors);
+        exit;
 
         // Create TenantId
-        $tenantId = call_user_func_array([$this->factory->getTenantIdClassName(), 'createTenantId'], [$name, $domain]);
+        $tenantId = call_user_func_array([$this->factory->getTenantIdClassName(), 'createFromString'], [$name, $domain]);
 
         // Get Tenant
         $tenant = $this->repository->find($tenantId);
@@ -85,6 +101,7 @@ class TenantService implements TenantServiceInterface
             $tenant->setId($tenantId);
             $tenant->setDomain((string) $tenantId);
             $tenant->setPlatform($platform);
+            $tenant->setIsRootMember(false);
             $tenant->setStatus($tenant->getStatusOptions('STATUS_ACTIVE'));
             $tenant->setCreatedAt($nowTime);
             $tenant->setupdatedAt($nowTime);

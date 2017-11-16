@@ -85,6 +85,7 @@ class TenantRepository implements TenantRepositoryInterface
                 id,
                 domain,
                 platform,
+                isRootMember,
                 status,
                 createdAt,
                 updatedAt
@@ -101,6 +102,7 @@ class TenantRepository implements TenantRepositoryInterface
               'id' => $item->getId()->toString(),
               'domain' => $item->getDomain(),
               'platform' => $item->getPlatform(),
+              'isRootMember' => $item->getIsRootMember(),
               'status' => $item->getStatus(),
               'createdAt' => DateTimeHelper::toDb($item->getCreatedAt()),
               'updatedAt' => DateTimeHelper::toDb($item->getUpdatedAt())

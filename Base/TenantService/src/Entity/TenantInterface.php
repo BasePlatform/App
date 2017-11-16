@@ -50,6 +50,15 @@ interface TenantInterface
     public function setPlatform(string $platform = null);
 
     /**
+     * Set the value of field isRootMember
+     *
+     * @param  bool $isRootMember
+     *
+     * @return $this
+     */
+    public function setIsRootMember(bool $isRootMember);
+
+    /**
      * Set the value of field status
      *
      * @param  string $status
@@ -96,6 +105,13 @@ interface TenantInterface
      * @return string|null
      */
     public function getPlatform(): ?string;
+
+    /**
+     * Return the value of field isRootMember
+     *
+     * @return bool
+     */
+    public function getIsRootMember(): bool;
 
     /**
      * Return the value of field status

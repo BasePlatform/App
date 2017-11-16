@@ -55,6 +55,11 @@ class Tenant implements TenantInterface, \JsonSerializable
     protected $status;
 
     /**
+     * @var boolean
+     */
+    protected $isRootMember;
+
+    /**
      * @var \DateTime
      */
     protected $createdAt;
@@ -101,6 +106,15 @@ class Tenant implements TenantInterface, \JsonSerializable
     public function setPlatform(string $platform = null)
     {
         $this->platform = $platform;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIsRootMember(bool $isRootMember)
+    {
+        $this->isRootMember = $isRootMember;
         return $this;
     }
 
@@ -159,6 +173,14 @@ class Tenant implements TenantInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
+    public function getIsRootMember(): bool
+    {
+        return $this->isRootMember;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getStatus(): string
     {
         return $this->status;
@@ -210,6 +232,7 @@ class Tenant implements TenantInterface, \JsonSerializable
             'id' => $this->id->toString(),
             'domain' => $this->domain,
             'platform' => $this->platform,
+            // We discard isRootMember field
             'status' => $this->status,
             'createdAt' => DateTimeHelper::toISO8601($this->createdAt),
             'updatedAt' => DateTimeHelper::toISO8601($this->updatedAt)
