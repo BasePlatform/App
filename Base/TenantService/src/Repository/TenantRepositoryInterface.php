@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Base\TenantService\Repository;
 
 use Base\TenantService\Entity\TenantInterface;
-use Base\TenantService\ValueObject\TenantIdInterface;
+use Base\Common\ValueObject\TenantIdInterface;
 
 /**
  * Tenant Repository Interface

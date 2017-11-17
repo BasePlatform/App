@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Base\TenantService\Factory;
 
 use Base\Factory\FactoryInterface;
-use Base\TenantService\ValueObject\TenantIdInterface;
 
 /**
  * Tenant Factory
@@ -26,32 +25,10 @@ class TenantFactory implements TenantFactoryInterface
     use \Base\Factory\FactoryTrait;
 
     /**
-     * @var string
-     */
-    private $tenantIdClassName;
-
-    /**
      * @param string $className
-     * @param string $tenantIdClassName
      */
-    public function __construct(string $className, string $tenantIdClassName)
+    public function __construct(string $className)
     {
         $this->className = $className;
-        $this->tenantIdClassName = $tenantIdClassName;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createTenantId(): TenantIdInterface
-    {
-        return new $this->tenantIdClassName();
-    }
-    /**
-     * {@inheritdoc}
-     */
-    public function getTenantIdClassName(): string
-    {
-        return $this->tenantIdClassName;
     }
 }

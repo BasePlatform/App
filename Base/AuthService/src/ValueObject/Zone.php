@@ -117,7 +117,7 @@ class Zone implements ZoneInterface
     /**
      * {@inheritdoc}
      */
-    public function sameValueAs(self $other): bool
+    public function equals(self $other): bool
     {
         return $this->toString() === $other->toString();
     }

@@ -11,15 +11,23 @@
 
 declare(strict_types=1);
 
-namespace Base\TenantService\Factory;
+namespace Base;
 
-use Base\Factory\FactoryInterface;
+use Base\ValueObject;
 
 /**
- * TenantId Factory Interface
+ * Value Object Interface
  *
- * @package Base\TenantService\Factory
+ * @package Base
  */
-interface TenantIdFactoryInterface extends FactoryInterface
+interface ValueObjectInterface
 {
+    /**
+     * Value Object Equals Comparision
+     *
+     * @param ValueObjectInterface $other
+     *
+     * @return boolean
+     */
+    public function equals(ValueObjectInterface $other): bool;
 }

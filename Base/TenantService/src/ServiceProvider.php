@@ -16,7 +16,7 @@ namespace Base\TenantService;
  *
  * @package Base\TenantService
  */
-class Service
+class ServiceProvider
 {
     /**
      * Get Service Config

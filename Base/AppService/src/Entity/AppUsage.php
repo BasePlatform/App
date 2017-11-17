@@ -18,7 +18,7 @@ use Base\Helper\DateTimeHelper;
  *
  * @package Base\AppService\Entity
  */
-class AppUsage implements AppUsageInterface, \JsonSerializable
+class AppUsage implements AppUsageInterface
 {
     /**
      * Active Status
@@ -109,6 +109,29 @@ class AppUsage implements AppUsageInterface, \JsonSerializable
      * @var \DateTime
      */
     protected $updatedAt;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules(): array
+    {
+        return [
+            // TenantId Required
+            'tenantIdRequired' => ['tenantId', 'required'],
+            // TenantId Length
+            'tenantIdLength' => ['tenantId', ['stringType','length'], 'min' => 3, 'max' => 255],
+            // selectedPlan Length
+            'selectedPlanLength' => ['selectedPlan', ['stringType','length'], 'min' => 1, 'max' => 64],
+            // AppId Required
+            'appIdRequired' => ['appId', 'required'],
+            // AppId Length
+            'appIdLength' => ['id', ['stringType','length'], 'min' => 1, 'max' => 64],
+            // Status Required
+            'statusRequired' => ['status', 'required'],
+            // Status Enum
+            'statusEnum' => ['status', 'in', 'haystack'=> [self::STATUS_ACTIVE, self::STATUS_DISABLED]]
+        ];
+    }
 
     /**
      * {@inheritdoc}

@@ -20,8 +20,18 @@ use Base\AuthService\ValueObject\ZoneInterface;
  *
  * @package Base\AuthService\Entity
  */
-class Policy implements PolicyInterface, \JsonSerializable
+class Policy implements PolicyInterface
 {
+    /**
+     * Permission Type
+     */
+    const TYPE_PERMISSION = 'permission';
+
+    /**
+     * Role Type
+     */
+    const TYPE_ROLE = 'role';
+
     /**
      * @var string
      */
@@ -51,6 +61,31 @@ class Policy implements PolicyInterface, \JsonSerializable
      * @var array
      */
     protected $params;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules(): array
+    {
+        return [
+            // Id Required
+            'idRequired' => ['id', 'required'],
+            // Id Length
+            'idLength' => ['tenantId', ['stringType','length'], 'min' => 3, 'max' => 255],
+            // AppId Required
+            'appIdRequired' => ['appId', 'required'],
+            // AppId Length
+            'appIdLength' => ['id', ['stringType','length'], 'min' => 1, 'max' => 64],
+            // Type Required
+            'typeRequired' => ['type', 'required'],
+            // Type Enum
+            'typeEnum' => ['type', 'in', 'haystack'=> [self::TYPE_PERMISSION, self::TYPE_ROLE]],
+            // Zone Required
+            'zoneRequired' => ['zone', 'required'],
+            // Description Length
+            'descriptionLength' => ['description', ['stringType','length'], 'min' => null, 'max' => 255]
+        ];
+    }
 
     /**
      * {@inheritdoc}

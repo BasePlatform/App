@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Base\TenantService\Repository;
 
 use Base\TenantService\Entity\TenantInterface;
-use Base\TenantService\ValueObject\TenantIdInterface;
 use Base\TenantService\Factory\TenantFactoryInterface;
+use Base\Common\ValueObject\TenantIdInterface;
+use Base\Common\Factory\TenantIdFactoryInterface;
 use Base\PDO\PDOProxyInterface;
 use Base\Exception\ServerErrorException;
 use Base\Helper\DateTimeHelper;
@@ -43,13 +44,19 @@ class TenantRepository implements TenantRepositoryInterface
     private $factory;
 
     /**
+     * @var TenantIdFactoryInterface
+     */
+    private $tenantIdFactory;
+
+    /**
      * @param PDOProxyInterface $pdo
      * @param TenantFactoryInterface $factory
      */
-    public function __construct(PDOProxyInterface $pdo, TenantFactoryInterface $factory)
+    public function __construct(PDOProxyInterface $pdo, TenantFactoryInterface $factory, TenantIdFactoryInterface $tenantIdFactory)
     {
         $this->pdo = $pdo;
         $this->factory = $factory;
+        $this->tenantIdFactory = $tenantIdFactory;
         if (defined('TENANT_SERVICE_CONSTANTS')
         && isset(TENANT_SERVICE_CONSTANTS['TABLE_PREFIX'])
         && !empty(TENANT_SERVICE_CONSTANTS['TABLE_PREFIX'])) {
@@ -65,7 +72,7 @@ class TenantRepository implements TenantRepositoryInterface
         try {
             $sql = 'SELECT * FROM '. $this->tablePrefix . 'Tenant t WHERE t.id = :id LIMIT 0,1';
             $stmt = $this->pdo->prepare($sql);
-            $stmt->execute(['id' => $tenantId]);
+            $stmt->execute(['id' => $tenantId->toString()]);
             $result = $stmt->fetch();
             // Convert to the desired return type
             return $this->convertToEntity($result);
@@ -132,9 +139,7 @@ class TenantRepository implements TenantRepositoryInterface
                     $setMethod = 'set'.ucfirst($key);
                     if (method_exists($entity, $setMethod) && $value != null) {
                         if ($key == 'id') {
-                            $tenantId = $this->factory->createTenantId();
-                            $tenantId->setId($value);
-                            $value = $tenantId;
+                            $value = call_user_func_array([$this->tenantIdFactory->getClassName(), 'createFromString'], [$value]);
                         }
                         $dateTimeProperties = [
                           'createdAt',

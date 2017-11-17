@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Base\TenantService\Service;
 
+use Base\TenantService\Entity\TenantInterface;
+
 /**
  * Tenant Service Interface
  *
@@ -32,5 +34,5 @@ interface TenantServiceInterface
      *
      * @return mixed
      */
-    public function register(array $data, string $appId, string $domain, string $platform = null);
+    public function register(array $data, string $appId, string $domain, string $platform = null): ?TenantInterface;
 }

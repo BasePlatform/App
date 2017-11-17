@@ -17,8 +17,6 @@ return [
        */
       \Base\TenantService\Entity\TenantInterface::class => \Base\TenantService\Entity\Tenant::class,
 
-      \Base\TenantService\ValueObject\TenantIdInterface::class => \Base\TenantService\ValueObject\TenantId::class,
-
       /**
        * Factories
        */
@@ -40,12 +38,7 @@ return [
        * Factories
        */
       \Base\TenantService\Factory\TenantFactory::class => [
-          'className' => \Base\TenantService\Entity\Tenant::class,
-          'tenantIdClassName' => \Base\TenantService\ValueObject\TenantId::class
-      ],
-
-      \Base\TenantService\Factory\TenantIdFactory::class => [
-          'className' => \Base\TenantService\ValueObject\TenantId::class
+          'className' => \Base\TenantService\Entity\Tenant::class
       ]
 
     ]

@@ -11,15 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Base\TenantService\Factory;
-
-use Base\Factory\FactoryInterface;
+namespace Base\Helper;
 
 /**
- * Tenant Factory Interface
+ * Helper for String
  *
- * @package Base\TenantService\Factory
+ * @package Base\Helper
  */
-interface TenantFactoryInterface extends FactoryInterface
+class StringHelper
 {
 }

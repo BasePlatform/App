@@ -20,7 +20,7 @@ use Base\Helper\DateTimeHelper;
  *
  * @package Base\AuthService\Entity
  */
-class ResourcePolicyAttachment implements ResourcePolicyAttachmentInterface, \JsonSerializable
+class ResourcePolicyAttachment implements ResourcePolicyAttachmentInterface
 {
     /**
      * @var int
@@ -46,6 +46,27 @@ class ResourcePolicyAttachment implements ResourcePolicyAttachmentInterface, \Js
      * @var \DateTime
      */
     protected $attachedAt;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules(): array
+    {
+        return [
+            // TenantId Required
+            'tenantIdRequired' => ['tenantId', 'required'],
+            // TenantId Length
+            'tenantIdLength' => ['tenantId', ['stringType','length'], 'min' => 3, 'max' => 255],
+            // ResourceId Required
+            'resourceIdRequired' => ['resourceId', 'required'],
+            // ResourceId Length
+            'resourceIdLength' => ['resourceId', ['stringType','length'], 'min' => 3, 'max' => 255],
+            // PolicyId Required
+            'policyIdRequired' => ['policyId', 'required'],
+            // PolicyId Length
+            'policyIdLength' => ['policyId', ['stringType','length'], 'min' => 3, 'max' => 255]
+        ];
+    }
 
     /**
      * {@inheritdoc}

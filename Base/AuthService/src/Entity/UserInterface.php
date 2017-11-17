@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Base\AuthService\Entity;
 
+use Base\Entity\EntityInterface;
 use Base\AuthService\ValueObject\ZoneInterface;
 use Base\AuthService\Entity\UserIdentityInterface;
 use Base\AuthService\Entity\UserProfileInterface;
@@ -22,7 +23,7 @@ use Base\AuthService\Entity\UserProfileInterface;
  *
  * @package Base\AuthService\Entity
  */
-interface UserInterface
+interface UserInterface extends EntityInterface
 {
     /**
      * Set the value of field id
@@ -248,22 +249,4 @@ interface UserInterface
      * @return array|string
      */
     public function getStatusOptions(string $status = null);
-
-    /**
-     * Convert Entity to Array
-     *
-     * @param array excludedAttributes
-     *
-     * @return array
-     */
-    public function toArray(array $excludedAttributes = []): array;
-
-    /**
-     * Specify data which should be serialized to JSON
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
-     */
-    public function jsonSerialize();
 }

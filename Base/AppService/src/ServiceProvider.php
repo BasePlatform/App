@@ -16,7 +16,7 @@ namespace Base\AppService;
  *
  * @package Base\AppService
  */
-class Service
+class ServiceProvider
 {
     /**
      * Get Service Config

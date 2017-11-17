@@ -20,7 +20,7 @@ use Base\Helper\DateTimeHelper;
  *
  * @package Base\AppService\Entity
  */
-class App implements AppInterface, \JsonSerializable
+class App implements AppInterface
 {
     /**
      * Active Status
@@ -56,6 +56,23 @@ class App implements AppInterface, \JsonSerializable
      * @var \DateTime
      */
     protected $updatedAt;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules(): array
+    {
+        return [
+          // Id Required
+          'idRequired' => ['id', 'required'],
+          // Id Length
+          'idLength' => ['id', ['stringType', 'length'], 'min' => 1, 'max' => 64],
+          // Status Required
+          'statusRequired' => ['status', 'required'],
+          // Status Enum
+          'statusEnum' => ['status', 'in', 'haystack'=> [self::STATUS_ACTIVE, self::STATUS_DISABLED]],
+        ];
+    }
 
     /**
      * {@inheritdoc}

@@ -16,7 +16,7 @@ namespace Base\AuthService;
  *
  * @package Base\AuthService
  */
-class Service
+class ServiceProvider
 {
     /**
      * Get Service Config

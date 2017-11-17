@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Base\TenantService\Entity;
 
-use Base\TenantService\ValueObject\TenantIdInterface;
+use Base\Common\ValueObject\TenantIdInterface;
 use Base\Helper\DateTimeHelper;
 use ReflectionClass;
 
@@ -22,7 +22,7 @@ use ReflectionClass;
  *
  * @package Base\TenantService\Entity
  */
-class Tenant implements TenantInterface, \JsonSerializable
+class Tenant implements TenantInterface
 {
     /**
      * Active Status
@@ -50,14 +50,14 @@ class Tenant implements TenantInterface, \JsonSerializable
     protected $platform;
 
     /**
+     * @var boolean
+     */
+    protected $isRootMember = false;
+
+    /**
      * @var string
      */
     protected $status;
-
-    /**
-     * @var boolean
-     */
-    protected $isRootMember;
 
     /**
      * @var \DateTime
@@ -75,10 +75,20 @@ class Tenant implements TenantInterface, \JsonSerializable
     public function rules(): array
     {
         return [
-          'domainLength' => ['domain', 'length', 'min' => 7, 'max' => 255],
-          'domainValid' => ['domain', 'domain'],
-          'platformLength' => ['platform', 'length', 'min' => 3, 'max' => 64],
-          'statusEnum' => ['status', 'in', 'haystack'=> [self::STATUS_ACTIVE, self::STATUS_DISABLED]],
+            // Id Required
+            'idRequired' => ['id', 'required'],
+            // Domain Required
+            'domainRequired' => ['domain', 'required'],
+            // Domain Length
+            'domainLength' => ['domain', ['stringType', 'length'], 'min' => 5, 'max' => 255],
+            // Valid Domain Format
+            'domainFormat' => ['domain', 'domain'],
+            // Platform Length
+            'platformLength' => ['platform', ['stringType', 'length'], 'min' => 3, 'max' => 64],
+            // Status Required
+            'statusRequired' => ['status', 'required'],
+            // Status Enum
+            'statusEnum' => ['status', 'in', 'haystack'=> [self::STATUS_ACTIVE, self::STATUS_DISABLED]]
         ];
     }
 

@@ -23,7 +23,7 @@ use Base\Helper\DateTimeHelper;
  *
  * @package Base\AuthService\Entity
  */
-class User implements UserInterface, \JsonSerializable
+class User implements UserInterface
 {
     /**
      * Active Status
@@ -109,6 +109,16 @@ class User implements UserInterface, \JsonSerializable
      * @var UseProfileInterface
      */
     protected $profile = null;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules(): array
+    {
+        return [
+
+        ];
+    }
 
     /**
      * {@inheritdoc}

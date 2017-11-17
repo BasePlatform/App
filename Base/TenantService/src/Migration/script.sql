@@ -6,7 +6,7 @@ CREATE TABLE `Base_Tenant` (
   `domain` varchar(255) NOT NULL,
   `platform` varchar(64) DEFAULT NULL,
   `isRootMember` boolean NOT NULL DEFAULT false,
-  `status` varchar(64) NOT NULL DEFAULT 'disabled',
+  `status` varchar(64) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),

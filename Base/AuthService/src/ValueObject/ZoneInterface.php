@@ -71,5 +71,5 @@ interface ZoneInterface
      *
      * @return bool
      */
-    public function sameValueAs(self $other): ZoneInterface;
+    public function equals(self $other): ZoneInterface;
 }

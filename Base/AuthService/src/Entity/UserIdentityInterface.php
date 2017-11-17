@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Base\AuthService\Entity;
 
+use Base\Entity\EntityInterface;
+
 /**
  * User Identity Entity Interface
  *
@@ -170,22 +172,4 @@ interface UserIdentityInterface
      * @return \DateTime
      */
     public function getUpdatedAt(): \DateTime;
-
-    /**
-     * Convert Entity to Array
-     *
-     * @param array excludedAttributes
-     *
-     * @return array
-     */
-    public function toArray(array $excludedAttributes = []): array;
-
-    /**
-     * Specify data which should be serialized to JSON
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
-     */
-    public function jsonSerialize();
 }

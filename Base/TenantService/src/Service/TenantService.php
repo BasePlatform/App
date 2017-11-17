@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Base\TenantService\Service;
 
-use Base\TenantService\ValueObject\TenantId;
+use Base\Common\ValueObject\TenantIdInterface;
+use Base\Common\Factory\TenantIdFactoryInterface;
 use Base\TenantService\Repository\TenantRepositoryInterface;
 use Base\TenantService\Factory\TenantFactoryInterface;
 use Base\TenantService\Exception\InvalidTenantRegistrationInfoException;
@@ -41,6 +42,11 @@ class TenantService implements TenantServiceInterface
     private $factory;
 
     /**
+     * @var TenantIdFactoryInterface
+     */
+    private $tenantIdFactory;
+
+    /**
      * @var ValidatorInterface
      */
     private $validator;
@@ -53,16 +59,19 @@ class TenantService implements TenantServiceInterface
     /**
      * @param TenantRepositoryInterface $repository
      * @param TenantFactoryInterface $factory
+     * @param TenantIdFactoryInterface $tenantIdFactory
      * @param ServiceRequestInterface $serviceRequest
      */
     public function __construct(
         TenantRepositoryInterface $repository,
         TenantFactoryInterface $factory,
+        TenantIdFactoryInterface $tenantIdFactory,
         ValidatorInterface $validator,
         ServiceRequestInterface $serviceRequest
     ) {
         $this->repository = $repository;
         $this->factory = $factory;
+        $this->tenantIdFactory = $tenantIdFactory;
         $this->validator = $validator;
         $this->serviceRequest = $serviceRequest;
     }
@@ -70,7 +79,7 @@ class TenantService implements TenantServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function register(array $data, string $appId, string $domain, string $platform = null)
+    public function register(array $data, string $appId, string $domain, string $platform = null): ?TenantInterface
     {
         // Get Info from $data
         $name = $data['name'] ?? null;
@@ -88,7 +97,7 @@ class TenantService implements TenantServiceInterface
         exit;
 
         // Create TenantId
-        $tenantId = call_user_func_array([$this->factory->getTenantIdClassName(), 'createFromString'], [$name, $domain]);
+        $tenantId = call_user_func_array([$this->tenantIdFactory->getClassName(), 'createFromStringNameDomain'], [$name, $domain]);
 
         // Get Tenant
         $tenant = $this->repository->find($tenantId);
@@ -96,15 +105,15 @@ class TenantService implements TenantServiceInterface
         if ($tenant) {
             throw new ExistedTenantException();
         } else {
-            $nowTime = DateTimeHelper::now();
+            $now = DateTimeHelper::now();
             $tenant = $this->factory->create();
             $tenant->setId($tenantId);
             $tenant->setDomain((string) $tenantId);
             $tenant->setPlatform($platform);
             $tenant->setIsRootMember(false);
             $tenant->setStatus($tenant->getStatusOptions('STATUS_ACTIVE'));
-            $tenant->setCreatedAt($nowTime);
-            $tenant->setupdatedAt($nowTime);
+            $tenant->setCreatedAt($now);
+            $tenant->setupdatedAt($now);
             $tenant = $this->repository->insert($tenant);
 
             if ($tenant) {
@@ -128,7 +137,7 @@ class TenantService implements TenantServiceInterface
                     return $tenant;
                 }
             }
-            throw new ServerErrorException(sprintf('Failed Registering Tenant `%s` Tenant `%s`', $tenantId));
+            throw new ServerErrorException(sprintf('Failed Registering Tenant `%s`', $tenantId));
         }
     }
 

@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Base\AuthService\Entity;
 
+use Base\Entity\EntityInterface;
+
 /**
  * Resource Policy Attachment Entity Interface
  *
  * @package Base\AuthService\Entity
  */
-interface ResourcePolicyAttachmentInterface
+interface ResourcePolicyAttachmentInterface extends EntityInterface
 {
     /**
      * Set the value of field id
@@ -101,22 +103,4 @@ interface ResourcePolicyAttachmentInterface
      * @return string
      */
     public static function createResourceId(string $type, string $id): string;
-
-    /**
-     * Convert Entity to Array
-     *
-     * @param array excludedAttributes
-     *
-     * @return array
-     */
-    public function toArray(array $excludedAttributes = []): array;
-
-    /**
-     * Specify data which should be serialized to JSON
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
-     */
-    public function jsonSerialize();
 }

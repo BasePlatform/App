@@ -20,7 +20,7 @@ use Base\Helper\DateTimeHelper;
  *
  * @package Base\AuthService\Entity
  */
-class UserProfile implements UserProfileInterface, \JsonSerializable
+class UserProfile implements UserProfileInterface
 {
     /**
      * @var int
@@ -76,6 +76,16 @@ class UserProfile implements UserProfileInterface, \JsonSerializable
      * @var \DateTime
      */
     protected $updatedAt;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules(): array
+    {
+        return [
+
+        ];
+    }
 
     /**
      * {@inheritdoc}
