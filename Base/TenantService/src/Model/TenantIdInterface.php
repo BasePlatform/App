@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Base\TenantService\ValueObject;
+namespace Base\TenantService\Model;
 
-use Base\ValueObject\ValueObjectInterface;
+use Base\Model\ValueObject\ValueObjectInterface;
 
 /**
- * TenantId Value Object Interface
+ * Tenant Id Value Object Interface
  *
- * @package Base\TenantService\ValueObject
+ * @package Base\TenantService\Model
  */
 interface TenantIdInterface extends ValueObjectInterface
 {
@@ -51,22 +51,6 @@ interface TenantIdInterface extends ValueObjectInterface
      * @return boolean
      */
     public function validate(string $value);
-
-    /**
-     * Set the value of value
-     *
-     * @param  string|null $value
-     *
-     * @return $this
-     */
-    public function setValue(string $value = null);
-
-    /**
-     * Return the value of value
-     *
-     * @return string|null
-     */
-    public function getValue(): ?string;
 
     /**
      * @return string|null

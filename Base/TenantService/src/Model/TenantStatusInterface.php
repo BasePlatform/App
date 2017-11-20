@@ -11,23 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Base;
+namespace Base\TenantService\Model;
 
-use Base\ValueObject;
+use Base\Model\ValueObject\EnumValueObjectInterface;
 
 /**
- * Value Object Interface
+ * Tenant Status Value Object Interface
  *
- * @package Base
+ * @package Base\TenantService\Model
  */
-interface ValueObjectInterface
+interface TenantStatusInterface extends EnumValueObjectInterface
 {
-    /**
-     * Value Object Equals Comparision
-     *
-     * @param ValueObjectInterface $other
-     *
-     * @return boolean
-     */
-    public function equals(ValueObjectInterface $other): bool;
 }

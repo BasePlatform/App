@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Base\TenantService\Factory;
 
 use Base\Factory\FactoryInterface;
+use Base\TenantService\Model\TenantIdInterface;
+use Base\TenantService\Model\TenantStatusInterface;
 
 /**
  * Tenant Factory
@@ -25,10 +27,64 @@ class TenantFactory implements TenantFactoryInterface
     use \Base\Factory\FactoryTrait;
 
     /**
-     * @param string $className
+     * @var string
      */
-    public function __construct(string $className)
+    private $tenantIdClass;
+
+    /**
+     * @var string
+     */
+    private $tenantStatusClass;
+
+    /**
+     * @param string $class
+     */
+    public function __construct(string $class = null, string $tenantIdClass = null, string $tenantStatusClass = null)
     {
-        $this->className = $className;
+        $this->class = $class ? $class : \Base\TenantService\Model\Tenant::class;
+        $this->tenantIdClass = $tenantIdClass ? $tenantIdClass : \Base\TenantService\Model\TenantId::class;
+        $this->tenantStatusClass = $tenantStatusClass ? $tenantStatusClass : \Base\TenantService\Model\TenantStatus::class;
+    }
+
+    /**
+     * Create a Tenant Id from the class
+     *
+     * @return \Base\TenantService\Model\TenantIdInterface
+     */
+    /**
+     * {@inheritdoc}
+     */
+    public function createTenantId(): TenantIdInterface
+    {
+        return new $this->tenantIdClass();
+    }
+
+    /**
+     * Create a Tenant Status from the class
+     *
+     * @return \Base\TenantService\Model\TenantStatusInterface
+     */
+    /**
+     * {@inheritdoc}
+     */
+    public function createTenantStatus(): TenantStatusInterface
+    {
+        return new $this->tenantStatusClass();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTenantIdClass(): string
+    {
+        return $this->tenantIdClass;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTenantStatusClass(): string
+    {
+        return $this->tenantStatusClass;
     }
 }

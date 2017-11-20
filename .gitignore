@@ -3,3 +3,5 @@ config/params-local*
 .env
 runtime/cache/*
 **/.php_cs.cache
+public/opcache_reset.php
+Base/*.bk

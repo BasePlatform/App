@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Base\TenantService\Repository;
 
 use Base\TenantService\Entity\TenantInterface;
-use Base\Common\ValueObject\TenantIdInterface;
 
 /**
  * Tenant Repository Interface
@@ -30,7 +29,7 @@ interface TenantRepositoryInterface
      *
      * @return TenantInterface|null
      */
-    public function find(TenantIdInterface $tenantId): ?TenantInterface;
+    //public function find(TenantIdInterface $tenantId): ?TenantInterface;
 
     /**
      * Insert a Tenant

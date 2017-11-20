@@ -35,6 +35,7 @@ return function ($container) {
      * Setup the middleware queue
      */
     $middlewares = [
+        Base\Middleware\ResponseTimeMiddleware::class,
         Base\Middleware\RequestIdMiddleware::class,
         Base\Middleware\ErrorHandlerMiddleware::class,
         new Base\Middleware\FastRouteMiddleware($routeDispatcher),

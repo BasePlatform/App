@@ -11,31 +11,22 @@
 
 declare(strict_types=1);
 
-namespace Base\TenantService\Entity;
+namespace Base\TenantService\Model;
 
-use Base\Common\ValueObject\TenantIdInterface;
+use Base\TenantService\Model\TenantIdInterface;
+use Base\TenantService\Model\TenantStatusInterface;
 use Base\Helper\DateTimeHelper;
 use ReflectionClass;
 
 /**
  * Tenant Entity
  *
- * @package Base\TenantService\Entity
+ * @package Base\TenantService\Model
  */
 class Tenant implements TenantInterface
 {
     /**
-     * Active Status
-     */
-    const STATUS_ACTIVE = 'active';
-
-    /**
-     * Disabled Status
-     */
-    const STATUS_DISABLED = 'disabled';
-
-    /**
-     * @var TenantId
+     * @var TenantIdInterface
      */
     protected $id;
 
@@ -55,7 +46,7 @@ class Tenant implements TenantInterface
     protected $isRootMember = false;
 
     /**
-     * @var string
+     * @var TenantStatusInterface
      */
     protected $status;
 
@@ -68,29 +59,6 @@ class Tenant implements TenantInterface
      * @var \DateTime
      */
     protected $updatedAt;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rules(): array
-    {
-        return [
-            // Id Required
-            'idRequired' => ['id', 'required'],
-            // Domain Required
-            'domainRequired' => ['domain', 'required'],
-            // Domain Length
-            'domainLength' => ['domain', ['stringType', 'length'], 'min' => 5, 'max' => 255],
-            // Valid Domain Format
-            'domainFormat' => ['domain', 'domain'],
-            // Platform Length
-            'platformLength' => ['platform', ['stringType', 'length'], 'min' => 3, 'max' => 64],
-            // Status Required
-            'statusRequired' => ['status', 'required'],
-            // Status Enum
-            'statusEnum' => ['status', 'in', 'haystack'=> [self::STATUS_ACTIVE, self::STATUS_DISABLED]]
-        ];
-    }
 
     /**
      * {@inheritdoc}
@@ -131,10 +99,9 @@ class Tenant implements TenantInterface
     /**
      * {@inheritdoc}
      */
-    public function setStatus(string $status)
+    public function setStatus(TenantStatusInterface $status)
     {
         $this->status = $status;
-
         return $this;
     }
 
@@ -191,7 +158,7 @@ class Tenant implements TenantInterface
     /**
      * {@inheritdoc}
      */
-    public function getStatus(): string
+    public function getStatus(): TenantStatusInterface
     {
         return $this->status;
     }
@@ -210,50 +177,5 @@ class Tenant implements TenantInterface
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStatusOptions(string $status = null)
-    {
-        $reflector = new ReflectionClass(get_class($this));
-        $constants = $reflector->getConstants();
-        $result = [];
-        foreach ($constants as $constant => $value) {
-            if (!empty($status) && $constant == $status) {
-                $result = $value;
-                break;
-            }
-            $prefix = "STATUS_";
-            if (strpos($constant, $prefix) !==false) {
-                $result[] = $value;
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function toArray(array $excludedAttributes = []): array
-    {
-        return array_diff_key([
-            'id' => $this->id->toString(),
-            'domain' => $this->domain,
-            'platform' => $this->platform,
-            // We discard isRootMember field
-            'status' => $this->status,
-            'createdAt' => DateTimeHelper::toISO8601($this->createdAt),
-            'updatedAt' => DateTimeHelper::toISO8601($this->updatedAt)
-        ], array_flip($excludedAttributes));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function jsonSerialize()
-    {
-        return $this->toArray();
     }
 }

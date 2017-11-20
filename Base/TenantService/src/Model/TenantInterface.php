@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Base\TenantService\Entity;
 
 use Base\Common\ValueObject\TenantIdInterface;
-use Base\Entity\EntityInterface;
+use Base\TenantService\Model\TenantStatusInterface;
+use Base\Model\Entity\EntityInterface;
 
 /**
  * Tenant Entity Interface
@@ -23,11 +24,6 @@ use Base\Entity\EntityInterface;
  */
 interface TenantInterface extends EntityInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function rules(): array;
-
     /**
      * Set the value of field id
      *
@@ -67,11 +63,11 @@ interface TenantInterface extends EntityInterface
     /**
      * Set the value of field status
      *
-     * @param  string $status
+     * @param  TenantStatusInterface $status
      *
      * @return $this
      */
-    public function setStatus(string $status);
+    public function setStatus(TenantStatusInterface $status);
 
     /**
      * Set the value of field createdAt
@@ -122,9 +118,9 @@ interface TenantInterface extends EntityInterface
     /**
      * Return the value of field status
      *
-     * @return string
+     * @return TenantStatusInterface
      */
-    public function getStatus(): string;
+    public function getStatus(): TenantStatusInterface;
 
     /**
      * Return the value of field createdAt
@@ -139,14 +135,4 @@ interface TenantInterface extends EntityInterface
      * @return \DateTime
      */
     public function getUpdatedAt(): \DateTime;
-
-    /**
-     * Get Status Options from Constants
-     * If $status is passed, it will return the value of the status constant
-     *
-     * @param  string|null $status
-     *
-     * @return array|string
-     */
-    public function getStatusOptions(string $status = null);
 }

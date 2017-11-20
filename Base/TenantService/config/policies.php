@@ -10,13 +10,15 @@
  */
 
 $appId = 'default';
+$roleType = 'role';
+$adminZone = 'admin';
 
 return [
   'policies' => [
     'tenant.tenantOwner' => [
         'appId' => $appId,
-        'type' => 'role',
-        'zone' => 'admin',
+        'type' => $roleType,
+        'zone' => $adminZone,
         'description' => 'Tenant Owner'
     ]
   ]

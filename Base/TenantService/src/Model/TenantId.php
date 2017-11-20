@@ -11,25 +11,28 @@
 
 declare(strict_types=1);
 
-namespace Base\Common\ValueObject;
+namespace Base\TenantService\Model;
 
+use Base\Exception\InvalidTenantIdException;
 use Ramsey\Uuid\Uuid;
 
 /**
  * TenantId Value Object
  *
- * @package Base\Common\ValueObject
+ * @package Base\TenantService\Model
  */
 class TenantId implements TenantIdInterface
 {
-    const MIN_LENGTH = 3;
+    // Min Length of the TenantId
+    const ID_MIN_LENGTH = 3;
 
-    const MAX_LENGTH = 128;
+    // Max Length of the TenantId
+    const ID_MAX_LENGTH = 128;
 
     /**
      * @var string
      */
-    protected $value;
+    private $value;
 
     /**
      * @param string $value
@@ -38,9 +41,8 @@ class TenantId implements TenantIdInterface
     {
         if ($this->validate($value)) {
             $this->value = $value;
-        } else {
-            $this->value = null;
         }
+        throw new InvalidTenantIdException();
     }
 
     /**
@@ -74,23 +76,6 @@ class TenantId implements TenantIdInterface
             $uuid = Uuid::uuid4()->toString();
             return new self($uuid.$domain);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setValue(string $value)
-    {
-        $this->value = $value;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getValue(): ?string
-    {
-        return $this->value;
     }
 
     /**

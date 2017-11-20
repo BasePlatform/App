@@ -11,15 +11,20 @@
 
 declare(strict_types=1);
 
-namespace Base\Common\Factory;
-
-use Base\Factory\FactoryInterface;
+namespace Base\TenantService\Model;
 
 /**
- * TenantId Factory Interface
+ * Tenant Status Value Object
  *
- * @package Base\Common\Factory
+ * @package Base\TenantService\Model
  */
-interface TenantIdFactoryInterface extends FactoryInterface
+class TenantStatus implements TenantStatusInterface
 {
+    use \Base\Model\ValueObject\EnumValueObjectTrait;
+
+    // Tenant is Active
+    const STATUS_ACTIVE = 'active';
+
+    // Tenant is Disabled
+    const STATUS_DISABLED = 'disabled';
 }

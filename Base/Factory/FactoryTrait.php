@@ -23,7 +23,7 @@ trait FactoryTrait
     /**
      * @var string
      */
-    private $className;
+    private $class;
 
     /**
      * Create an object from the class
@@ -32,14 +32,14 @@ trait FactoryTrait
      */
     public function create()
     {
-        return new $this->className();
+        return new $this->class();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getClassName(): string
+    public function getClass(): string
     {
-        return $this->className;
+        return $this->class;
     }
 }

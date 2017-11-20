@@ -22,4 +22,31 @@ use Base\Factory\FactoryInterface;
  */
 interface TenantFactoryInterface extends FactoryInterface
 {
+    /**
+     * Create a Tenant Id from the class
+     *
+     * @return \Base\TenantService\Model\TenantIdInterface
+     */
+    public function createTenantId(): TenantIdInterface;
+
+    /**
+     * Create a Tenant Status from the class
+     *
+     * @return \Base\TenantService\Model\TenantStatusInterface
+     */
+    public function createTenantStatus(): TenantStatusInterface;
+
+    /**
+     * Create class of TenantId
+     *
+     * @return string
+     */
+    public function getTenantIdClass(): string;
+
+    /**
+     * Create class of TenantStatus
+     *
+     * @return string
+     */
+    public function getTenantStatusClass(): string;
 }
