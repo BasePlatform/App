@@ -19,7 +19,7 @@ return function ($container) {
     $routeDispatcher = \FastRoute\cachedDispatcher(function (\FastRoute\RouteCollector $r) {
         $routes = \Base\Service::$config->get('routes');
         if (is_array($routes) && !empty($routes)) {
-            foreach ($routes as $route) {
+            foreach ($routes as $name => $route) {
                 $enabled = $route['enabled'] ?? true;
                 if ($enabled) {
                     $r->addRoute($route['allowedMethods'], $route['path'], $route['handler']);

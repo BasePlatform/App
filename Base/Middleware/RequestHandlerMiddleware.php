@@ -105,7 +105,7 @@ class RequestHandlerMiddleware implements MiddlewareInterface
                 // process it
                 return $handler->process($request, $next);
             }
-            throw new InvalidArgumentException('Invalid callable handler provided');
+            throw new InvalidArgumentException('Invalid Callable Handler Provided');
         } else {
             // The handler might be in the format of a class
             if (is_string($handler)) {
