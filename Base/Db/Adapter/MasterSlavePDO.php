@@ -11,23 +11,23 @@
 
 declare(strict_types=1);
 
-namespace Base\PDO;
+namespace Base\Db\Adapter;
 
-use \PDO as PDO;
+use Base\Db\DbAdapterInterface;
 use InvalidArgumentException;
-use Base\Exception\ServerErrorException;
+use RuntimeException;
 
 /**
- * PDO Proxy supports Master-Slave Database Cluster Connections
+ * Master Slave PDO Proxy supports Master-Slave Database Cluster Connections
  * and select the connection based on the query
  *
  * It also helps not to create a connection before actual usage
  *
  * Original source - https://github.com/voduytuan/litpi-framework-3/blob/master/src/Vendor/Litpi/MyPdoProxy.php
  *
- * @package Base\PDO
+ * @package Base\Db\Adapter
  */
-class PDOProxy implements PDOProxyInterface
+class MasterSlavePDO implements DbAdapterInterface
 {
     /**
      * @var array Connection Definitions
@@ -55,7 +55,7 @@ class PDOProxy implements PDOProxyInterface
     protected $latestReplicateDb = null;
 
     /**
-     * @var array PDO Options
+     * @var array \PDO Options
      */
     protected $options = [];
 
@@ -73,11 +73,127 @@ class PDOProxy implements PDOProxyInterface
             $this->options = $options;
         } else {
             $this->options =  [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
+            \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+            \PDO::ATTR_EMULATE_PREPARES   => false,
             ];
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function errorCode()
+    {
+        if ($this->latestReplicateDb) {
+            return $this->latestReplicateDb->errorCode();
+        }
+        throw new RuntimeException('No Living Connection');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function errorInfo()
+    {
+        if ($this->latestReplicateDb) {
+            return $this->latestReplicateDb->errorInfo();
+        }
+        throw new RuntimeException('No Living Connection');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function exec(string $statement)
+    {
+        $this->latestReplicateDb = $replicateDb = $this->selectReplicateDbAutomatically($statement);
+        return $replicateDb->exec($statement);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepare(string $statement, array $options = null)
+    {
+        $this->latestReplicateDb = $replicateDb = $this->selectReplicateDbAutomatically($statement);
+        return $replicateDb->prepare($statement, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function quote(string $string, int $paramer_type = \PDO::PARAM_STR)
+    {
+        $this->latestReplicateDb = $replicateDb = $this->getAReplicateDb('slave');
+        return $replicateDb->quote($string, $paramer_type);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function query(string $statement)
+    {
+        $this->latestReplicateDb = $replicateDb = $this->selectReplicateDbAutomatically($statement);
+        return $replicateDb->query($statement);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function lastInsertId($name = null)
+    {
+        if ($this->latestReplicateDb) {
+            return $this->latestReplicateDb->lastInsertId($name);
+        }
+        throw new RuntimeException('No Living Connection');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function beginTransaction()
+    {
+        $this->latestReplicateDb = $replicateDb = $this->getAReplicateDb('master');
+        $result = $replicateDb->beginTransaction();
+        if ($result) {
+            $this->inTransaction = true;
+        }
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function commit()
+    {
+        $this->latestReplicateDb = $replicateDb = $this->getAReplicateDb('master');
+        $result = $replicateDb->commit();
+        if ($result) {
+            $this->inTransaction = true;
+        }
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rollBack()
+    {
+        $this->latestReplicateDb = $replicateDb = $this->getAReplicateDb('master');
+        $result = $replicateDb->rollBack();
+        if ($result) {
+            $this->inTransaction = true;
+        }
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function inTransaction()
+    {
+        return $this->inTransaction;
     }
 
     /**
@@ -103,13 +219,13 @@ class PDOProxy implements PDOProxyInterface
         // Create connection identifier
         $identifier = md5($host.$port.$database.$username.$password);
         $this->connections['master'][$identifier] = [
-        'identifier' => $identifier,
-        'host' => $host,
-        'port' => $port,
-        'database' => $database,
-        'username' => $username,
-        'password' => $password,
-        'options' => $options
+          'identifier' => $identifier,
+          'host' => $host,
+          'port' => $port,
+          'database' => $database,
+          'username' => $username,
+          'password' => $password,
+          'options' => $options
         ];
     }
 
@@ -136,47 +252,14 @@ class PDOProxy implements PDOProxyInterface
         // Create connection identifier
         $identifier = md5($host.$port.$database.$username.$password);
         $this->connections['slave'][$identifier] = [
-        'identifier' => $identifier,
-        'host' => $host,
-        'port' => $port,
-        'database' => $database,
-        'username' => $username,
-        'password' => $password,
-        'options' => $options
+          'identifier' => $identifier,
+          'host' => $host,
+          'port' => $port,
+          'database' => $database,
+          'username' => $username,
+          'password' => $password,
+          'options' => $options
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prepare(string $sql)
-    {
-        $this->latestReplicateDb = $replicateDb = $this->selectReplicateDbAutomatically($sql);
-        $stmt = $replicateDb->prepare($sql);
-        $stmt->setFetchMode(PDO::FETCH_ASSOC);
-        return $stmt;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function query(string $sql, array $params = [])
-    {
-        $this->latestReplicateDb = $replicateDb = $this->selectReplicateDbAutomatically($sql);
-        $stmt = $replicateDb->query($sql, $params);
-        return $stmt;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __call($method, $args)
-    {
-        if ($this->latestReplicateDb && is_callable([$this->latestReplicateDb, $method])) {
-            return call_user_func_array([$this->latestReplicateDb, $method], $args);
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -215,7 +298,7 @@ class PDOProxy implements PDOProxyInterface
                 //mark as connect to this replicate
                 $this->connectedConnections[$replicate . '-' . $identifier] = true;
             } catch (\PDOException $e) {
-                throw new ServerErrorException('Internal Server Error - DxB');
+                throw new \RuntimeException('Error Establishing Database Connection');
             }
         } //end check connection
         $db = null;
@@ -285,7 +368,6 @@ class PDOProxy implements PDOProxyInterface
         if ($this->inTransaction) {
             return $this->getAReplicateDb('master');
         }
-
         $sql = trim($sql);
         if (stripos($sql, 'SELECT') === 0) {
             $db = $this->getAReplicateDb('slave');
@@ -293,45 +375,6 @@ class PDOProxy implements PDOProxyInterface
             $db = $this->getAReplicateDb('master');
         }
         return $db;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function beginTransaction()
-    {
-        $this->latestReplicateDb = $replicateDb = $this->getAReplicateDb('master');
-        $result = $replicateDb->beginTransaction();
-        if ($result) {
-            $this->inTransaction = true;
-        }
-        return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function commit()
-    {
-        $this->latestReplicateDb = $replicateDb = $this->getAReplicateDb('master');
-        $result = $replicateDb->commit();
-        if ($result) {
-            $this->inTransaction = true;
-        }
-        return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rollBack()
-    {
-        $this->latestReplicateDb = $replicateDb = $this->getAReplicateDb('master');
-        $result = $replicateDb->rollBack();
-        if ($result) {
-            $this->inTransaction = true;
-        }
-        return $result;
     }
 
     /**

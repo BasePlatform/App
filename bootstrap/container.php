@@ -88,7 +88,7 @@ if (!empty($dbConfig)) {
       PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
       PDO::ATTR_EMULATE_PREPARES   => false,
     ];
-    $pdo = new \Base\PDO\PDOProxy($pdoOptions);
+    $pdo = new \Base\Database\Adapter\MasterSlavePDO($pdoOptions);
     $pdo->addMaster($dbConfig['master']['m1']);
     $pdo->addSlave($dbConfig['slave']['s1']);
     // Share it

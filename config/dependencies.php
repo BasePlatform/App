@@ -18,8 +18,8 @@ return [
       // Define for ServiceRequestInterface
       \Base\ServiceRequest\ServiceRequestInterface::class => \Base\ServiceRequest\ServiceRequest::class,
 
-      // Define for PDOProxyInterface
-      \Base\PDO\PDOProxyInterface::class => \Base\PDO\PDOProxy::class,
+      // Define for DbAdapterInterface
+      \Base\Database\DbAdapterInter::class => \Base\Database\Adapter\MasterSlavePDO::class,
 
       // Define for Security Interface
       \Base\Security\SecurityInterface::class => \Base\Security\Security::class,
