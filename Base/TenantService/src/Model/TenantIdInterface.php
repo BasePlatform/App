@@ -53,12 +53,12 @@ interface TenantIdInterface extends ValueObjectInterface
     public function validate(string $value);
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function toString(): ?string;
+    public function toString(): string;
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function __toString(): ?string;
+    public function __toString(): string;
 }
