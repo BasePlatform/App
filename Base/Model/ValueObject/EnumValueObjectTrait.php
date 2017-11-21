@@ -39,8 +39,10 @@ trait EnumValueObjectTrait
      */
     final private function __construct($value)
     {
-        $this->validateValue($value);
-        $this->value = $value;
+        if ($this->validateValue($value)) {
+            $this->value = $value;
+        }
+        throw new \InvalidArgumentException(sprintf('Value `%s` Is not Defined In `%s`', $value, get_called_class()));
     }
 
     /**
@@ -153,7 +155,7 @@ trait EnumValueObjectTrait
      *
      * @throws \InvalidArgumentException Throws if the given name is not defined.
      */
-    final public static function getValueOf($name)
+    final public static function getValueOf(string $name)
     {
         if (self::definedName($name)) {
             return self::$options[$name];
@@ -201,9 +203,10 @@ trait EnumValueObjectTrait
      */
     public function validateValue($value): bool
     {
-        if (!self::definedValue($value)) {
-            throw new \InvalidArgumentException(sprintf('Value `%s` Is Not Defined', $value));
+        if (self::definedValue($value)) {
+            return true;
         }
+        return false;
     }
 
     /**
@@ -237,7 +240,7 @@ trait EnumValueObjectTrait
      *
      * @throws \InvalidArgumentException
      */
-    final private static function create($name)
+    final private static function create(string $name)
     {
         $name = self::toUpperCaseName($s2);
         if (!self::definedName($name)) {
@@ -248,13 +251,28 @@ trait EnumValueObjectTrait
     }
 
     /**
+     * Create Enum object from value
+     *
+     * @param mixed $value
+     *
+     * @return self
+     *
+     * @throws \InvalidArgumentException
+     */
+    final private static function createFromValue($value)
+    {
+        $name = self::getNameOf($value);
+        return self::create($name);
+    }
+
+    /**
      * Convert CamelCase to UPPER_CASE.
      *
      * @param string $name CamelCase name.
      *
      * @return string
      */
-    final private static function toUpperCaseName($name)
+    final private static function toUpperCaseName(string $name)
     {
         $s1 = preg_replace('/(.)([A-Z][a-z]+)/', '$1_$2', $name);
         $s2 = preg_replace('/([a-z0-9])([A-Z])/', '$1_$2', $s1);
@@ -268,7 +286,7 @@ trait EnumValueObjectTrait
      *
      * @return boolean
      */
-    final public static function definedValue($value)
+    final public static function definedValue(string $value)
     {
         self::parseEnumOptions();
         return in_array($value, self::$options, true);
@@ -281,7 +299,7 @@ trait EnumValueObjectTrait
      *
      * @return boolean
      */
-    final public static function definedName($name)
+    final public static function definedName(string $name)
     {
         self::parseEnumOptions();
         return isset(self::$options[$name]);

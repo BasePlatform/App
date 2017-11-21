@@ -35,8 +35,14 @@ class Security implements SecurityInterface
      */
     public $passwordHashCost;
 
+    /**
+     * @var bool
+     */
     private $_useLibreSSL;
 
+    /**
+     * @var mixed
+     */
     private $_randomFile;
 
     /**
