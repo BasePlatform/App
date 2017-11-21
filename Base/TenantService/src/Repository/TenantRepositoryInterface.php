@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Base\TenantService\Repository;
 
-use Base\TenantService\Entity\TenantInterface;
+use Base\TenantService\Model\TenantInterface;
+use Base\TenantService\Model\TenantIdInterface;
 
 /**
  * Tenant Repository Interface
@@ -23,29 +24,11 @@ use Base\TenantService\Entity\TenantInterface;
 interface TenantRepositoryInterface
 {
     /**
-     * Find Tenant by Tenant Id
+     * Get Tenant by Tenant Id
      *
      * @param TenantIdInterface $tenantId
      *
      * @return TenantInterface|null
      */
-    //public function find(TenantIdInterface $tenantId): ?TenantInterface;
-
-    /**
-     * Insert a Tenant
-     *
-     * @param TenantInterface $item
-     *
-     * @return TenantInterface|null
-     */
-    public function insert(TenantInterface $item): ?TenantInterface;
-
-    /**
-     * Convert an array data from fetch assoc to Entity
-     *
-     * @param array|boolean $data
-     *
-     * @return TenantInterface|null
-     */
-    public function convertToEntity($data): ?TenantInterface;
+    public function get(TenantIdInterface $tenantId): ?TenantInterface;
 }

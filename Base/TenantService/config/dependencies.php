@@ -13,34 +13,31 @@ return [
   'dependencies' => [
     'definitions' => [
       /**
-       * Entities and Value Objects
+       * Models
        */
-      \Base\TenantService\Entity\TenantInterface::class => \Base\TenantService\Entity\Tenant::class,
-
-      /**
-       * Factories
-       */
-      \Base\TenantService\Factory\TenantFactoryInterface::class => \Base\TenantService\Factory\TenantFactory::class,
-
+      \Base\TenantService\Model\TenantInterface::class => \Base\TenantService\Model\Tenant::class,
+      \Base\TenantService\Model\TenantIdInterface::class => \Base\TenantService\Model\TenantId::class,
+      \Base\TenantService\Model\TenantStatusInterface::class => \Base\TenantService\Model\TenantStatus::class,
+      \Base\TenantService\Model\Factory\TenantFactoryInterface::class => \Base\TenantService\Model\Factory\TenantFactory::class,
       /**
        * Repositories
        */
       \Base\TenantService\Repository\TenantRepositoryInterface::class => \Base\TenantService\Repository\TenantRepository::class,
-
       /**
        * Services
        */
       \Base\TenantService\Service\TenantServiceInterface::class => \Base\TenantService\Service\TenantService::class
-
     ],
     'params' => [
       /**
        * Factories
        */
-      \Base\TenantService\Factory\TenantFactory::class => [
-          'className' => \Base\TenantService\Entity\Tenant::class
+      \Base\TenantService\Model\Factory\TenantFactory::class => [
+        'class' => \Base\TenantService\Model\Tenant::class,
+        'tenantCollectionClass' => \Base\TenantService\Model\TenantCollection::class,
+        'tenantIdClass' => \Base\TenantService\Model\TenantId::class,
+        'tenantStatusClass' => \Base\TenantService\Model\TenantStatus::class,
       ]
-
     ]
   ]
 ];

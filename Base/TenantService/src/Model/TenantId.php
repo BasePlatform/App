@@ -32,7 +32,7 @@ class TenantId implements TenantIdInterface
     /**
      * @var string
      */
-    private $value;
+    protected $value;
 
     /**
      * @param string $value
