@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Base\TenantService\Model;
+namespace Base\TenantService\Domain\Model;
 
 /**
  * Tenant Status Value Object
  *
- * @package Base\TenantService\Model
+ * @package Base\TenantService\Domain\Model
  */
 class TenantStatus implements TenantStatusInterface
 {

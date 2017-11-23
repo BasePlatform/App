@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Base\TenantService\Model;
+namespace Base\TenantService\Domain\Model;
 
 use Base\Model\ValueObject\EnumValueObjectInterface;
 
 /**
  * Tenant Status Value Object Interface
  *
- * @package Base\TenantService\Model
+ * @package Base\TenantService\Domain\Model
  */
 interface TenantStatusInterface extends EnumValueObjectInterface
 {

@@ -11,37 +11,28 @@
 
 declare(strict_types=1);
 
-namespace Base\TenantService\Model;
+namespace Base\TenantService\Domain\Model;
 
 use Base\Model\ValueObject\ValueObjectInterface;
 
 /**
  * Tenant Id Value Object Interface
  *
- * @package Base\TenantService\Model
+ * @package Base\TenantService\Domain\Model
  */
 interface TenantIdInterface extends ValueObjectInterface
 {
     /**
      * Create a Tenant Id from String Name and Domain
      *
-     * @param string $name
-     *
-     * @return self
-     */
-    public static function createFromString(string $value): TenantIdInterface;
-
-    /**
-     * Create a Tenant Id from String Name and Domain
-     *
      * Generate a unique id if name is blank
      *
-     * @param string $name
-     * @param string $domain
+     * @param string|null $name
+     * @param string|null $domain
      *
      * @return self
      */
-    public static function createFromStringNameDomain(string $name = '', string $domain = ''): TenantIdInterface;
+    public static function createFromNameDomain(string $name = null, string $domain = null): TenantIdInterface;
 
     /**
      * Validate a string value for the value object

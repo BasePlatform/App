@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Base\TenantService\Repository;
 
-use Base\TenantService\DataMapper\TenantMapperInterface;
-use Base\TenantService\Factory\TenantFactoryInterface;
+use Base\TenantService\Infrastructure\DataMapper\TenantMapperInterface;
+use Base\TenantService\Domain\Model\TenantIdInterface;
+use Base\TenantService\Domain\Model\TenantInterface;
 
 /**
  * Tenant Repository
@@ -41,6 +42,6 @@ class TenantRepository implements TenantRepositoryInterface
      */
     public function get(TenantIdInterface $tenantId): ?TenantInterface
     {
-        return $this->dataMapper->findById($tenantId);
+        return $this->dataMapper->fetchById($tenantId);
     }
 }

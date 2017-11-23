@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Base\TenantService\DataMapper;
+namespace Base\TenantService\Infrastructure\DataMapper;
 
 use Base\Db\DataMapper\DataMapperInterface;
-use Base\TenantService\Model\TenantInterface;
-use Base\TenantService\Model\TenantIdInterface;
+use Base\TenantService\Domain\Model\TenantInterface;
+use Base\TenantService\Domain\Model\TenantIdInterface;
 
 /**
  * Tenant Mapper Interface
  *
- * @package Base\TenantService\DataMapper
+ * @package Base\TenantService\Infrastructure\DataMapper
  */
 interface TenantMapperInterface extends DataMapperInterface
 {

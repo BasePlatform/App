@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Base\TenantService\Model;
+namespace Base\TenantService\Domain\Model;
 
-use Base\Exception\InvalidTenantIdException;
+use Base\Domain\Exception\InvalidTenantIdException;
 use Ramsey\Uuid\Uuid;
 
 /**
  * TenantId Value Object
  *
- * @package Base\TenantService\Model
+ * @package Base\TenantService\Domain\Model
  */
 class TenantId implements TenantIdInterface
 {
@@ -37,12 +37,26 @@ class TenantId implements TenantIdInterface
     /**
      * @param string $value
      */
-    public function __construct(string $value = null)
+    public function __construct(string $value)
     {
         if ($this->validate($value)) {
             $this->value = $value;
         }
         throw new InvalidTenantIdException();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function createFromNameDomain(string $name = null, string $domain = null): TenantIdInterface
+    {
+        $domain = $domain ?: '';
+        if (!empty($name)) {
+            return new self($name.$domain);
+        } else {
+            $uuid = Uuid::uuid4()->toString();
+            return new self($uuid.$domain);
+        }
     }
 
     /**
@@ -55,27 +69,6 @@ class TenantId implements TenantIdInterface
             return true;
         }
         return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function createFromString(string $name): TenantIdInterface
-    {
-        return new self($name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function createFromStringNameDomain(string $name = '', string $domain = ''): TenantIdInterface
-    {
-        if (!empty($name)) {
-            return new self($name.$domain);
-        } else {
-            $uuid = Uuid::uuid4()->toString();
-            return new self($uuid.$domain);
-        }
     }
 
     /**

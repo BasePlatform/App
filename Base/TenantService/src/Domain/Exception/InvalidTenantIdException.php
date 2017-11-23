@@ -9,18 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Base\TenantService\Exception;
+namespace Base\TenantService\Domain\Exception;
 
 use RuntimeException;
 use Base\Exception\ServiceExceptionInterface;
 use Base\Exception\ServiceExceptionTrait;
+use Base\Http\ResponseStatusCode;
 
 /**
- * Represents an Existed Tenant Exception
+ * Represents an Invalid TenantId Value
  *
- * @package Base\TenantService\Exception
+ * @package Base\TenantService\Domain\Exception
  */
-class ExistedTenantException extends RuntimeException implements ServiceExceptionInterface
+class InvalidTenantIdException extends RuntimeException implements ServiceExceptionInterface
 {
     use ServiceExceptionTrait;
 
@@ -31,11 +32,15 @@ class ExistedTenantException extends RuntimeException implements ServiceExceptio
      * @param array $additionalData
      *
      */
-    public function __construct(string $message = 'Tenant Is Already Existed', bool $notification = false, string $details = null, array $additionalData = null)
-    {
+    public function __construct(
+        string $message = 'Invalid TenantId Value',
+        bool $notification = false,
+        string $details = null,
+        array $additionalData = null
+    ) {
         $this->message = $message;
-        $this->statusCode = 422;
-        $this->code = TENANT_SERVICE_CONSTANTS['ERROR_CODE_SPACE']+2;
+        $this->statusCode = ResponseStatusCode::HTTP_UNPROCESSABLE_ENTITY;
+        $this->code = TENANT_SERVICE_CONSTANTS['ERROR_CODE_SPACE']+3;
         $this->notification = $notification;
         $this->details = $details;
         $this->additionalData = $additionalData;
@@ -44,8 +49,9 @@ class ExistedTenantException extends RuntimeException implements ServiceExceptio
     /**
      * {@inheritdoc}
      */
-    public function getReference(string $pathPrefix = ''): string
+    public function getReference(string $pathPrefix = null): string
     {
-        return $pathPrefix.'/api/problems/tenants/existed-tenant';
+        $pathPrefix = $pathPrefix ?: '';
+        return $pathPrefix.'/api/problems/tenants/invalid-tenantid';
     }
 }

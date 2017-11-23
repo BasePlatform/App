@@ -18,7 +18,7 @@ return [
       \Base\TenantService\Model\TenantInterface::class => \Base\TenantService\Model\Tenant::class,
       \Base\TenantService\Model\TenantIdInterface::class => \Base\TenantService\Model\TenantId::class,
       \Base\TenantService\Model\TenantStatusInterface::class => \Base\TenantService\Model\TenantStatus::class,
-      \Base\TenantService\Model\Factory\TenantFactoryInterface::class => \Base\TenantService\Model\Factory\TenantFactory::class,
+      \Base\TenantService\Model\TenantFactoryInterface::class => \Base\TenantService\Model\TenantFactory::class,
       /**
        * Repositories
        */

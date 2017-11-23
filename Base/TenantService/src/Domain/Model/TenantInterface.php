@@ -11,16 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Base\TenantService\Entity;
+namespace Base\TenantService\Domain\Model;
 
-use Base\Common\ValueObject\TenantIdInterface;
-use Base\TenantService\Model\TenantStatusInterface;
 use Base\Model\Entity\EntityInterface;
 
 /**
  * Tenant Entity Interface
  *
- * @package Base\TenantService\Entity
+ * @package Base\TenantService\Domain\Model
  */
 interface TenantInterface extends EntityInterface
 {

@@ -11,17 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Base\TenantService\Model;
-
-use Base\TenantService\Model\TenantIdInterface;
-use Base\TenantService\Model\TenantStatusInterface;
-use Base\Helper\DateTimeHelper;
-use ReflectionClass;
+namespace Base\TenantService\Domain\Model;
 
 /**
  * Tenant Entity
  *
- * @package Base\TenantService\Model
+ * @package Base\TenantService\Domain\Model
  */
 class Tenant implements TenantInterface
 {

@@ -11,15 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Base\TenantService\Repository;
-
-use Base\TenantService\Model\TenantInterface;
-use Base\TenantService\Model\TenantIdInterface;
+namespace Base\TenantService\Domain\Model;
 
 /**
  * Tenant Repository Interface
  *
- * @package Base\TenantService\Repository
+ * @package Base\TenantService\Domain\Model
  */
 interface TenantRepositoryInterface
 {

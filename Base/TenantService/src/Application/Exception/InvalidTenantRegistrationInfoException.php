@@ -14,6 +14,7 @@ namespace Base\TenantService\Exception;
 use RuntimeException;
 use Base\Exception\ServiceExceptionInterface;
 use Base\Exception\ServiceExceptionTrait;
+use Base\Http\ResponseStatusCode;
 
 /**
  * Represents an Invalid Tenant Registration Info Exception
@@ -31,10 +32,14 @@ class InvalidTenantRegistrationInfoException extends RuntimeException implements
      * @param array $additionalData
      *
      */
-    public function __construct(string $message = 'Invalid Tenant Registration Info', bool $notification = false, string $details = null, array $additionalData = null)
-    {
+    public function __construct(
+        string $message = 'Invalid Tenant Registration Info',
+        bool $notification = false,
+        string $details = null,
+        array $additionalData = null
+    ) {
         $this->message = $message;
-        $this->statusCode = 422;
+        $this->statusCode = ResponseStatusCode::HTTP_UNPROCESSABLE_ENTITY;
         $this->code = TENANT_SERVICE_CONSTANTS['ERROR_CODE_SPACE']+1;
         $this->notification = $notification;
         $this->details = $details;
@@ -44,8 +49,9 @@ class InvalidTenantRegistrationInfoException extends RuntimeException implements
     /**
      * {@inheritdoc}
      */
-    public function getReference(string $pathPrefix = ''): string
+    public function getReference(string $pathPrefix = null): string
     {
+        $pathPrefix = $pathPrefix ?: '';
         return $pathPrefix.'/api/problems/tenants/invalid-tenant-registration-info';
     }
 }
