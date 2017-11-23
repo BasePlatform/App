@@ -20,9 +20,11 @@ interface ServiceExceptionInterface
     /**
      * Return Exception Reference URL
      *
+     * @param string|null $pathPrefix
+     *
      * @return string
      */
-    public function getReference(string $pathPrefix = ''): ?string;
+    public function getReference(string $pathPrefix = null): ?string;
 
     /**
      * Return Status Code

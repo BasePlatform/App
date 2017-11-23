@@ -23,7 +23,6 @@ use Base\Http\ResponseStatusCode;
  */
 class ServerErrorException extends RuntimeException implements ServiceExceptionInterface
 {
-
     use ServiceExceptionTrait;
 
     /**
@@ -33,8 +32,12 @@ class ServerErrorException extends RuntimeException implements ServiceExceptionI
      * @param array $additionalData
      *
      */
-    public function __construct(string $message = 'Internal Server Error', bool $notification = false, string $details = null, array $additionalData = null)
-    {
+    public function __construct(
+        string $message = 'Internal Server Error',
+        bool $notification = false,
+        string $details = null,
+        array $additionalData = null
+    ) {
         $this->message = $message;
         $this->statusCode = ResponseStatusCode::HTTP_INTERNAL_SERVER_ERROR;
         $this->code = 0;
@@ -46,8 +49,9 @@ class ServerErrorException extends RuntimeException implements ServiceExceptionI
     /**
      * {@inheritdoc}
      */
-    public function getReference(string $pathPrefix = ''): string
+    public function getReference(string $pathPrefix = null): string
     {
+        $pathPrefix = $pathPrefix ?: '';
         return $pathPrefix.'/api/problems/server-error';
     }
 }
