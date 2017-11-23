@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Base\Db\DataMapper;
 
+use Base\Db\DbAdapterInterface;
+use Base\Model\Entity\EntityInterface;
+
 /**
  * Data Mapper Interface
  *
@@ -29,4 +32,38 @@ interface DataMapperInterface
      * @return string
      */
     public function getEntityInterface(): string;
+
+    /**
+     * Return DbAdapter
+     *
+     * @return DbAdapterInterface
+     */
+    public function getDbAdapter(): DbAdapterInterface;
+
+    /**
+     * Insert Entity
+     *
+     * @param EntityInterface
+     *
+     * @return EntityInterface|null
+     */
+    public function insert(EntityInterface $entity): ?EntityInterface;
+
+    /**
+     * Update Entity
+     *
+     * @param EntityInterface
+     *
+     * @return EntityInterface|null
+     */
+    public function update(EntityInterface $entity): ?EntityInterface;
+
+    /**
+     * Delete Entity
+     *
+     * @param EntityInterface
+     *
+     * @return boolean
+     */
+    public function delete(EntityInterface $entity): bool;
 }

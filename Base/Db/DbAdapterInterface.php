@@ -80,7 +80,7 @@ interface DbAdapterInterface
      *
      * @param  string|null $name
      *
-     * @return string
+     * @return string|null
      */
     public function lastInsertId($name = null);
 

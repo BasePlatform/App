@@ -146,7 +146,7 @@ class MasterSlavePDO implements DbAdapterInterface
         if ($this->latestReplicateDb) {
             return $this->latestReplicateDb->lastInsertId($name);
         }
-        throw new RuntimeException('No Living Connection');
+        return null;
     }
 
     /**
@@ -167,12 +167,10 @@ class MasterSlavePDO implements DbAdapterInterface
      */
     public function commit()
     {
-        $this->latestReplicateDb = $replicateDb = $this->getAReplicateDb('master');
-        $result = $replicateDb->commit();
-        if ($result) {
-            $this->inTransaction = true;
+        if ($this->latestReplicateDb) {
+            return $this->latestReplicateDb->commit();
         }
-        return $result;
+        return false;
     }
 
     /**
@@ -180,12 +178,10 @@ class MasterSlavePDO implements DbAdapterInterface
      */
     public function rollBack()
     {
-        $this->latestReplicateDb = $replicateDb = $this->getAReplicateDb('master');
-        $result = $replicateDb->rollBack();
-        if ($result) {
-            $this->inTransaction = true;
+        if ($this->latestReplicateDb) {
+            return $this->latestReplicateDb->rollBack();
         }
-        return $result;
+        return false;
     }
 
     /**
