@@ -23,7 +23,7 @@ interface CommandHandlerInterface
     /**
      * Handler the Command
      * @param  CommandInterface $command
-     * @return [type]                    [description]
+     * @return mixed
      */
     public function handle(CommandInterface $command);
 }

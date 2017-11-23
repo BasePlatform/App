@@ -132,7 +132,7 @@ class UnitOfWork implements UnitOfWorkInterface
     /**
      * {@inheritdoc}
      */
-    public function commit()
+    public function commit(): bool
     {
         // We process based on entiy class group
         foreach ($this->storage as $class => $entityStorage) {
@@ -163,7 +163,7 @@ class UnitOfWork implements UnitOfWorkInterface
     /**
      * {@inheritdoc}
      */
-    public function rollBack()
+    public function rollBack(): bool
     {
         return true;
     }
