@@ -9,24 +9,21 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
-
-namespace Base\Validator;
+namespace Base\Event;
 
 /**
- * Interface for Validator
+ * Listener Interface
  *
- * @package Base\Http
+ * @package Base\Event
  */
-interface ValidatorInterface
+interface ListenerInterface
 {
     /**
-     * Validate Data against rules
+     * Handle the Event
      *
-     * @param array|object $data
-     * @param array $rules
+     * @param  EventInterface $event
      *
-     * @return null|ResponseInterface
+     * @return mixed
      */
-    public function validate($data, array $rules = []): bool;
+    public function handle(EventInterface $event);
 }
