@@ -31,11 +31,20 @@ class PublicRegisterTenantAction extends MiddlewareInterface
     public $responseFactory;
 
     /**
-     * @param ResponseFactoryInterface $responseFactory
+     * @var RegisterTenantCommandHandler
      */
-    public function __construct(ResponseFactoryInterface $responseFactory)
-    {
+    protected $commandHandler;
+
+    /**
+     * @param ResponseFactoryInterface     $responseFactory
+     * @param RegisterTenantCommandHandler $commandHandler
+     */
+    public function __construct(
+        ResponseFactoryInterface $responseFactory,
+        RegisterTenantCommandHandler $commandHandler
+    ) {
         $this->responseFactory = $responseFactory;
+        $this->commandHandler = $commandHandler;
     }
 
      /**
@@ -51,7 +60,6 @@ class PublicRegisterTenantAction extends MiddlewareInterface
             $config->get('app.domain'),
             $config->get('app.platform')
         );
-        $commandHandler = new RegisterTenantCommandHandler();
-        return $this->responseFactory->createJson($commandHandler->handle($command));
+        return $this->responseFactory->createJson($this->commandHandler->handle($command));
     }
 }

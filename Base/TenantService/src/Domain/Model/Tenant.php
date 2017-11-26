@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Base\TenantService\Domain\Model;
 
+use Base\Helper\DateTimeHelper;
+
 /**
  * Tenant Entity
  *
@@ -29,11 +31,6 @@ class Tenant implements TenantInterface
      * @var string
      */
     protected $domain;
-
-    /**
-     * @var string
-     */
-    protected $platform;
 
     /**
      * @var boolean
@@ -56,65 +53,47 @@ class Tenant implements TenantInterface
     protected $updatedAt;
 
     /**
-     * {@inheritdoc}
+     * @param TenantIdInterface          $id
+     * @param string|null                $domain
+     * @param bool|boolean               $isRootMember
+     * @param TenantStatusInterface|null $status
+     * @param \DateTime|null             $createdAt
+     * @param \DateTime|null             $updatedAt
      */
-    public function setId(TenantIdInterface $id)
-    {
+    public function __construct(
+        TenantIdInterface $id,
+        string $domain = null,
+        bool $isRootMember = false,
+        TenantStatusInterface $status = null,
+        \DateTime $createdAt = null,
+        \DateTime $updatedAt = null
+    ) {
         $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDomain(string $domain)
-    {
-        $this->domain = $domain;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPlatform(string $platform = null)
-    {
-        $this->platform = $platform;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setIsRootMember(bool $isRootMember)
-    {
+        $this->domain = $domain ?: (string) $this->id;
         $this->isRootMember = $isRootMember;
+        $now = DateTimeHelper::now();
+        $this->status = $status ?: TenantStatus::createStatusDisabled();
+        $this->createdAt = $createdAt ?: $now;
+        $this->updatedAt = $updatedAt ?: $now;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function activate()
+    {
+        $this->status = TenantStatus::createStatusActive();
+        $this->updatedAt = DateTimeHelper::now();
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setStatus(TenantStatusInterface $status)
+    public function disable()
     {
-        $this->status = $status;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUpdatedAt(\DateTime $updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
+        $this->status = TenantStatus::createStatusDisabled();
+        $this->updatedAt = DateTimeHelper::now();
         return $this;
     }
 
@@ -132,14 +111,6 @@ class Tenant implements TenantInterface
     public function getDomain(): string
     {
         return $this->domain;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPlatform(): ?string
-    {
-        return $this->platform;
     }
 
     /**

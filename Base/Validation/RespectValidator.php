@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Base\Validator;
+namespace Base\Validation;
 
 use Respect\Validation\Validator as v;
 use Respect\Validation\Exceptions\NestedValidationException;
@@ -19,7 +19,7 @@ use Respect\Validation\Exceptions\NestedValidationException;
 /**
  * Respect Validator
  *
- * @package Base\Validator
+ * @package Base\Validation
  */
 class RespectValidator implements ValidatorInterface
 {

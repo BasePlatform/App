@@ -31,7 +31,7 @@ interface EntityCollectionInterface extends Countable, ArrayAccess, IteratorAggr
      *
      * @return void
      */
-    public function add(EntityInterface $item): void;
+    public function add(EntityInterface $item);
 
     /**
      * Remove Entity from Collection
@@ -40,7 +40,7 @@ interface EntityCollectionInterface extends Countable, ArrayAccess, IteratorAggr
      *
      * @return void
      */
-    public function remove(EntityInterface $item): void;
+    public function remove(EntityInterface $item);
 
     /**
      * Get Entity from Collection
@@ -65,7 +65,7 @@ interface EntityCollectionInterface extends Countable, ArrayAccess, IteratorAggr
      *
      * @return void
      */
-    public function clear(): void;
+    public function clear();
 
     /**
      * To Array

@@ -61,7 +61,7 @@ class TenantMapper implements TenantMapperInterface
      */
     public function fetchById(TenantIdInterface $tenantId): ?TenantInterface
     {
-        $sql = 'SELECT * FROM '. $this->table . 't WHERE t.id = :id LIMIT 0,1';
+        $sql = 'SELECT * FROM '. $this->table . ' t WHERE t.id = :id LIMIT 0,1';
         $stmt = $this->dbAdapter->prepare($sql);
         $stmt->execute(['id' => $tenantId->toString()]);
         $result = $stmt->fetch();

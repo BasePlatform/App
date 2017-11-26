@@ -284,7 +284,7 @@ class ConfigAggregator implements ArrayAccess, ConfigInterface
      *
      * @return void
      */
-    protected function saveCache(): void
+    protected function saveCache()
     {
         if (file_exists($this->cacheFilePath) && !is_writable($this->cacheFilePath)) {
             throw new RuntimeException(

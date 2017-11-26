@@ -13,10 +13,6 @@ declare(strict_types=1);
 
 namespace Base\TenantService\Domain\Model;
 
-use Base\TenantService\Domain\Model\TenantInterface;
-use Base\TenantService\Domain\Model\TenantIdInterface;
-use Base\TenantService\Domain\Model\TenantStatusInterface;
-
 /**
  * Tenant Factory Interface
  *
@@ -26,10 +22,22 @@ interface TenantFactoryInterface
 {
     /**
      * Create a Tenant
-     *
+     * @param  TenantIdInterface          $id
+     * @param  string|null                $domain
+     * @param  bool|boolean               $isRootMember
+     * @param  TenantStatusInterface|null $status
+     * @param  \DateTime|null             $createdAt
+     * @param  \DateTime|null             $updatedAt
      * @return TenantInterface
      */
-    public function createTenant(): TenantInterface;
+    public function createTenant(
+        TenantIdInterface $id,
+        string $domain = null,
+        bool $isRootMember = false,
+        TenantStatusInterface $status = null,
+        \DateTime $createdAt = null,
+        \DateTime $updatedAt = null
+    ): TenantInterface;
 
     /**
      * Create a Tenant Id

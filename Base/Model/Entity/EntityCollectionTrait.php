@@ -39,7 +39,7 @@ class EntityCollectionTrait
     /**
      * {@inheritdoc}
      */
-    public function add(EntityInterface $item): void
+    public function add(EntityInterface $item)
     {
         $this->offsetSet($item);
     }
@@ -47,7 +47,7 @@ class EntityCollectionTrait
     /**
      * {@inheritdoc}
      */
-    public function remove(EntityInterface $item): void
+    public function remove(EntityInterface $item)
     {
         $this->offsetUnset($item);
     }
@@ -71,7 +71,7 @@ class EntityCollectionTrait
     /**
      * {@inheritdoc}
      */
-    public function clear(): void
+    public function clear()
     {
         $this->items = [];
     }

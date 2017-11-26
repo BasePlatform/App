@@ -13,10 +13,6 @@ declare(strict_types=1);
 
 namespace Base\TenantService\Domain\Model;
 
-use Base\TenantService\Domain\Model\TenantInterface;
-use Base\TenantService\Domain\Model\TenantIdInterface;
-use Base\TenantService\Domain\Model\TenantStatusInterface;
-
 /**
  * Tenant Factory
  *
@@ -65,9 +61,22 @@ class TenantFactory implements TenantFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createTenant(): TenantInterface
-    {
-        return new $this->tenantClass();
+    public function createTenant(
+        TenantIdInterface $id,
+        string $domain = null,
+        bool $isRootMember = false,
+        TenantStatusInterface $status = null,
+        \DateTime $createdAt = null,
+        \DateTime $updatedAt = null
+    ): TenantInterface {
+        return new $this->tenantClass(
+            $id,
+            $domain,
+            $isRootMember,
+            $status,
+            $createdAt,
+            $updatedAt
+        );
     }
 
     /**

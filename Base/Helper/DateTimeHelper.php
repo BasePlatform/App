@@ -33,17 +33,17 @@ class DateTimeHelper
      *
      * This function could be used for creating the datetime for inserting to DB by using $now = DateTimeHelper::now(DateTimeHelper::DB_DATETIME_FORMAT);
      *
-     * @param  string $outputFormat
      * @param  string $timezone default value is UTC
+     * @param  string $outputFormat
      * @return mixed The DateTime|Formatted DateTime
      */
-    public static function now(string $outputFormat = null, string $timeZone = 'UTC')
+    public static function now(string $timeZone = 'UTC', string $outputFormat = null)
     {
         try {
             $result = new \DateTime('now', new \DateTimeZone($timeZone));
             return ($outputFormat) ? $result->format($outputFormat) : $result;
         } catch (\Exception $e) {
-            throw new RuntimeException('Could Not Create Now DateTime - Check Timezone Value or Output Format');
+            throw new RuntimeException('Could Not Create Now DateTime');
         }
     }
 
@@ -53,26 +53,16 @@ class DateTimeHelper
      * This function could be used for creating the datetime for inserting to DB by using $now = DateTimeHelper::now(DateTimeHelper::DB_DATETIME_FORMAT);
      *
      * @param  string $value
+     * @param  string $format
      * @return \DateTime
      */
-    public static function createFromDb(string $value, string $type = 'datetime')
+    public static function createFromDb(string $value, string $format = self::DB_DATETIME_FORMAT)
     {
         try {
-            switch ($type) {
-                case 'date':
-                    $type = self::DB_DATE_FORMAT;
-                    break;
-                case 'time':
-                    $type = self::DB_TIME_FORMAT;
-                    break;
-                default:
-                    $type = self::DB_DATETIME_FORMAT;
-                    break;
-            }
-            $result = \DateTime::createFromFormat($type, $value);
+            $result = \DateTime::createFromFormat($format, $value);
             return $result;
         } catch (\Exception $e) {
-            throw new RuntimeException('Could Not Create DateTime from DB Value');
+            throw new RuntimeException('Could Not Create DateTime from Database Value');
         }
     }
 
@@ -107,7 +97,7 @@ class DateTimeHelper
                 return $result;
             }
         } catch (\Exception $e) {
-            throw new RuntimeException('Could Not Convert to DB Format');
+            throw new RuntimeException('Could Not Convert to Database Format');
         }
     }
 
@@ -120,7 +110,7 @@ class DateTimeHelper
      * @param   string $inputTimeZone
      * @return  string|null
      */
-    public static function toISO8601($value, string $outputTimeZone = 'UTC', string $inputFormat = null, string $inputTimeZone = 'UTC')
+    public static function toISO8601($value, string $outputTimeZone = 'UTC', string $inputFormat = self::DB_DATETIME_FORMAT, string $inputTimeZone = 'UTC')
     {
         try {
             $result = null;
@@ -129,7 +119,7 @@ class DateTimeHelper
             }
             if ($value instanceof \DateTime) {
                 $result = $value;
-            } elseif (is_string($value) && !empty($value)) {
+            } elseif (is_string($value)) {
                 if (!$inputFormat) {
                     $inputFormat = self::DB_DATETIME_FORMAT;
                 }
@@ -154,19 +144,19 @@ class DateTimeHelper
      * Convert Date Time between formats
      *
      * @param  string $value
-     * @param  string $from Old format
-     * @param  string $to New format
+     * @param  string $fromFormat
+     * @param  string $toFormat
      * @return string New format value
      */
-    public function convertDateTimeFormat(string $value, string $from, string $to)
+    public function convertDateTimeFormat(string $value, string $fromFormat, string $toFormat)
     {
         try {
-            $myDateTime = \DateTime::createFromFormat($from, $value);
-            if ($myDateTime) {
-                return $myDateTime->format($to);
+            $result = \DateTime::createFromFormat($fromFormat, $value);
+            if ($result) {
+                return $result->format($toFormat);
             }
         } catch (\Exception $e) {
-            throw new RuntimeException('Could Not Convert DateTime from DB Format to ISO8601');
+            throw new RuntimeException('Could Not Convert DateTime Format');
         }
     }
 }

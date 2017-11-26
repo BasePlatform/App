@@ -23,67 +23,18 @@ use Base\Model\Entity\EntityInterface;
 interface TenantInterface extends EntityInterface
 {
     /**
-     * Set the value of field id
-     *
-     * @param  TenantIdInterface $id
+     * Activate Tenant
      *
      * @return $this
      */
-    public function setId(TenantIdInterface $id);
+    public function activate();
 
     /**
-     * Set the value of field domain
-     *
-     * @param  string $domain
+     * Disable Tenant
      *
      * @return $this
      */
-    public function setDomain(string $domain);
-
-    /**
-     * Set the value of field Platform
-     *
-     * @param  string|null $platform
-     *
-     * @return $this
-     */
-    public function setPlatform(string $platform = null);
-
-    /**
-     * Set the value of field isRootMember
-     *
-     * @param  bool $isRootMember
-     *
-     * @return $this
-     */
-    public function setIsRootMember(bool $isRootMember);
-
-    /**
-     * Set the value of field status
-     *
-     * @param  TenantStatusInterface $status
-     *
-     * @return $this
-     */
-    public function setStatus(TenantStatusInterface $status);
-
-    /**
-     * Set the value of field createdAt
-     *
-     * @param  \DateTime $createdAt
-     *
-     * @return $this
-     */
-    public function setCreatedAt(\DateTime $createdAt);
-
-    /**
-     * Set the value of field updatedAt
-     *
-     * @param  \DateTime $updatedAt
-     *
-     * @return $this
-     */
-    public function setUpdatedAt(\DateTime $updatedAt);
+    public function disable();
 
     /**
      * Return the value of field id
