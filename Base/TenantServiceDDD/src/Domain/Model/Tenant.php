@@ -22,6 +22,8 @@ use Base\Helper\DateTimeHelper;
  */
 class Tenant implements TenantInterface
 {
+    use \Base\Event\HasEventsTrait;
+
     /**
      * @var TenantIdInterface
      */
@@ -69,12 +71,22 @@ class Tenant implements TenantInterface
         \DateTime $updatedAt = null
     ) {
         $this->id = $id;
-        $this->domain = $domain ?: (string) $this->id;
+        $this->domain = !empty($domain) ? $domain : (string) $this->id;
         $this->isRootMember = $isRootMember;
-        $now = DateTimeHelper::now();
         $this->status = $status ?: TenantStatus::createStatusDisabled();
+        $now = DateTimeHelper::now();
         $this->createdAt = $createdAt ?: $now;
         $this->updatedAt = $updatedAt ?: $now;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function register()
+    {
+        $this->status = TenantStatus::createStatusActive();
+        $this->updatedAt = DateTimeHelper::now();
+        return $this;
     }
 
     /**

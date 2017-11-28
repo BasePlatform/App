@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Base\TenantService\Infrastructure\DataMapper;
+namespace Base\TenantService\DataMapper;
 
-use Base\TenantService\Domain\Model\TenantInterface;
-use Base\TenantService\Domain\Model\TenantIdInterface;
-use Base\TenantService\Domain\Model\TenantFactoryInterface;
+use Base\TenantService\Model\TenantInterface;
+use Base\TenantService\Model\TenantIdInterface;
+use Base\TenantService\Model\TenantFactoryInterface;
 use Base\Db\DbAdapterInterface;
 use Base\Exception\ServerErrorException;
 use Base\Helper\DateTimeHelper;
@@ -23,12 +23,10 @@ use Base\Helper\DateTimeHelper;
 /**
  * Tenant Mapper
  *
- * @package Base\TenantService\Infrastructure\DataMapper
+ * @package Base\TenantService\DataMapper
  */
 class TenantMapper implements TenantMapperInterface
 {
-    use \Base\Db\DataMapper\DataMapperTrait;
-
     /**
      * @var string
      */
@@ -61,7 +59,7 @@ class TenantMapper implements TenantMapperInterface
      */
     public function fetchById(TenantIdInterface $tenantId): ?TenantInterface
     {
-        $sql = 'SELECT * FROM '. $this->table . ' t WHERE t.id = :id LIMIT 0,1';
+        $sql = 'SELECT * FROM '. $this->table . 't WHERE t.id = :id LIMIT 0,1';
         $stmt = $this->dbAdapter->prepare($sql);
         $stmt->execute(['id' => $tenantId->toString()]);
         $result = $stmt->fetch();
@@ -157,7 +155,7 @@ class TenantMapper implements TenantMapperInterface
                         $value = $this->factory->createTenantId($value);
                     }
                     if ($key == 'status') {
-                        $value = $this->factory->createTenantStatusFromValue($value);
+                        $value = $this->factory->createTenantStatus($value, true);
                     }
                     $dateTimeProperties = [
                       'createdAt',

@@ -25,13 +25,13 @@ use Base\TenantService\Domain\Model\TenantIdInterface;
 interface TenantMapperInterface extends DataMapperInterface
 {
     /**
-     * Find Tenant by Tenant Id
+     * Fetch Tenant by Tenant Id
      *
      * @param TenantIdInterface $tenantId
      *
      * @return TenantInterface|null
      */
-    public function findById(TenantIdInterface $tenantId): ?TenantInterface;
+    public function fetchById(TenantIdInterface $tenantId): ?TenantInterface;
 
     /**
      * Insert a Tenant

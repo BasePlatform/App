@@ -16,10 +16,10 @@ $pathPrefix = 'tenants';
 return [
   'routes' => [
     [
-      // Site - Register a tenant to the system
-      'tenant.site.registerTenantEndpoint' => [
+      // Public - Register a tenant to the system
+      'tenant.public.registerTenantEndpoint' => [
         'path' => '/'.$pathPrefix.'/register',
-        'handler' => \Base\TenantService\Controller\Site\RegisterTenantAction::class,
+        'handler' => \Base\TenantService\Application\Controller\RegisterTenantAction::class,
         'middlewares' => null,
         'allowedMethods' => [RequestMethod::METHOD_POST],
         'allowedPolicies' => '*',

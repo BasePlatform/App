@@ -28,11 +28,6 @@ class TenantFactory implements TenantFactoryInterface
     /**
      * @var string
      */
-    private $tenantCollectionClass;
-
-    /**
-     * @var string
-     */
     private $tenantIdClass;
 
     /**
@@ -42,18 +37,15 @@ class TenantFactory implements TenantFactoryInterface
 
     /**
      * @param string $tenantClass
-     * @param string $tenantCollectionClass
      * @param string $tenantIdClass
      * @param string $tenantStatusClass
      */
     public function __construct(
         string $tenantClass,
-        string $tenantCollectionClass,
         string $tenantIdClass,
         string $tenantStatusClass
     ) {
         $this->tenantClass = $tenantClass;
-        $this->tenantCollectionClass = $tenantCollectionClass;
         $this->tenantIdClass = $tenantIdClass;
         $this->tenantStatusClass = $tenantStatusClass;
     }
